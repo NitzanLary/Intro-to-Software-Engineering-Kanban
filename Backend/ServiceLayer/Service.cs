@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
 using System;
 using System.Linq;
+using IntroSE.Kanban.Backend.BusinessLayer;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     public class Service
     {
+        private UserController userController;
        
         public Service()
         {
+            userController = UserController.GetInstance();
             throw new NotImplementedException();
         }
         ///<summary>This method loads the data from the persistance.
@@ -101,7 +104,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
         public Response<Task> AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
+            //if(userController.isLoggedIn(email).ErrorOccured)
             throw new NotImplementedException();
+
         }
         /// <summary>
         /// Update the due date of a task

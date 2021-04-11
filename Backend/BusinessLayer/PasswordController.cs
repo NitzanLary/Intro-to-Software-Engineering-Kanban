@@ -11,6 +11,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
     {
         private int MIN_LEN;
         private int MAX_LEN;
+        private static PasswordController passwordController = null;
         //private Response<bool> Response;
 
         public PasswordController()
@@ -19,8 +20,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             this.MAX_LEN = 20;
         }
 
+        public static PasswordController GetInstance()
+        {
+            if (passwordController == null)
+                passwordController = new PasswordController();
+            return passwordController;
+        }
+
         public Response<bool> isValid(string password)
         {
+            bool flag1 = false;
+            bool flag2 = false;
+            bool flag3 = false;
             if (password.Length < MIN_LEN)
             {
                 return Response<bool>.FromError("The password is too short, you need at least " + MIN_LEN + " charcters");
@@ -31,15 +42,26 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return Response<bool>.FromError("The password is too long, you need at most " + MAX_LEN + " charcters");
             }
             foreach (char c in password){
-
+                if ("ABCDEFGHIJKLMNOPQRSTUVWXYZ".Contains(c))
+                    flag1 = true;
+                if ("abcdefghijklmnopqrstuvwxyz".Contains(c))
+                    flag1 = true;
+                if ("1234567890".Contains(c))
+                    flag1 = true;
             }
-            return null;
-
+            if (flag1 && flag3 && flag2)
+                return Response<bool>.FromValue(true);
+            return Response<bool>.FromError("Password must include atleast one uppercase letter, one small character and a number.");
+            
         }
 
         public Response<Password> createPassword(string password)
         {
-            return null;
+            Response<bool> r = isValid(password);
+            if (r.ErrorOccured)
+                return Response<Password>.FromError(r.ErrorMessage);
+            Password pass = new Password(password);
+            return Response<Password>.FromValue(pass);
         } 
     }
 }

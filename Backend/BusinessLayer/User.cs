@@ -9,14 +9,33 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 {
     class User
     {
-        // can you see this?
+        
         private string email;
+        public string Email
+        {
+            get => email;
+        }
         private bool isLoggedIn;
+        public bool IsLoggedIn
+        {
+            get => isLoggedIn;
+            set => isLoggedIn = value;
+        }
+        private Password password;
 
-        public User(string email, bool isLoggedIn)
+
+        public User(string email, Password password)
         {
             this.email = email;
-            this.isLoggedIn = isLoggedIn;
+            this.password = password;
+        }
+
+        public Response Login(string password)
+        {
+            if (!IsPasswordCorrect(password))
+                return new Response("Incorrect Password");
+            IsLoggedIn = true;
+            return new Response();
         }
         
         public Response addBoard(string boardName)
@@ -32,6 +51,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public Response logout()
         {
             throw new NotImplementedException();
+        }
+
+        private bool IsPasswordCorrect(string password)
+        {
+            return this.password.IsMatch(password);
         }
     }
 }

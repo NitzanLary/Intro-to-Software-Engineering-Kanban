@@ -14,6 +14,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             this.password = pass;
         }
+
+        public bool IsMatch(string other) { return password == other; }
     }
 }
     
