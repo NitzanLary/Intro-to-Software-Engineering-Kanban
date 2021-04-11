@@ -8,5 +8,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 {
     class Board
     {
+       
     }
 }
