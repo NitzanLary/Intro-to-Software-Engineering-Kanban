@@ -13,7 +13,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public Response Register(string email, string password)
         {
             throw new NotImplementedException();
-            // can you see this?
+            
         }
 
         public Response Login(string email, string password)
