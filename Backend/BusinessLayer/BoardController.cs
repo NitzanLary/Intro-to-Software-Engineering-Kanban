@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IntroSE.Kanban.Backend.ServiceLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,18 +8,18 @@ using System.Threading.Tasks;
 namespace IntroSE.Kanban.Backend.BusinessLayer
 {
     class BoardController
-    {
-        private Dictionary<string, Dictionary<string, Borad>> boards;
+    {                   // email            boardName 
+        private Dictionary<string, Dictionary<string, Board>> boards;
             
-        public BoardController
-            {
-                this.boards = new Dictionary<string, new Dictionary<string, Board>();
-            }
+        public BoardController()
+        {
+            this.boards = new Dictionary<string, Dictionary<string, Board>>();
+        }
 
 
-        public void LimitColumn(String email, string boardName, int columnOrdinal, int limit)) { throw new NotImplementedException();}
+        public void LimitColumn(String email, string boardName, int columnOrdinal, int limit) { throw new NotImplementedException();}
 
-        public Response<int> GetColumnLimit((string email, string boardName, int columnOrdinal) { throw new NotImplementedException(); }
+        public Response<int> GetColumnLimit(string email, string boardName, int columnOrdinal) { throw new NotImplementedException(); }
 
         public Response<String> GetColumnName(string email, string boardName, int columnOrdinal) { throw new NotImplementedException(); }
 
