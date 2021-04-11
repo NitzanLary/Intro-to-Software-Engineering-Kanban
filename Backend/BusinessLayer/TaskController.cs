@@ -12,6 +12,25 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         readonly private int MAX_TITLE = 50;
         readonly private int MAX_DESC = 300;
 
+        private static TaskController taskController = null;
+
+        //This Class Is Singleton
+        private TaskController()
+        {
+
+        }
+
+        public static TaskController GetInstance()
+        {
+            if (taskController == null)
+            {
+                taskController = new TaskController();
+            }
+            return taskController;
+        }
+
+        
+
   
 
         public Response AddTask(string title, string description, DateTime dueDate, int taskID)
