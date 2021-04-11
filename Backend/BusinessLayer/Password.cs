@@ -8,5 +8,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 {
     class Password
     {
+        private string password;
+
+        public Password(string pass)
+        {
+            this.password = pass;
+        }
     }
 }
+    
