@@ -27,14 +27,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             get => maxInProgress;
             set => maxInProgress = value;
         }
-        private static int taskNumber = 0;
-        public static int TaskNumber
+        private int taskNumber = 0; // changed to not static. asaf & rafa
+        public int TaskNumber
         {
             get => taskNumber;
             set => taskNumber += 1;
         }
 
-        // nitzan is doing share
+        
+        public Response AddTask(Task task) // getting a new task from task controller (through boardController) and add it here to the board. asaf & rafa
+        {
+            throw new NotImplementedException();
+        }
+
         public Board(string name, int maxBacklogs, int maxInProgress)
         {
             this.name = name;
@@ -70,6 +75,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public Response<List<Task>> getColumn(int columnOrdinal)
         {
             return null;
+        }
+
+        internal Response<string> getColumnName(int columnOrdinal) // todo - insert to diagram
+        {
+            throw new NotImplementedException();
         }
     }
 }

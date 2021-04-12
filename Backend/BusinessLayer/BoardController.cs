@@ -13,10 +13,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
                         // email            boardName 
         private Dictionary<string, Dictionary<string, Board>> boards;
+
+        private TaskController taskController;
             
         private BoardController()
         {
             boards = new Dictionary<string, Dictionary<string, Board>>();
+            taskController = TaskController.GetInstance();
         }
 
         public static BoardController GetInstance()
@@ -24,32 +27,52 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return instance == null ? new BoardController() : instance;
         }
 
-        public Response LimitColumn(String email, string boardName, int columnOrdinal, int limit) 
+        private Response BoardsContainsEmailAndBoard(string email, string boardName) // todo - valid input checker - add to diagram
         {
-            bool containsEmail = boards.ContainsKey(email);
-            //Dictionary<string, Board> ofUser = boards[email];
-            bool containsBoard = false;
-            //bool containsColumn = false;
-            Board boa = null;
-            if (containsEmail)
-            {
-                containsBoard = boards[email].ContainsKey(boardName);
-            }
-            if (containsBoard)
-            {
-                boa = boards[email][boardName];
-                if (columnOrdinal > 2 || columnOrdinal < 0)
-                    return new Response("invalid column number");
-                
-            }
-            
+            if (!boards.ContainsKey(email))
+                return Response<bool>.FromError($"boards atribute doesn't contains the given email value {email}");
+            if (!boards[email].ContainsKey(boardName))
+                return Response<bool>.FromError($"user {email} doesn't possess board name {boardName}");
+            return new Response();
         }
 
-        public Response<int> GetColumnLimit(string email, string boardName, int columnOrdinal) { throw new NotImplementedException(); }
+        public Response LimitColumn(string email, string boardName, int columnOrdinal, int limit) 
+        {
+            Response validArguments = BoardsContainsEmailAndBoard(email, boardName);
+            if (validArguments.ErrorOccured)
+                return validArguments;
+            return boards[email][boardName].limitColumn(columnOrdinal, limit);
+        }
 
-        public Response<string> GetColumnName(string email, string boardName, int columnOrdinal) { throw new NotImplementedException(); }
+        public Response<int> GetColumnLimit(string email, string boardName, int columnOrdinal)
+        {
+            Response validArguments = BoardsContainsEmailAndBoard(email, boardName);
+            if (validArguments.ErrorOccured)
+                return Response<int>.FromError(validArguments.ErrorMessage);
+            return boards[email][boardName].getColumnLimit(columnOrdinal);
+        }
 
-        public Response<Task> AddTask(string email, string boardName, string title, string description, DateTime dueDate) { throw new NotImplementedException(); }
+        public Response<string> GetColumnName(string email, string boardName, int columnOrdinal) 
+        {
+            Response validArguments = BoardsContainsEmailAndBoard(email, boardName);
+            if (validArguments.ErrorOccured)
+                return Response<string>.FromError(validArguments.ErrorMessage);
+            return boards[email][boardName].getColumnName(columnOrdinal);
+        }
+
+        public Response<Task> AddTask(string email, string boardName, string title, string description, DateTime dueDate)
+        {
+            Response validArguments = BoardsContainsEmailAndBoard(email, boardName);
+            if (validArguments.ErrorOccured)
+                return Response<Task>.FromError(validArguments.ErrorMessage);
+            Board b = boards[email][boardName];
+            Response<Task> r = taskController.AddTask(title, description, dueDate, b.TaskNumber);
+            if (r.ErrorOccured)
+                return r;
+            Task t = r.Value;
+            b.AddTask(t);
+            return r;
+        }
 
         public Response UpdateTaskDueDate(string email, string boardName, int columnOrdinal, int taskId, DateTime dueDate) { throw new NotImplementedException(); }
 
