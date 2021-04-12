@@ -30,12 +30,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             this.password = password;
         }
 
-        public Response Login(string password)
+        public Response<User> Login(string password)
         {
             if (!IsPasswordCorrect(password))
-                return new Response("Incorrect Password");
+                return Response<User>.FromError("Incorrect Password");
             IsLoggedIn = true;
-            return new Response();
+            return Response<User>.FromValue(this);
         }
         
         public Response addBoard(string boardName)
@@ -50,7 +50,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response logout()
         {
-            throw new NotImplementedException();
+            IsLoggedIn = false;
+            return new Response();
         }
 
         private bool IsPasswordCorrect(string password)

@@ -31,7 +31,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         ///<returns cref="Response">The response of the action</returns>
         public Response Register(string email, string password)
         {
-            throw new NotImplementedException();
+            return userController.Register(email, password);
         }
         /// <summary>
         /// Log in an existing user
@@ -41,7 +41,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the user, instead the response should contain a error message in case of an error</returns>
         public Response<User> Login(string email, string password)
         {
-            throw new NotImplementedException();
+            string e = userController.Login(email, password).Value.Email;
+            return Response<User>.FromValue(new User(e));
         }
         /// <summary>        
         /// Log out an logged in user. 
@@ -50,7 +51,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response Logout(string email)
         {
-            throw new NotImplementedException();
+            return userController.Logout(email);
         }
         private void ValidateUserLoggin(string email)
         {
@@ -104,8 +105,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
         public Response<Task> AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
-            //if(userController.isLoggedIn(email).ErrorOccured)
-            throw new NotImplementedException();
+            Response<bool> loginRes = userController.isLoggedIn(email);
+            if (loginRes.ErrorOccured)
+                return Response<Task>.FromError(loginRes.ErrorMessage);
+            if (!loginRes.Value)
+                return Response<Task>.FromError("The User is NOT login");
+
 
         }
         /// <summary>

@@ -39,10 +39,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return new Response();
         }
 
-        public Response Login(string email, string password)
+        public Response<User> Login(string email, string password)
         {
             if (!users.ContainsKey(email))
-                return new Response("User not found");
+                return Response<User>.FromError("User not found");
             return users[email].Login(password);
         }
 

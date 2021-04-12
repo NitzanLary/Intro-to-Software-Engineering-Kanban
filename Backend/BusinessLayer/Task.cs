@@ -14,8 +14,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public DateTime CreationTime
         {
             get => creationTime;
-            set => creationTime = value;
-
         }
         private DateTime dueDate;
         public DateTime DueDate
@@ -36,29 +34,33 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             set => description = value;
         } 
 
-        Task(int ID, DateTime creationTime, string title, string description)
+        public Task(int ID, DateTime dueDate, string title, string description)
         {
             this.ID = ID;
-            this.creationTime = creationTime;
+            this.dueDate = dueDate;
             this.title = title;
             this.description = description;
+            this.creationTime = DateTime.Now;
         }
 
         
 
         public Response UpdateTaskDueDate(DateTime newDueDate)
         {
-            throw new NotImplementedException();
+            DueDate = newDueDate;
+            return new Response();
         }
 
         public Response UpdateTaskTitle(string newTitle)
         {
-            throw new NotImplementedException();
+            Title = newTitle;
+            return new Response();
         }
 
         public Response UpdateTaskDescription(string newDescription)
         {
-            throw new NotImplementedException();
+            Description = newDescription;
+            return new Response();
         }
 
     }
