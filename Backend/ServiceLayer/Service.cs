@@ -108,9 +108,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<bool> loginRes = userController.isLoggedIn(email);
             if (loginRes.ErrorOccured)
                 return Response<Task>.FromError(loginRes.ErrorMessage);
-            if (!loginRes.Value)
+            if(!loginRes.Value)
                 return Response<Task>.FromError("The User is NOT login");
 
+
+            return null;
 
         }
         /// <summary>
