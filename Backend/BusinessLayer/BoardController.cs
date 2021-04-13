@@ -32,18 +32,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return instance == null ? new BoardController() : instance;
         }
 
-        private Response BoardsContainsEmailAndBoard(string email, string boardName) // todo - valid input checker - add to diagram
+        private Response AllBoardsContainsBoardByEmail(string email, string boardName) // todo - valid input checker - add to diagram
         {
             if (!boards.ContainsKey(email))
-                return Response<bool>.FromError($"boards atribute doesn't contains the given email value {email}");
+                boards.Add(email, new Dictionary<string, Board>());
             if (!boards[email].ContainsKey(boardName))
-                return Response<bool>.FromError($"user {email} doesn't possess board name {boardName}");
+                //return Response<bool>.FromError($"user {email} doesn't possess board name {boardName}");
+                return new Response($"user {email} doesn't possess board name {boardName}");
             return new Response();
         }
 
         public Response LimitColumn(string email, string boardName, int columnOrdinal, int limit) 
         {
-            Response validArguments = BoardsContainsEmailAndBoard(email, boardName);
+            Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
             if (validArguments.ErrorOccured)
                 return validArguments;
             return boards[email][boardName].limitColumn(columnOrdinal, limit);
@@ -51,7 +52,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response<int> GetColumnLimit(string email, string boardName, int columnOrdinal)
         {
-            Response validArguments = BoardsContainsEmailAndBoard(email, boardName);
+            Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
             if (validArguments.ErrorOccured)
                 return Response<int>.FromError(validArguments.ErrorMessage);
             return boards[email][boardName].getColumnLimit(columnOrdinal);
@@ -59,7 +60,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response<string> GetColumnName(string email, string boardName, int columnOrdinal) 
         {
-            Response validArguments = BoardsContainsEmailAndBoard(email, boardName);
+            Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
             if (validArguments.ErrorOccured)
             {
                 log.Debug(validArguments.ErrorMessage);
@@ -70,7 +71,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response<Task> AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
-            Response validArguments = BoardsContainsEmailAndBoard(email, boardName);
+            Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
             if (validArguments.ErrorOccured)
                 return Response<Task>.FromError(validArguments.ErrorMessage);
             Board b = boards[email][boardName];
@@ -87,7 +88,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         private Response<Task> TaskGetter(string email, string boardName, int columnOrdinal, int taskId) // todo - update in the diagram
         {
-            Response validArguments = BoardsContainsEmailAndBoard(email, boardName);
+            Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
             if (validArguments.ErrorOccured)
                 return Response<Task>.FromError(validArguments.ErrorMessage);
             Board b = boards[email][boardName];
@@ -135,7 +136,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response AdvanceTask(string email, string boardName, int columnOrdinal, int taskId) 
         {
-            Response validArguments = BoardsContainsEmailAndBoard(email, boardName);
+            Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
             if (validArguments.ErrorOccured)
             {
                 log.Debug(validArguments.ErrorMessage);
@@ -147,7 +148,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response<IList<Task>> GetColumn(string email, string boardName, int columnOrdinal)
         {
-            Response validArguments = BoardsContainsEmailAndBoard(email, boardName);
+            Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
             if (validArguments.ErrorOccured)
                 return Response<IList<Task>>.FromError(validArguments.ErrorMessage);
             Board b = boards[email][boardName];
@@ -169,7 +170,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response RemoveBoard(string email, string name) 
         {
-            Response validArguments = BoardsContainsEmailAndBoard(email, name);
+            Response validArguments = AllBoardsContainsBoardByEmail(email, name);
             if (validArguments.ErrorOccured)
             {
                 log.Debug(validArguments.ErrorMessage);
