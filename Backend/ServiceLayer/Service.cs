@@ -9,7 +9,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     {
         private UserController userController;
         private BoardController boardController;
-       
+
         public Service()
         {
             userController = UserController.GetInstance();
@@ -98,7 +98,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The limit of the column.</returns>
         public Response<int> GetColumnLimit(string email, string boardName, int columnOrdinal)
         {
-            Response r = userController.isLoggedIn(email);
+            Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return Response<int>.FromError(r.ErrorMessage);
             return boardController.GetColumnLimit(email, boardName, columnOrdinal);
@@ -113,7 +113,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The name of the column.</returns>
         public Response<string> GetColumnName(string email, string boardName, int columnOrdinal)
         {
-            Response r = userController.isLoggedIn(email);
+            Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return Response<string>.FromError(r.ErrorMessage);
             return boardController.GetColumnName(email, boardName, columnOrdinal);
@@ -130,19 +130,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
         public Response<Task> AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
-            Response<bool> r = userController.isLoggedIn(email);
+            Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return Response<Task>.FromError(r.ErrorMessage);
-            
-            Response<bool> loginRes = userController.isLoggedIn(email);
-            if (loginRes.ErrorOccured)
-                return Response<Task>.FromError(loginRes.ErrorMessage);
-            if(!loginRes.Value)
-                return Response<Task>.FromError("The User is NOT login");
 
+            Response<BusinessLayer.Task> rT = boardController.AddTask(email, boardName, title, description, dueDate);
+            if (rT.ErrorOccured)
+                return Response<Task>.FromError(rT.ErrorMessage);
 
-            return null;
-
+            BusinessLayer.Task task = rT.Value;
+            return Response<Task>.FromValue(new Task(task.ID, task.CreationTime, task.Title, task.Description, task.DueDate));
         }
 
 
