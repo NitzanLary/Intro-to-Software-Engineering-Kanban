@@ -27,11 +27,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             get => maxInProgress;
             set => maxInProgress = value;
         }
-        private int taskNumber = 0; // changed to not static. asaf & rafa
-        public int TaskNumber
+        //private static int taskNumber = 0;
+        //public static int TaskNumber
+        //{
+        //    get => taskNumber;
+        //    set => taskNumber += 1;
+        //}
+
+        private List<Dictionary<int, Task>> columns; // backlogs , inProgress, done (generic updatable)
+        public List<Dictionary<int, Task>> Columns
         {
-            get => taskNumber;
-            set => taskNumber += 1;
+            get => columns;
+            set => columns = value;
         }
 
         
@@ -40,11 +47,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             throw new NotImplementedException();
         }
 
-        public Board(string name, int maxBacklogs, int maxInProgress)
+        public Board(string name)
         {
             this.name = name;
-            this.maxBacklogs = maxBacklogs;
-            this.maxInProgress = maxInProgress;
+            //this.maxbacklogs = maxbacklogs;
+            //this.maxinprogress = maxinprogress;
         }
 
         public int getNumOfTasks()
@@ -52,7 +59,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return 0;
         }
 
-        public Response<List<Task>> getInProgess()
+        public Response<Dictionary<int, Task>> getInProgess()
         {
             return null;
         }
@@ -72,7 +79,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return null;
         }
 
-        public Response<List<Task>> getColumn(int columnOrdinal)
+        public Response<Dictionary<int, Task>> getColumn(int columnOrdinal)
         {
             return null;
         }
