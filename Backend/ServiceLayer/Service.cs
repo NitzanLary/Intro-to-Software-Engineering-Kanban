@@ -2,6 +2,10 @@
 using System;
 using System.Linq;
 using IntroSE.Kanban.Backend.BusinessLayer;
+using log4net;
+using System.Reflection;
+using log4net.Config;
+using System.IO;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -10,11 +14,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         private UserController userController;
         private BoardController boardController;
 
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public Service()
         {
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+
+            log.Info("Starting up!");
+
             userController = UserController.GetInstance();
             boardController = BoardController.GetInstance();
-            throw new NotImplementedException();
         }
         ///<summary>This method loads the data from the persistance.
         ///         You should call this function when the program starts. </summary>
@@ -33,6 +43,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         ///<returns cref="Response">The response of the action</returns>
         public Response Register(string email, string password)
         {
+            log.Debug($"Trying to Register new user email: {email} ");
             return userController.Register(email, password);
         }
         /// <summary>
