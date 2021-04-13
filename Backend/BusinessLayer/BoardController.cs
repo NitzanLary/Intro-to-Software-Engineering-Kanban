@@ -17,7 +17,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         private Dictionary<string, Dictionary<string, Board>> boards;
 
         private TaskController taskController;
+
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+
         private BoardController()
         {
             boards = new Dictionary<string, Dictionary<string, Board>>();
@@ -73,7 +76,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Board b = boards[email][boardName];
             Response<Task> r = taskController.AddTask(title, description, dueDate);
             if (r.ErrorOccured)
+            {
+                log.Warn(r.Value);
                 return r;
+            }
             Task t = r.Value;
             b.AddTask(t);
             return r;

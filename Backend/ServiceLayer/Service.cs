@@ -43,7 +43,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         ///<returns cref="Response">The response of the action</returns>
         public Response Register(string email, string password)
         {
-            log.Debug($"Trying to Register new user email: {email} ");
             return userController.Register(email, password);
         }
         /// <summary>
@@ -106,6 +105,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return r;
+            log.Debug($"limit column successfully to {limit}");
             return boardController.LimitColumn(email, boardName, columnOrdinal, limit);
         }
 
@@ -158,8 +158,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<BusinessLayer.Task> rT = boardController.AddTask(email, boardName, title, description, dueDate);
             if (rT.ErrorOccured)
                 return Response<Task>.FromError(rT.ErrorMessage);
-
             BusinessLayer.Task task = rT.Value;
+            log.Debug($"task {title} added successfully to board {boardName}");
             return Response<Task>.FromValue(new Task(task.ID, task.CreationTime, task.Title, task.Description, task.DueDate));
         }
 
