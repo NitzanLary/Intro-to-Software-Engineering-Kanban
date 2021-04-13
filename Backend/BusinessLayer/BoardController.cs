@@ -122,13 +122,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return b.advanceTask(taskId);
         }
 
-        public Response<Dictionary<int, Task>> GetColumn(string email, string boardName, int columnOrdinal)
+        public Response<IList<Task>> GetColumn(string email, string boardName, int columnOrdinal)
         {
             Response validArguments = BoardsContainsEmailAndBoard(email, boardName);
             if (validArguments.ErrorOccured)
-                return Response<Dictionary<int,Task>>.FromError(validArguments.ErrorMessage);
+                return Response<IList<Task>>.FromError(validArguments.ErrorMessage);
             Board b = boards[email][boardName];
-            return b.getColumn(columnOrdinal);
+            Response<Dictionary<int, Task>> res = b.getColumn(columnOrdinal);
+            if (res.ErrorOccured)
+                return Response<IList<Task>>.FromError(res.ErrorMessage);
+            return Response<IList<Task>>.FromValue(res.Value.Values.ToList());
         }
 
         public Response AddBoard(string email, string name) 
@@ -151,19 +154,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             
         }
 
-        public Response<List<Task>> InProgressTask(string email) 
+        public Response<IList<Task>> InProgressTask(string email) 
         {
             if (!boards.ContainsKey(email))
-                return Response<List<Task>>.FromError($"boards atribute doesn't contains the given email value {email}");
+                return Response<IList<Task>>.FromError($"boards atribute doesn't contains the given email value {email}");
             List<Task> ret = new List<Task>();
             foreach(Board b in boards[email].Values)
             {
                 Response<Dictionary<int,Task>> r = b.getColumn(1);
                 if (r.ErrorOccured)
-                    return Response<List<Task>>.FromError(r.ErrorMessage);
+                    return Response<IList<Task>>.FromError(r.ErrorMessage);
                 ret.AddRange(r.Value.Values);
             }
-            return Response<List<Task>>.FromValue(ret);
+            return Response<IList<Task>>.FromValue(ret);
         }
     }
 }
