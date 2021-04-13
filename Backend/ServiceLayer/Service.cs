@@ -44,7 +44,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response Register(string email, string password)
         {
             log.Info($"User {email} is trying to Register");
-            return userController.Register(email, password);
+            Response r = userController.Register(email, password);
+            if (r.ErrorOccured)
+                return r; 
+            return boardController.(email, password);
         }
         /// <summary>
         /// Log in an existing user

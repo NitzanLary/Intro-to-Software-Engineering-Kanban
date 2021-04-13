@@ -35,7 +35,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         private Response BoardsContainsEmailAndBoard(string email, string boardName) // todo - valid input checker - add to diagram
         {
             if (!boards.ContainsKey(email))
-                return Response<bool>.FromError($"boards atribute doesn't contains the given email value {email}");
+                boards.Add(email, new Dictionary<string, Board>());
+                //return Response<bool>.FromError($"boards atribute doesn't contains the given email value {email}");
             if (!boards[email].ContainsKey(boardName))
                 return Response<bool>.FromError($"user {email} doesn't possess board name {boardName}");
             return new Response();

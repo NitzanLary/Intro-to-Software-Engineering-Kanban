@@ -45,9 +45,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 if ("ABCDEFGHIJKLMNOPQRSTUVWXYZ".Contains(c))
                     flag1 = true;
                 if ("abcdefghijklmnopqrstuvwxyz".Contains(c))
-                    flag1 = true;
+                    flag2 = true;
                 if ("1234567890".Contains(c))
-                    flag1 = true;
+                    flag3 = true;
             }
             if (flag1 && flag3 && flag2)
                 return Response<bool>.FromValue(true);
