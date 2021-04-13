@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,11 +27,26 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return instance;
         }
 
+        public bool IsValidEmail(string emailaddress)
+        {
+            try
+            {
+                MailAddress m = new MailAddress(emailaddress);
+
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
 
         public Response Register(string email, string password)
         {
             if (users.ContainsKey(email))
                 return new Response("User already registered");
+            if (!IsValidEmail(email))
+                return new Response("Unvalid email address");
             Response<Password> rPass = pc.createPassword(password);
             if (rPass.ErrorOccured)
                 return rPass;
