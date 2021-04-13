@@ -75,7 +75,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public Response<User> getUserByEmail(string email)
         {
             if (!users.ContainsKey(email))
-                return Response<User>.FromError("User not found");
+            {
+                string s = $"User {email} not found";
+                log.Warn(s);
+                return Response<User>.FromError(s);
+            }
             return Response<User>.FromValue(users[email]);
         }
 
