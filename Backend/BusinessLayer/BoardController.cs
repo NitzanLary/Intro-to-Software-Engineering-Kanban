@@ -66,7 +66,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             if (validArguments.ErrorOccured)
                 return Response<Task>.FromError(validArguments.ErrorMessage);
             Board b = boards[email][boardName];
-            Response<Task> r = taskController.AddTask(title, description, dueDate, b.TaskNumber);
+            Response<Task> r = taskController.AddTask(title, description, dueDate);
             if (r.ErrorOccured)
                 return r;
             Task t = r.Value;
@@ -74,20 +74,96 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return r;
         }
 
-        public Response UpdateTaskDueDate(string email, string boardName, int columnOrdinal, int taskId, DateTime dueDate) { throw new NotImplementedException(); }
+        private Response<Task> TaskGetter(string email, string boardName, int columnOrdinal, int taskId) // todo - update in the diagram
+        {
+            Response validArguments = BoardsContainsEmailAndBoard(email, boardName);
+            if (validArguments.ErrorOccured)
+                return Response<Task>.FromError(validArguments.ErrorMessage);
+            Board b = boards[email][boardName];
+            Response<Dictionary<int, Task>> res = b.getColumn(columnOrdinal);
+            if (res.ErrorOccured)
+                return Response<Task>.FromError(res.ErrorMessage);
+            Dictionary<int, Task> col = res.Value;
+            if (!col.ContainsKey(taskId))
+                return Response<Task>.FromError($"coldn't find task id {taskId} in email {email} | board {boardName} | column {columnOrdinal}");
+            return Response<Task>.FromValue(col[taskId]);
+        }
 
-        public Response UpdateTaskTitle(string email, string boardName, int columnOrdinal, int taskId, string title) { throw new NotImplementedException(); }
+        public Response UpdateTaskDueDate(string email, string boardName, int columnOrdinal, int taskId, DateTime dueDate) 
+        {
+            Response<Task> res = TaskGetter(email, boardName, columnOrdinal, taskId);
+            if (res.ErrorOccured)
+                return res;
+            return taskController.UpdateTaskDueDate(res.Value, dueDate);
+        }
 
-        public Response UpdateTaskDescription(string email, string boardName, int columnOrdinal, int taskId, string description) { throw new NotImplementedException(); }
+        public Response UpdateTaskTitle(string email, string boardName, int columnOrdinal, int taskId, string title) 
+        {
+            Response<Task> res = TaskGetter(email, boardName, columnOrdinal, taskId);
+            if (res.ErrorOccured)
+                return res;
+            return taskController.UpdateTaskTitle(res.Value, title);
+        }
 
-        public Response AdvanceTask(string email, string boardName, int columnOrdinal, int taskId) { throw new NotImplementedException(); }
+        public Response UpdateTaskDescription(string email, string boardName, int columnOrdinal, int taskId, string description) 
+        {
+            Response<Task> res = TaskGetter(email, boardName, columnOrdinal, taskId);
+            if (res.ErrorOccured)
+                return res;
+            return taskController.UpdateTaskDescription(res.Value, description);
+        }
 
-        public Response<List<Task>> GetColumn(string email, string boardName, int columnOrdinal) { throw new NotImplementedException(); }
+        public Response AdvanceTask(string email, string boardName, int columnOrdinal, int taskId) 
+        {
+            Response validArguments = BoardsContainsEmailAndBoard(email, boardName);
+            if (validArguments.ErrorOccured)
+                return Response<Task>.FromError(validArguments.ErrorMessage);
+            Board b = boards[email][boardName];
+            return b.advanceTask(taskId);
+        }
 
-        public Response AddBoard(string email, string name) { throw new NotImplementedException(); }
+        public Response<Dictionary<int, Task>> GetColumn(string email, string boardName, int columnOrdinal)
+        {
+            Response validArguments = BoardsContainsEmailAndBoard(email, boardName);
+            if (validArguments.ErrorOccured)
+                return Response<Dictionary<int,Task>>.FromError(validArguments.ErrorMessage);
+            Board b = boards[email][boardName];
+            return b.getColumn(columnOrdinal);
+        }
 
-        public Response RemoveBoard(string email, string name) { throw new NotImplementedException(); }
+        public Response AddBoard(string email, string name) 
+        {
+            if (!boards.ContainsKey(email))
+                return Response<bool>.FromError($"boards atribute doesn't contains the given email value {email}");
+            if (boards[email].ContainsKey(name))
+                return new Response($"user {email} already has board named {name}");
+            boards[email].Add(name, new Board(name));
+            return new Response();
+        }
 
-        public Response<List<Task>> InProgressTask(string email) { throw new NotImplementedException(); }
+        public Response RemoveBoard(string email, string name) 
+        {
+            Response validArguments = BoardsContainsEmailAndBoard(email, name);
+            if (validArguments.ErrorOccured)
+                return Response<Task>.FromError(validArguments.ErrorMessage);
+            boards[email].Remove(name);
+            return new Response();
+            
+        }
+
+        public Response<List<Task>> InProgressTask(string email) 
+        {
+            if (!boards.ContainsKey(email))
+                return Response<List<Task>>.FromError($"boards atribute doesn't contains the given email value {email}");
+            List<Task> ret = new List<Task>();
+            foreach(Board b in boards[email].Values)
+            {
+                Response<Dictionary<int,Task>> r = b.getColumn(1);
+                if (r.ErrorOccured)
+                    return Response<List<Task>>.FromError(r.ErrorMessage);
+                ret.AddRange(r.Value.Values);
+            }
+            return Response<List<Task>>.FromValue(ret);
+        }
     }
 }
