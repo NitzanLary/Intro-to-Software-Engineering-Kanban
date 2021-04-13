@@ -8,10 +8,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     public class Service
     {
         private UserController userController;
-       
+        private BoardController boardController;
+
         public Service()
         {
             userController = UserController.GetInstance();
+            boardController = BoardController.GetInstance();
             throw new NotImplementedException();
         }
         ///<summary>This method loads the data from the persistance.
@@ -41,8 +43,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the user, instead the response should contain a error message in case of an error</returns>
         public Response<User> Login(string email, string password)
         {
-            string e = userController.Login(email, password).Value.Email;
-            return Response<User>.FromValue(new User(e));
+            Response r = userController.Login(email, password);
+            if (r.ErrorOccured)
+                return Response<User>.FromError(r.ErrorMessage);
+            return Response<User>.FromValue(new User(email));
         }
         /// <summary>        
         /// Log out an logged in user. 
@@ -53,10 +57,22 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             return userController.Logout(email);
         }
+
         private void ValidateUserLoggin(string email)
         {
             throw new NotImplementedException();
         }
+
+        private Response IsLoggedIn(string email)
+        {
+            Response<bool> r = userController.isLoggedIn(email);
+            if (r.ErrorOccured)
+                return r;
+            if (!r.Value)
+                return new Response("User is not logged in");
+            return new Response();
+        }
+
         /// <summary>
         /// Limit the number of tasks in a specific column
         /// </summary>
@@ -67,7 +83,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response LimitColumn(string email, string boardName, int columnOrdinal, int limit)
         {
-            throw new NotImplementedException();
+            Response r = IsLoggedIn(email);
+            if (r.ErrorOccured)
+                return r;
+            return boardController.LimitColumn(email, boardName, columnOrdinal, limit);
         }
 
         /// <summary>
@@ -79,7 +98,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The limit of the column.</returns>
         public Response<int> GetColumnLimit(string email, string boardName, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            Response r = IsLoggedIn(email);
+            if (r.ErrorOccured)
+                return Response<int>.FromError(r.ErrorMessage);
+            return boardController.GetColumnLimit(email, boardName, columnOrdinal);
         }
 
         /// <summary>
@@ -91,7 +113,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The name of the column.</returns>
         public Response<string> GetColumnName(string email, string boardName, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            Response r = IsLoggedIn(email);
+            if (r.ErrorOccured)
+                return Response<string>.FromError(r.ErrorMessage);
+            return boardController.GetColumnName(email, boardName, columnOrdinal);
         }
 
         /// <summary>
@@ -105,16 +130,19 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
         public Response<Task> AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
-            Response<bool> loginRes = userController.isLoggedIn(email);
-            if (loginRes.ErrorOccured)
-                return Response<Task>.FromError(loginRes.ErrorMessage);
-            if(!loginRes.Value)
-                return Response<Task>.FromError("The User is NOT login");
+            Response r = IsLoggedIn(email);
+            if (r.ErrorOccured)
+                return Response<Task>.FromError(r.ErrorMessage);
 
+            Response<BusinessLayer.Task> rT = boardController.AddTask(email, boardName, title, description, dueDate);
+            if (rT.ErrorOccured)
+                return Response<Task>.FromError(rT.ErrorMessage);
 
-            return null;
-
+            BusinessLayer.Task task = rT.Value;
+            return Response<Task>.FromValue(new Task(task.ID, task.CreationTime, task.Title, task.Description, task.DueDate));
         }
+
+
         /// <summary>
         /// Update the due date of a task
         /// </summary>
@@ -126,7 +154,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDueDate(string email, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
         {
-            throw new NotImplementedException();
+            Response r = IsLoggedIn(email);
+            if (r.ErrorOccured)
+                return r;
+            return boardController.UpdateTaskDueDate(email, boardName, columnOrdinal, taskId, dueDate);
         }
         /// <summary>
         /// Update task title
@@ -139,7 +170,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskTitle(string email, string boardName, int columnOrdinal, int taskId, string title)
         {
-            throw new NotImplementedException();
+            Response r = IsLoggedIn(email);
+            if (r.ErrorOccured)
+                return r;
+            return boardController.UpdateTaskTitle(email, boardName, columnOrdinal, taskId, title);
         }
         /// <summary>
         /// Update the description of a task
@@ -152,7 +186,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDescription(string email, string boardName, int columnOrdinal, int taskId, string description)
         {
-            throw new NotImplementedException();
+            Response r = IsLoggedIn(email);
+            if (r.ErrorOccured)
+                return r;
+            return boardController.UpdateTaskDescription(email, boardName, columnOrdinal, taskId, description);
         }
         /// <summary>
         /// Advance a task to the next column
@@ -164,7 +201,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AdvanceTask(string email, string boardName, int columnOrdinal, int taskId)
         {
-            throw new NotImplementedException();
+            Response r = IsLoggedIn(email);
+            if (r.ErrorOccured)
+                return r;
+            return boardController.AdvanceTask(email, boardName, columnOrdinal, taskId);
         }
         /// <summary>
         /// Returns a column given it's name
@@ -175,7 +215,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Column, The response should contain a error message in case of an error</returns>
         public Response<IList<Task>> GetColumn(string email, string boardName, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            Response r = IsLoggedIn(email);
+            if (r.ErrorOccured)
+                return Response<IList<Task>>.FromError(r.ErrorMessage);
+            return boardController.GetColumn(email, boardName, columnOrdinal);
         }
         /// <summary>
         /// Adds a board to the specific user.
@@ -185,7 +228,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AddBoard(string email, string name)
         {
-            throw new NotImplementedException();
+            Response r = IsLoggedIn(email);
+            if (r.ErrorOccured)
+                return r;
+            return boardController.AddBoard(email, name);
+
         }
         /// <summary>
         /// Removes a board to the specific user.
@@ -195,7 +242,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response RemoveBoard(string email, string name)
         {
-            throw new NotImplementedException();
+            Response r = IsLoggedIn(email);
+            if (r.ErrorOccured)
+                return r;
+            return boardController.RemoveBoard(email, name);
         }
         /// <summary>
         /// Returns all the In progress tasks of the user.
@@ -204,7 +254,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the list of tasks, The response should contain a error message in case of an error</returns>
         public Response<IList<Task>> InProgressTasks(string email)
         {
-            throw new NotImplementedException();
+            Response r = IsLoggedIn(email);
+            if (r.ErrorOccured)
+                return Response<IList<Task>>.FromError(r.ErrorMessage);
+            return boardController.InProgressTask(email);
         }
     }
 }

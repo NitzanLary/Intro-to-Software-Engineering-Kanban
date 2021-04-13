@@ -13,6 +13,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
     {
         readonly private int MAX_TITLE = 50;
         readonly private int MAX_DESC = 300;
+        private int taskNumber = 1;
+        public int TaskNumber
+        {
+            get => taskNumber;
+            //set => taskNumber += 1;
+        }
 
         private static TaskController taskController = null;
 
@@ -44,7 +50,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return Response<bool>.FromValue(true);
         }
 
-        public Response<Task> AddTask(string title, string description, DateTime dueDate, int taskID)
+        public Response<Task> AddTask(string title, string description, DateTime dueDate)
         {
             Response<bool> titleValidRes = isValidTitle(title);
             if (titleValidRes.ErrorOccured)
@@ -52,7 +58,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Response<bool> descValidRes = isValidDesc(description);
             if(descValidRes.ErrorOccured)
                 return Response<Task>.FromError(descValidRes.ErrorMessage);
-            return Response<Task>.FromValue(new Task(taskID, dueDate, title, description));
+            taskNumber += 1;
+            return Response<Task>.FromValue(new Task(taskNumber, dueDate, title, description));
         }
 
         public Response UpdateTaskDueDate(Task task, DateTime NewDueDate)
