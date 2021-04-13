@@ -1,7 +1,9 @@
 ﻿using IntroSE.Kanban.Backend.ServiceLayer;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,7 +17,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         private Dictionary<string, Dictionary<string, Board>> boards;
 
         private TaskController taskController;
-            
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private BoardController()
         {
             boards = new Dictionary<string, Dictionary<string, Board>>();
@@ -56,7 +58,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             Response validArguments = BoardsContainsEmailAndBoard(email, boardName);
             if (validArguments.ErrorOccured)
+            {
+                log.Debug(validArguments.ErrorMessage);
                 return Response<string>.FromError(validArguments.ErrorMessage);
+            }
             return boards[email][boardName].getColumnName(columnOrdinal);
         }
 
@@ -93,7 +98,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             Response<Task> res = TaskGetter(email, boardName, columnOrdinal, taskId);
             if (res.ErrorOccured)
+            {
+                log.Error(res.ErrorMessage);
                 return res;
+            }
             return taskController.UpdateTaskDueDate(res.Value, dueDate);
         }
 
@@ -101,7 +109,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             Response<Task> res = TaskGetter(email, boardName, columnOrdinal, taskId);
             if (res.ErrorOccured)
+            {
+                log.Debug(res.ErrorMessage);
                 return res;
+            }
             return taskController.UpdateTaskTitle(res.Value, title);
         }
 
@@ -109,7 +120,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             Response<Task> res = TaskGetter(email, boardName, columnOrdinal, taskId);
             if (res.ErrorOccured)
+            {
+                log.Debug(res.ErrorMessage);
                 return res;
+            }
             return taskController.UpdateTaskDescription(res.Value, description);
         }
 
@@ -117,7 +131,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             Response validArguments = BoardsContainsEmailAndBoard(email, boardName);
             if (validArguments.ErrorOccured)
+            {
+                log.Debug(validArguments.ErrorMessage);
                 return Response<Task>.FromError(validArguments.ErrorMessage);
+            }
             Board b = boards[email][boardName];
             return b.advanceTask(taskId);
         }
@@ -137,7 +154,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public Response AddBoard(string email, string name) 
         {
             if (!boards.ContainsKey(email))
-                return Response<bool>.FromError($"boards atribute doesn't contains the given email value {email}");
+                return new Response($"boards atribute doesn't contains the given email value {email}");
             if (boards[email].ContainsKey(name))
                 return new Response($"user {email} already has board named {name}");
             boards[email].Add(name, new Board(name));
@@ -148,7 +165,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             Response validArguments = BoardsContainsEmailAndBoard(email, name);
             if (validArguments.ErrorOccured)
+            {
+                log.Debug(validArguments.ErrorMessage);
                 return Response<Task>.FromError(validArguments.ErrorMessage);
+            }
+                
             boards[email].Remove(name);
             return new Response();
             
