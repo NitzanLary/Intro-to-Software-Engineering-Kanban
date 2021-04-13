@@ -80,7 +80,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             if (r.ErrorOccured)
                 return r;
             if (!r.Value)
-                return new Response("User is not logged in");
+                return new Response($"User {email} is not logged in");
             return new Response();
         }
 
@@ -229,7 +229,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return Response<IList<Task>>.FromError(r.ErrorMessage);
-            return boardController.GetColumn(email, boardName, columnOrdinal);
+            Response<IList<BusinessLayer.Task>> returned = boardController.InProgressTask(email);
+            if (returned.ErrorOccured)
+                return Response<IList<Task>>.FromError(returned.ErrorMessage);
+            return ConvertBusinessToServiceTasksCollection(returned.Value);
         }
         /// <summary>
         /// Adds a board to the specific user.
@@ -268,7 +271,21 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return Response<IList<Task>>.FromError(r.ErrorMessage);
-            return boardController.InProgressTask(email);
+            Response<IList<BusinessLayer.Task>> returned = boardController.InProgressTask(email);
+            if (returned.ErrorOccured)
+                return Response<IList<Task>>.FromError(returned.ErrorMessage);
+            return ConvertBusinessToServiceTasksCollection(returned.Value);
+        }
+
+        private Response<IList<Task>> ConvertBusinessToServiceTasksCollection(IList<BusinessLayer.Task> lst)
+        {
+            IList<Task> ret = new List<Task>();
+            foreach(BusinessLayer.Task t in lst)
+            {
+                Task toAdd = new Task(t.ID, t.CreationTime, t.Title, t.Description, t.DueDate);
+                ret.Add(toAdd);
+            }
+            return Response<IList<Task>>.FromValue(ret);
         }
     }
 }
