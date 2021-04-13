@@ -36,7 +36,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             if (users.ContainsKey(email))
             {
-                string s = "User already registered";
+                string s = $"User {email} already registered";
                 log.Warn(s);
                 return new Response(s);
             }
@@ -45,6 +45,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return rPass;
             User user = new User(email, rPass.Value);
             users.Add(email, user);
+            log.Info($"{email} successfully Registered!");
             return new Response();
         }
 
@@ -86,7 +87,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public Response<bool> isLoggedIn(string email)
         {
             if (!users.ContainsKey(email))
-                return Response<bool>.FromError("User not found");
+            {
+                string s = $"User {email} not found";
+                log.Warn(s);
+                return Response<bool>.FromError(s);
+            }
             return Response<bool>.FromValue(users[email].IsLoggedIn);
         }
 

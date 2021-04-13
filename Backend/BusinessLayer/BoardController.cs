@@ -1,7 +1,9 @@
 ﻿using IntroSE.Kanban.Backend.ServiceLayer;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,7 +17,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         private Dictionary<string, Dictionary<string, Board>> boards;
 
         private TaskController taskController;
-            
+
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+
         private BoardController()
         {
             boards = new Dictionary<string, Dictionary<string, Board>>();
@@ -68,7 +73,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Board b = boards[email][boardName];
             Response<Task> r = taskController.AddTask(title, description, dueDate);
             if (r.ErrorOccured)
+            {
+                log.Warn(r.Value);
                 return r;
+            }
             Task t = r.Value;
             b.AddTask(t);
             return r;
