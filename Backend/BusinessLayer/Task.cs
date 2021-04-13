@@ -9,7 +9,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 {
     class Task
     {
-        private readonly int ID;
+        private readonly int id;
+        public int ID
+        {
+            get => id;
+        }
+
         private DateTime creationTime;
         public DateTime CreationTime
         {
@@ -36,7 +41,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Task(int ID, DateTime dueDate, string title, string description)
         {
-            this.ID = ID;
+            this.id = ID;
             this.dueDate = dueDate;
             this.title = title;
             this.description = description;
