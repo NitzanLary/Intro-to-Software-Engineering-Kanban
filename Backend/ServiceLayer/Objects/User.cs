@@ -17,8 +17,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             this.Email = email;
 
-            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
-            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+
 
             log.Info("Logger test!");
         }
