@@ -2,6 +2,10 @@
 using System;
 using System.Linq;
 using IntroSE.Kanban.Backend.BusinessLayer;
+using log4net;
+using System.Reflection;
+using log4net.Config;
+using System.IO;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -10,11 +14,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         private UserController userController;
         private BoardController boardController;
 
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public Service()
         {
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+
+            log.Info("Starting up!");
+
             userController = UserController.GetInstance();
             boardController = BoardController.GetInstance();
-            throw new NotImplementedException();
         }
         ///<summary>This method loads the data from the persistance.
         ///         You should call this function when the program starts. </summary>
@@ -33,6 +43,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         ///<returns cref="Response">The response of the action</returns>
         public Response Register(string email, string password)
         {
+            log.Info($"User {email} is trying to Register");
             return userController.Register(email, password);
         }
         /// <summary>
@@ -43,6 +54,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the user, instead the response should contain a error message in case of an error</returns>
         public Response<User> Login(string email, string password)
         {
+            log.Info($"User {email} is trying to Login");
             Response r = userController.Login(email, password);
             if (r.ErrorOccured)
                 return Response<User>.FromError(r.ErrorMessage);
@@ -55,6 +67,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response Logout(string email)
         {
+            log.Info($"User {email} is trying to Logout");
             return userController.Logout(email);
         }
 
@@ -67,9 +80,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             Response<bool> r = userController.isLoggedIn(email);
             if (r.ErrorOccured)
+            {
+                log.Debug(r.ErrorMessage);
                 return r;
+            }
+                
             if (!r.Value)
-                return new Response($"User {email} is not logged in");
+            {
+                string msg = $"User {email} is not logged in";
+                log.Debug(msg);
+                return new Response(msg);
+            }
+                
             return new Response();
         }
 
@@ -83,9 +105,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response LimitColumn(string email, string boardName, int columnOrdinal, int limit)
         {
+            log.Info($"User {email} is trying to LimitColumn in board {boardName}, column {columnOrdinal} with limit: {limit}");
             Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return r;
+            log.Debug($"limit column successfully to {limit}");
             return boardController.LimitColumn(email, boardName, columnOrdinal, limit);
         }
 
@@ -98,6 +122,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The limit of the column.</returns>
         public Response<int> GetColumnLimit(string email, string boardName, int columnOrdinal)
         {
+            log.Info($"User {email} is trying to GetColumnLimit in board {boardName}, column {columnOrdinal}");
             Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return Response<int>.FromError(r.ErrorMessage);
@@ -113,6 +138,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The name of the column.</returns>
         public Response<string> GetColumnName(string email, string boardName, int columnOrdinal)
         {
+            log.Info($"User {email} is trying to GetColumnName in board {boardName}, column {columnOrdinal}");
             Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return Response<string>.FromError(r.ErrorMessage);
@@ -130,6 +156,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
         public Response<Task> AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
+            log.Info($"User {email} is trying to AddTask: {boardName}, {title}, {description}, {dueDate}");
             Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return Response<Task>.FromError(r.ErrorMessage);
@@ -137,8 +164,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<BusinessLayer.Task> rT = boardController.AddTask(email, boardName, title, description, dueDate);
             if (rT.ErrorOccured)
                 return Response<Task>.FromError(rT.ErrorMessage);
-
             BusinessLayer.Task task = rT.Value;
+            log.Debug($"task {title} added successfully to board {boardName}");
             return Response<Task>.FromValue(new Task(task.ID, task.CreationTime, task.Title, task.Description, task.DueDate));
         }
 
@@ -154,6 +181,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDueDate(string email, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
         {
+            log.Info($"User {email} is trying to UpdateTaskDueDate");
             Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return r;
@@ -170,6 +198,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskTitle(string email, string boardName, int columnOrdinal, int taskId, string title)
         {
+            log.Info($"User {email} is trying to UpdateTaskTitle");
             Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return r;
@@ -186,6 +215,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDescription(string email, string boardName, int columnOrdinal, int taskId, string description)
         {
+            log.Info($"User {email} is trying to UpdateTaskDescription");
             Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return r;
@@ -201,6 +231,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AdvanceTask(string email, string boardName, int columnOrdinal, int taskId)
         {
+            log.Info($"User {email} is trying to AdvanceTask in board {boardName}, column {columnOrdinal}, task {taskId}");
             Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return r;
@@ -215,12 +246,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Column, The response should contain a error message in case of an error</returns>
         public Response<IList<Task>> GetColumn(string email, string boardName, int columnOrdinal)
         {
+            log.Info($"User {email} is trying to GetColumn: {boardName}, {columnOrdinal}");
             Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return Response<IList<Task>>.FromError(r.ErrorMessage);
             Response<IList<BusinessLayer.Task>> returned = boardController.InProgressTask(email);
             if (returned.ErrorOccured)
+            {
+                log.Debug(returned.ErrorMessage);
                 return Response<IList<Task>>.FromError(returned.ErrorMessage);
+            }
             return ConvertBusinessToServiceTasksCollection(returned.Value);
         }
         /// <summary>
@@ -231,10 +266,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AddBoard(string email, string name)
         {
+            log.Info($"User {email} is trying to AddBoard: {name}");
             Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return r;
-            return boardController.AddBoard(email, name);
+            r = boardController.AddBoard(email, name);
+            if (r.ErrorOccured)
+                log.Debug(r.ErrorMessage);
+            log.Info($"Borad for user {email} succesfully added");
+            return r;
 
         }
         /// <summary>
@@ -257,12 +297,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the list of tasks, The response should contain a error message in case of an error</returns>
         public Response<IList<Task>> InProgressTasks(string email)
         {
+            log.Info($"{email} is Trying to get InProgressTasks");
             Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return Response<IList<Task>>.FromError(r.ErrorMessage);
             Response<IList<BusinessLayer.Task>> returned = boardController.InProgressTask(email);
             if (returned.ErrorOccured)
+            {
+                log.Error(returned.ErrorMessage);
                 return Response<IList<Task>>.FromError(returned.ErrorMessage);
+            }
             return ConvertBusinessToServiceTasksCollection(returned.Value);
         }
 
