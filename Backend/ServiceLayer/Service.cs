@@ -62,6 +62,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             throw new NotImplementedException();
         }
+
+        private Response IsLoggedIn(string email)
+        {
+            Response<bool> r = userController.isLoggedIn(email);
+            if (r.ErrorOccured)
+                return r;
+            if (!r.Value)
+                return new Response("User is not logged in");
+            return new Response();
+        }
+
         /// <summary>
         /// Limit the number of tasks in a specific column
         /// </summary>
@@ -72,7 +83,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response LimitColumn(string email, string boardName, int columnOrdinal, int limit)
         {
-            Response r = userController.isLoggedIn(email);
+            Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return r;
             return boardController.LimitColumn(email, boardName, columnOrdinal, limit);
@@ -132,14 +143,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
             return null;
 
-        }
-
-        private Response IsLoggedIn(string email)
-        {
-            Response r = userController.isLoggedIn(email);
-            if (r.ErrorOccured)
-                return r;
-            return null;
         }
 
 
