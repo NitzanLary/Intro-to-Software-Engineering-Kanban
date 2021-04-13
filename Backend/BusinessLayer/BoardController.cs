@@ -82,11 +82,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Board b = boards[email][boardName];
             Response<Dictionary<int, Task>> res = b.getColumn(columnOrdinal);
             if (res.ErrorOccured)
-                return res;
+                return Response<Task>.FromError(res.ErrorMessage);
             Dictionary<int, Task> col = res.Value;
             if (!col.ContainsKey(taskId))
-                return new Response($"coldn't find task id {taskId} in email {email} | board {boardName} | column {columnOrdinal}";
-            return Response<Task>.FromValue(taskController[taskId]);
+                return Response<Task>.FromError($"coldn't find task id {taskId} in email {email} | board {boardName} | column {columnOrdinal}");
+            return Response<Task>.FromValue(col[taskId]);
         }
 
         public Response UpdateTaskDueDate(string email, string boardName, int columnOrdinal, int taskId, DateTime dueDate) 
@@ -126,9 +126,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             Response validArguments = BoardsContainsEmailAndBoard(email, boardName);
             if (validArguments.ErrorOccured)
-                return Response<Task>.FromError(validArguments.ErrorMessage);
+                return Response<Dictionary<int,Task>>.FromError(validArguments.ErrorMessage);
             Board b = boards[email][boardName];
-            return b.advanceTask(taskId);
+            return b.getColumn(columnOrdinal);
         }
 
         public Response AddBoard(string email, string name) 
@@ -154,14 +154,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public Response<List<Task>> InProgressTask(string email) 
         {
             if (!boards.ContainsKey(email))
-                return Response<bool>.FromError($"boards atribute doesn't contains the given email value {email}");
+                return Response<List<Task>>.FromError($"boards atribute doesn't contains the given email value {email}");
             List<Task> ret = new List<Task>();
-            foreach(Board b in boards[email])
+            foreach(Board b in boards[email].Values)
             {
-                Response<Dictionary<int,Task>> r = b.getColumn(2);
+                Response<Dictionary<int,Task>> r = b.getColumn(1);
                 if (r.ErrorOccured)
-                    return r;
-                ret.AddRange(r.Value);
+                    return Response<List<Task>>.FromError(r.ErrorMessage);
+                ret.AddRange(r.Value.Values);
             }
             return Response<List<Task>>.FromValue(ret);
         }
