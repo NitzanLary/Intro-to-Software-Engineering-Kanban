@@ -31,7 +31,7 @@ namespace Test
             if (res.ErrorOccured)
                 input = res.ErrorMessage;
             else
-                input = "passed  "+ res.GetType().Name;
+                input = "no error  "+ res.GetType().Name;
             Console.WriteLine($"\n    -  ----------   {input}   ----------   -\n");
         }
     }
