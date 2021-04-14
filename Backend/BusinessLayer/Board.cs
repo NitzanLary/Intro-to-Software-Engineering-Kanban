@@ -63,6 +63,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             this.MaxBacklogs = int.MaxValue;
             this.MaxInProgress = int.MaxValue;
             this.MaxDone = int.MaxValue;
+            this.columns = new List<Dictionary<int,Task>>();
+            for (int i=0; i<3; i++)
+            {
+                this.columns.Add(new Dictionary<int, Task>());
+            }
         }
 
         public int getNumOfTasks()

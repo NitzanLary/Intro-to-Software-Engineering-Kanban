@@ -32,6 +32,14 @@ namespace Test
 
 
 
+        static void print(Response res)
+        {
+            string input = "";
+            if (res.ErrorOccured)
+                input = res.ErrorMessage;
+            else
+                input = "no error  "+ res.GetType().Name;
+            Console.WriteLine($"\n    -  ----------   {input}   ----------   -\n");
         }
     }
 }
