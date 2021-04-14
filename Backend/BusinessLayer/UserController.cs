@@ -78,7 +78,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 log.Warn(s);
                 return Response<User>.FromError(s);
             }
-            log.Info($"User {email} Login successfully!");
+            //log.Info($"User {email} Login successfully!");
             return users[email].Login(password);
         }
 
