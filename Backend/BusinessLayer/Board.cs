@@ -146,7 +146,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             if (columnOrdinal == 0)
                 return Response<string>.FromValue("Backlogs");
             if (columnOrdinal == 1)
-                return Response<string>.FromValue("InProgress");
+                return Response<string>.FromValue("In Progress");
             if (columnOrdinal == 2)
                 return Response<string>.FromValue("Done");
             return Response<string>.FromError("there is no such column number");

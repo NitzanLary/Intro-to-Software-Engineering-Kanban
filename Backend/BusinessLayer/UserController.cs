@@ -44,7 +44,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             {
                 return false;
             }
-        }
+        }//
 
         public Response Register(string email, string password)
         {
@@ -54,6 +54,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 log.Warn(s);
                 return new Response(s);
             }
+            if (!IsValidEmail(email))
+            {
+                string s = $"{email} is not real valid email";
+                log.Warn(s);
+                return new Response(s);
+            }
+                 
             Response<Password> rPass = pc.createPassword(password);
             if (rPass.ErrorOccured)
                 return rPass;
