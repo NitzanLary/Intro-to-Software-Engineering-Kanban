@@ -109,6 +109,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 log.Error(res.ErrorMessage);
                 return res;
             }
+            if (columnOrdinal > 1)
+                return new Response("task that is done, cnnot be change");
             return taskController.UpdateTaskDueDate(res.Value, dueDate);
         }
 
@@ -120,6 +122,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 log.Debug(res.ErrorMessage);
                 return res;
             }
+            if (columnOrdinal > 1)
+                return new Response("task that is done, cnnot be change");
             return taskController.UpdateTaskTitle(res.Value, title);
         }
 
@@ -131,6 +135,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 log.Debug(res.ErrorMessage);
                 return res;
             }
+            if (columnOrdinal > 1)
+                return new Response("task that is done, cnnot be change");
+
             return taskController.UpdateTaskDescription(res.Value, description);
         }
 
@@ -192,7 +199,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                     return Response<IList<Task>>.FromError(r.ErrorMessage);
                 ret.AddRange(r.Value.Values);
             }
-            return Response<IList<Task>>.FromValue(ret);
+            return Response<IList<Task>>.FromValue(ret);    
         }
     }
 }

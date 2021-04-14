@@ -90,7 +90,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 log.Warn(s);
                 return new Response("User not found");
             }
-            log.Info($"User {email} Logout successfully!");
+            //log.Info($"User {email} Logout successfully!");
             return users[email].logout();
         }
 
