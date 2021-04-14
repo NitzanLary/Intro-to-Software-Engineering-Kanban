@@ -29,9 +29,6 @@ namespace Test
             Print(s.Login("Rafa111111@gmail.com", "R12345678f"));
             //Print(s.Logout("Rafa@gmailcom"));
             //Print(s.Logout("Rafa@gmail.com"));
-            //Print(s.Logout("Rafa@gmail.com"));
-            //Print(s.Logout("Rafa@gmail.com"));
-            //Print(s.Logout("Rafa@gmail.com"));
 
             //Print(s.Logout("Rafagmail.com"));
             //Print(s.Logout("Rada@gmail.com"));
@@ -39,10 +36,20 @@ namespace Test
 
 
             Print(s.AddBoard("Rafa@gmail.com", "semester B"));
+            //Print(s.AddBoard("Rafa@gmail.com", "semester B"));
+            //Print(s.AddBoard("Rafa111111@gmail.com", "semester B"));
+
+
             Print(s.AddTask("Rafa@gmail.com", "semester B", "SE", "task 1", new DateTime(2021, 5, 14, 0, 0, 0)));
             Print(s.AddTask("Rafa@gmail.com", "semester B", "SE", "task 1", new DateTime(2021, 5, 14, 0, 0, 0))); // possible the same name for task???
-            Print(s.AddTask("Rafa@gmail.com", "semester B", "SE", "task 1", new DateTime(2021, 3, 14, 0, 0, 0)));
+            //Print(s.AddTask("Rafa@gmail.com", "semester B", "SE", "task 1", new DateTime(2021, 3, 14, 0, 0, 0)));
             Print(s.AdvanceTask("Rafa@gmail.com", "semester B", 0, 1));
+            Print(s.AdvanceTask("Rafa@gmail.com", "semester B", 1, 2));
+            Print(s.AdvanceTask("Rafa@gmail.com", "semester B", 1, 1));
+            Print(s.AdvanceTask("Rafa@gmail.com", "semester B", 1, 1));
+
+
+
 
 
 
