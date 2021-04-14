@@ -160,9 +160,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response AddBoard(string email, string name) 
         {
-            if (!boards.ContainsKey(email))
-                return new Response($"boards atribute doesn't contains the given email value {email}");
-            if (boards[email].ContainsKey(name))
+            if (!AllBoardsContainsBoardByEmail(email,name).ErrorOccured)
                 return new Response($"user {email} already has board named {name}");
             boards[email].Add(name, new Board(name));
             return new Response();
