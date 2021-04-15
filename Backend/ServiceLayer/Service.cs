@@ -253,7 +253,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return Response<IList<Task>>.FromError(r.ErrorMessage);
-            Response<IList<BusinessLayer.Task>> returned = boardController.InProgressTask(email);
+            Response<IList<BusinessLayer.Task>> returned = boardController.GetColumn(email,boardName,columnOrdinal);
             if (returned.ErrorOccured)
             {
                 log.Debug(returned.ErrorMessage);

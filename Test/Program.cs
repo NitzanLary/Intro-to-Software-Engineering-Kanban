@@ -167,6 +167,18 @@ namespace Test
             Print(s.GetColumn("asafs@gmail.com", "b11", 2));
             Console.WriteLine("\t\tshould print not ok\n");
             Console.WriteLine("\n\n\n\n" + s.GetColumn("asafs@gmail.com","b1",1).Value.Count + "\n\n\n\n");
+
+            //////////// starting asaf register tests
+            Print(s.Register("a@a.co.il", "Aa12"));
+            Console.WriteLine("\t\tshould print ok\n");
+            Print(s.Register("aa@a.co.il", "Aa1"));
+            Console.WriteLine("\t\tshould print not ok\n");
+            Print(s.Register("aa@a.co.il", "Aaa1"));
+            Console.WriteLine("\t\tshould print ok\n");
+            Print(s.Register("aaa@a.co.il", "0Aaa1"));
+            Console.WriteLine("\t\tshould print ok\n");
+            Print(s.Register("a^a_?a@a.co.il", "0Aaa1"));
+            Console.WriteLine("\t\tshould print not ok\n");
         }
 
         static void Print(Response res)
