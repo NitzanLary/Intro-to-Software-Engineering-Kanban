@@ -10,22 +10,22 @@ namespace Test
         static void Main(string[] args)
         {
             Service s = new Service();
-            print(s.AddBoard("Rafa@gmail.com", "semster B"));
-            print(s.Register("Rafa@gmail.com", "12345678"));
-            print(s.Register("Rafagmail.com", "Rf12345678"));
-            print(s.Register("Rafa@gmail.com", "Rf12345678"));
-            print(s.AddBoard("Rada@gmail.com", "Semester B"));
-            print(s.AddBoard("Rafa@gmail.com", "Semester B"));
-            print(s.Login("Rafa@gmail.com", "Rf12345678"));
-            print(s.AddBoard("Rafa@gmail.com", "Semester B"));
-            print(s.AddBoard("Rafa@gmail.com", "board1"));
-            print(s.AddBoard("Rafa@gmail.com", "board1"));
-            print(s.AddTask("Rafa@gmail.com", "board1", "title1", "no description", DateTime.Now));
-            print(s.AddTask("Rafa@gmail.com", "board1", "title1", "no description", DateTime.Now));
+            Print(s.AddBoard("Rafa@gmail.com", "semster B"));
+            Print(s.Register("Rafa@gmail.com", "12345678"));
+            Print(s.Register("Rafagmail.com", "Rf12345678"));
+            Print(s.Register("Rafa@gmail.com", "Rf12345678"));
+            Print(s.AddBoard("Rada@gmail.com", "Semester B"));
+            Print(s.AddBoard("Rafa@gmail.com", "Semester B"));
+            Print(s.Login("Rafa@gmail.com", "Rf12345678"));
+            Print(s.AddBoard("Rafa@gmail.com", "Semester B"));
+            Print(s.AddBoard("Rafa@gmail.com", "board1"));
+            Print(s.AddBoard("Rafa@gmail.com", "board1"));
+            Print(s.AddTask("Rafa@gmail.com", "board1", "title1", "no description", DateTime.Now));
+            Print(s.AddTask("Rafa@gmail.com", "board1", "title1", "no description", DateTime.Now));
         }
 
 
-        static void print(Response res)
+        static void Print(Response res)
         {
             string input = "";
             if (res.ErrorOccured)
