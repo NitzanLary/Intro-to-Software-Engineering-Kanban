@@ -74,11 +74,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return userController.Logout(email);
         }
 
-        private void ValidateUserLoggin(string email)
-        {
-            throw new NotImplementedException();
-        }
-
         private Response IsLoggedIn(string email)
         {
             Response<bool> r = userController.isLoggedIn(email);

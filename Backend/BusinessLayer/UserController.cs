@@ -44,7 +44,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             {
                 return false;
             }
-        }//
+        }
 
         public Response Register(string email, string password)
         {

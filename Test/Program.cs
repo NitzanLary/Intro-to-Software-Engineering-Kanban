@@ -50,30 +50,33 @@ namespace Test
             Print(s.AddTask("Rafa@gmail.com", "semester B", "SE", "task 3", new DateTime(2021, 5, 14, 0, 0, 0))); 
             Print(s.AddTask("Rafa@gmail.com", "semester A", "SE", "task 1", new DateTime(2021, 5, 14, 0, 0, 0))); 
             Print(s.AddTask("Rafa111111@gmail.com", "semester B", "SE", "task 1", new DateTime(2021, 5, 14, 0, 0, 0)));
+            //Print(s.AddTask("a1@gmail.com", "semester B", "SE", "test", new DateTime(2021, 5, 14, 0, 0, 0)));
+            //Print(s.AddTask("Rafa111111@gmail.com", "semester C", "SE", "task 1", new DateTime(2021, 5, 14, 0, 0, 0)));
 
             // --------------------- AdvenceTask Tests -----------------------
-            Print(s.AdvanceTask("Rafa@gmail.com", "semester B", 0, 10)); // EROR ID not exsit
-            Print(s.AdvanceTask("Rafa@gmail.com", "semester B", 0, 1));
-            Print(s.AdvanceTask("Rafa@gmail.com", "semester B", 1, 2));
-            Print(s.AdvanceTask("Rafa@gmail.com", "semester B", 1, 1));
-            Print(s.AdvanceTask("Rafa@gmail.com", "semester B", 1, 1));
-            Print(s.AdvanceTask("Rafa@gmail.com", "semester B", 2, 1));
-            Print(s.AdvanceTask("Rafa@gmail.com", "semester B", 0, 3));
-            Print(s.AdvanceTask("Rafa@gmail.com", "semester A", 0, 5));
+            //Print(s.AdvanceTask("Rafa@gmail.com", "semester B", 0, 10)); // EROR ID not exsit
+            //Print(s.AdvanceTask("Rafa@gmail.com", "semester B", 0, 1));
+            //Print(s.AdvanceTask("Rafa@gmail.com", "semester B", 1, 2));
+            //Print(s.AdvanceTask("Rafa@gmail.com", "semester B", 1, 1));
+            //Print(s.AdvanceTask("Rafa@gmail.com", "semester B", 1, 1));
+            //Print(s.AdvanceTask("Rafa@gmail.com", "semester B", 2, 1));
+            //Print(s.AdvanceTask("Rafa@gmail.com", "semester B", 0, 3));
+            //Print(s.AdvanceTask("Rafa@gmail.com", "semester A", 0, 5));
 
 
-            // --------------------- UpdateTask Tests ----------------
-            //Print(s.UpdateTaskDescription("Rafa@gmail.com", "semester B", 0, 2, "1.1"));
-            ////Print(s.UpdateTaskDueDate("Rafa@gmail.com", "semester B", 0, 2, new DateTime(2021, 13, 14, 0, 0, 0))); // EROR invalid data 
-            //Print(s.UpdateTaskDueDate("Rafa@gmail.com", "semester B", 0, 2, new DateTime(2021, 4, 14, 0, 0, 0))); // EROR passed date
-            //Print(s.UpdateTaskDueDate("Rafa@gmail.com", "semester B", 0, 2, new DateTime(2021, 6, 15, 0, 0, 0)));
-            //Print(s.UpdateTaskTitle("Rafa@gmail.com", "semester B", 0, 2, "")); // EROR canot be empty title
-            //Print(s.UpdateTaskTitle("Rafa@gmail.com", "semester B", 0, 2, "semseter C"));
+            //// --------------------- UpdateTask Tests ----------------
+            ////Print(s.UpdateTaskDescription("Rafa@gmail.com", "semester B", 0, 2, "1.1"));
+            //////Print(s.UpdateTaskDueDate("Rafa@gmail.com", "semester B", 0, 2, new DateTime(2021, 13, 14, 0, 0, 0))); // EROR invalid data 
+            ////Print(s.UpdateTaskDueDate("Rafa@gmail.com", "semester B", 0, 2, new DateTime(2021, 4, 14, 0, 0, 0))); // EROR passed date
+            ////Print(s.UpdateTaskDueDate("Rafa@gmail.com", "semester B", 0, 2, new DateTime(2021, 6, 15, 0, 0, 0)));
+            ////Print(s.UpdateTaskTitle("Rafa@gmail.com", "semester B", 0, 2, "")); // EROR canot be empty title
+            ////Print(s.UpdateTaskTitle("Rafa@gmail.com", "semester B", 0, 2, "semseter C"));
 
-            // --------------------- InProgress Tests ----------------
+            //// --------------------- InProgress Tests ----------------
 
-            Console.WriteLine(s.InProgressTasks("Rafa@gmail.com").Value[0].Id);
-            Console.WriteLine(s.InProgressTasks("Rafa@gmail.com").Value[1].Id);
+            //Console.WriteLine(s.InProgressTasks("Rafa@gmail.com").Value[0].Id);
+            //Console.WriteLine(s.InProgressTasks("Rafa@gmail.com").Value[1].Id);
+            ////Console.WriteLine(s.InProgressTasks("Rafa@gmail.com").Value[2].Id); // EROR 
 
 
 
