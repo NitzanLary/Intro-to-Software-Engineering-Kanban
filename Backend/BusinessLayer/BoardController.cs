@@ -150,7 +150,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return Response<Task>.FromError(validArguments.ErrorMessage);
             }
             Board b = boards[email][boardName];
-            return b.advanceTask(taskId);
+            return b.advanceTask(taskId, columnOrdinal);
         }
 
         public Response<IList<Task>> GetColumn(string email, string boardName, int columnOrdinal)
@@ -194,10 +194,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             List<Task> ret = new List<Task>();
             foreach(Board b in boards[email].Values)
             {
-                Response<Dictionary<int,Task>> r = b.getColumn(1);
+                Response<Dictionary<int,Task>> r = b.getInProgess();
                 if (r.ErrorOccured)
                     return Response<IList<Task>>.FromError(r.ErrorMessage);
                 ret.AddRange(r.Value.Values);
+                Console.WriteLine("-------------------------------" + r.Value.Count + "-------------------------------" );
             }
             return Response<IList<Task>>.FromValue(ret);    
         }
