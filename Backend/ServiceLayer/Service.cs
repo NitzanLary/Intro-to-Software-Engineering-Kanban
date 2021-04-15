@@ -310,7 +310,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 log.Error(returned.ErrorMessage);
                 return Response<IList<Task>>.FromError(returned.ErrorMessage);
             }
-            Console.WriteLine(returned.Value[0]);
             return ConvertBusinessToServiceTasksCollection(returned.Value);
         }
 
