@@ -5,7 +5,7 @@ namespace Test
 {
     class Program
     {
-        /*ervice service = new Service();*/
+        
 
         static void Main(string[] args)
         {
@@ -13,15 +13,6 @@ namespace Test
             init(s);
             Task(s);
 
-        }
-        static void Print(Response res)
-        {
-            string input = "";
-            if (res.ErrorOccured)
-                input = res.ErrorMessage;
-            else
-                input = "no error  " + res.GetType().Name;
-            Console.WriteLine($"\n    -  ----------   {input}   ----------   -\n");
         }
 
 
