@@ -139,11 +139,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         internal Response<string> getColumnName(int columnOrdinal) // todo - insert to diagram
         {
             if (columnOrdinal == 0)
-                return Response<string>.FromValue("Backlogs");
+                return Response<string>.FromValue("backlogs");
             if (columnOrdinal == 1)
-                return Response<string>.FromValue("In Progress");
+                return Response<string>.FromValue("in progress");
             if (columnOrdinal == 2)
-                return Response<string>.FromValue("Done");
+                return Response<string>.FromValue("done");
             return Response<string>.FromError("there is no such column number");
 
         }
