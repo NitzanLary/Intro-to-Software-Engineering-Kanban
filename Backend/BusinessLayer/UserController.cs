@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer
 {
@@ -40,16 +41,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <returns>A true if valid else false</returns>
         public bool IsValidEmail(string emailaddress)
         {
-            try
-            {
-                MailAddress m = new MailAddress(emailaddress);
+            //try
+            //{
+            //    MailAddress m = new MailAddress(emailaddress);
 
-                return m.Address == emailaddress;
-            }
-            catch (FormatException)
-            {
-                return false;
-            }
+            //    return m.Address == emailaddress;
+            //}
+            //catch (FormatException)
+            //{
+            //    return false;
+            //}
+            return Regex.IsMatch(emailaddress, @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
         }
 
         ///<summary>This method registers a new user to the system.</summary>
