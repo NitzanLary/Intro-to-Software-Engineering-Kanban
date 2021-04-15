@@ -20,22 +20,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             set => taskNumber = value;
         }
 
-        private static TaskController taskController = null;
+        //private static TaskController taskController = null;
 
         //This Class Is Singleton
-        private TaskController()
+        public TaskController()
         {
 
         }
 
-        public static TaskController GetInstance()
-        {
-            if (taskController == null)
-            {
-                taskController = new TaskController();
-            }
-            return taskController;
-        }
+        //public static TaskController GetInstance()
+        //{
+        //    if (taskController == null)
+        //    {
+        //        taskController = new TaskController();
+        //    }
+        //    return taskController;
+        //}
   
         public Response<bool> isValidTitle(string title){
             if (title.Length > MAX_TITLE || title.Equals(""))

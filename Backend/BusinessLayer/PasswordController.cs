@@ -11,7 +11,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
     {
         private int MIN_LEN;
         private int MAX_LEN;
-        private static PasswordController passwordController = null;
+        //private static PasswordController passwordController = null;
         //private Response<bool> Response;
 
         public PasswordController()
@@ -20,12 +20,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             this.MAX_LEN = 20;
         }
 
-        public static PasswordController GetInstance()
-        {
-            if (passwordController == null)
-                passwordController = new PasswordController();
-            return passwordController;
-        }
+        //public static PasswordController GetInstance()
+        //{
+        //    if (passwordController == null)
+        //        passwordController = new PasswordController();
+        //    return passwordController;
+        //}
 
         public Response<bool> isValid(string password)
         {

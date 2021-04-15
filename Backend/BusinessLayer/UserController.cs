@@ -12,25 +12,26 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 {
     class UserController
     {
-        private static UserController instance;
+        //private static UserController instance;
         private readonly PasswordController pc;
         private Dictionary<string, User> users;
 
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
 
-        private UserController()
+        public UserController()
         {
-            pc = PasswordController.GetInstance();
+            //pc = PasswordController.GetInstance();
+            pc = new PasswordController();
             users = new Dictionary<string, User>();
         }
 
-        public static UserController GetInstance()
-        {
-            if (instance == null)
-                instance = new UserController();
-            return instance;
-        }
+        //public static UserController GetInstance()
+        //{
+        //    if (instance == null)
+        //        instance = new UserController();
+        //    return instance;
+        //}
 
         /// <summary>        
         /// checks if the given email address is valid

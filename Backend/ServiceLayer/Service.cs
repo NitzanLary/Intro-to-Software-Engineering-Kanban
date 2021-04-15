@@ -23,8 +23,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
             log.Info("Starting up!");
 
-            userController = UserController.GetInstance();
-            boardController = BoardController.GetInstance();
+            userController = new UserController();
+            boardController = new BoardController();
         }
         ///<summary>This method loads the data from the persistance.
         ///         You should call this function when the program starts. </summary>
@@ -72,11 +72,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             log.Info($"User {email} is trying to Logout");
             return userController.Logout(email);
-        }
-
-        private void ValidateUserLoggin(string email)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>        
