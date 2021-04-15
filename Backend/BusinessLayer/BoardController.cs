@@ -93,7 +93,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return r;
             }
             Task t = r.Value;
-            b.AddTask(t);
+            Response res = b.AddTask(t);
+            if (res.ErrorOccured)
+                return Response<Task>.FromError(res.ErrorMessage);
             return r;
         }
 
