@@ -30,6 +30,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             this.password = password;
         }
 
+        /// <summary>        
+        /// Login an unlogged user. 
+        /// </summary>
+        /// <param name="password">The password of the user to log in</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response<User> Login(string password)
         {
             if (!IsPasswordCorrect(password))
@@ -50,6 +55,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             throw new NotImplementedException();
         }
 
+        /// <summary>        
+        /// Log out an logged in user. 
+        /// </summary>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response logout()
         {
             if (!isLoggedIn)
@@ -58,6 +67,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return new Response();
         }
 
+        /// <summary>        
+        /// Validattion of the given passowrd.
+        /// </summary>
+        /// <param name="password">The password of the user to log in</param>
+        /// <returns> true if the passowrd correct else false. </returns>
         private bool IsPasswordCorrect(string password)
         {
             return this.password.IsMatch(password);
