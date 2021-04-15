@@ -57,6 +57,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         ///<returns cref="Response">The response of the action</returns>
         public Response Register(string email, string password)
         {
+            if (email == null || password == null)
+                return new Response("Null is not optional");
             if (users.ContainsKey(email))
             {
                 string s = $"User {email} already registered";
@@ -87,6 +89,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <returns>A response object with a value set to the user, instead the response should contain a error message in case of an error</returns>
         public Response<User> Login(string email, string password)
         {
+            if (email == null || password == null)
+                return Response<User>.FromError("Null is not optional");
             if (!users.ContainsKey(email))
             {
                 string s = "User not found";
@@ -104,6 +108,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response Logout(string email)
         {
+            if (email == null)
+                return new Response("Null is not optional");
             if (!users.ContainsKey(email))
             {
                 string s = $"User {email} not found";
@@ -116,6 +122,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response<User> getUserByEmail(string email)
         {
+            if (email == null)
+                return Response<User>.FromError("Null is not optional");
             if (!users.ContainsKey(email))
             {
                 string s = $"User {email} not found";
@@ -127,6 +135,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response<bool> isLoggedIn(string email)
         {
+            if (email == null)
+                return Response<bool>.FromError("Null is not optional");
             if (!users.ContainsKey(email))
             {
                 string s = $"User {email} not found";
