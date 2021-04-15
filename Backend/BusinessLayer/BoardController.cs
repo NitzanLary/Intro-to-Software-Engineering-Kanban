@@ -186,7 +186,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response AddBoard(string email, string name) 
         {
-            if (!AllBoardsContainsBoardByEmail(email,name).ErrorOccured)
+            if (name == null || email == null || name.Length == 0 || email.Length == 0)
+                return new Response("null value given");
+            if (!AllBoardsContainsBoardByEmail(email, name).ErrorOccured)
                 return new Response($"user {email} already has board named {name}");
             boards[email].Add(name, new Board(name));
             return new Response();
