@@ -80,7 +80,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response<Task> AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
-            if (title == null || description == null || title.Length == 0 || description.Length == 0)
+            if (title == null || title.Length == 0) // || description == null
                 return Response<Task>.FromError("empty string given");
             Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
             if (validArguments.ErrorOccured)
@@ -93,7 +93,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return r;
             }
             Task t = r.Value;
-            b.AddTask(t);
+            Response res = b.AddTask(t);
+            if (res.ErrorOccured)
+                return Response<Task>.FromError(res.ErrorMessage);
             return r;
         }
 

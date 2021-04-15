@@ -44,7 +44,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             {
                 MailAddress m = new MailAddress(emailaddress);
 
-                return true;
+                return m.Address == emailaddress;
             }
             catch (FormatException)
             {
