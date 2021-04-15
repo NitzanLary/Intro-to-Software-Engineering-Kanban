@@ -6,7 +6,7 @@ namespace Test
     class Program
     {
         /*ervice service = new Service();*/
-
+        private static int testCount = 0; 
         static void Main(string[] args)
         {
             Service s = new Service();
@@ -135,15 +135,47 @@ namespace Test
             Console.WriteLine("\t\tshould print ok\n");
             Print(s.AddTask("asafs@gmail.com", "b1", "title1", "123", DateTime.Parse("4-20-2021")));
             Console.WriteLine("\t\tshould print ok\n");
-
+            Print(s.LimitColumn("asafs@gmail.com", "b11", 0, 2));
+            Console.WriteLine("\t\tshould print not ok\n");
+            Print(s.LimitColumn("asafs@gmail.com", "b1", 0, 2));
+            Console.WriteLine("\t\tshould print ok\n");
+            Print(s.AddTask("asafs@gmail.com", "b1", "title1", "1234", DateTime.Parse("4-20-2021")));
+            Console.WriteLine("\t\tshould print not ok\n");
+            Print(s.LimitColumn("asafs@gmail.com", "b1", 0, 3));
+            Console.WriteLine("\t\tshould print ok\n");
+            Print(s.AddTask("asafs@gmail.com", "b1", "title1", "1234", DateTime.Parse("4-20-2021")));
+            Console.WriteLine("\t\tshould print ok\n");
+            Console.WriteLine("\n\n\n\n" + s.InProgressTasks("asafs@gmail.com").Value.Count + "\n\n\n\n");
+            Print(s.AdvanceTask("asafs@gmail.com", "b1", 1, 4));
+            Console.WriteLine("\t\tshould print not ok\n");
+            Console.WriteLine("\n\n\n\n" + s.InProgressTasks("asafs@gmail.com").Value.Count + "\n\n\n\n");
+            Print(s.AdvanceTask("asafs@gmail.com", "b1", 0, 4));
+            Console.WriteLine("\t\tshould print ok\n");
+            Console.WriteLine("\n\n\n\n"+s.InProgressTasks("asafs@gmail.com").Value.Count+"\n\n\n\n");
+            Print(s.AdvanceTask("asafs@gmail.com", "b1", 0, 1));
+            Console.WriteLine("\t\tshould print ok\n");
+            Console.WriteLine("\n\n\n\n" + s.InProgressTasks("asafs@gmail.com").Value.Count + "\n\n\n\n");
+            Print(s.AdvanceTask("asafs@gmail.com", "b1", 1, 1));
+            Console.WriteLine("\t\tshould print ok\n");
+            Console.WriteLine("\n\n\n\n" + s.InProgressTasks("asafs@gmail.com").Value.Count + "\n\n\n\n");
+            Print(s.GetColumnName("asafs@gmail.com", "b11", 1));
+            Console.WriteLine("\t\tshould print not ok\n");
+            Print(s.GetColumnName("asafs@gmail.com", "b1", 3));
+            Console.WriteLine("\t\tshould print not ok\n");
+            Print(s.GetColumnName("asafs@gmail.com", "b1", 1));
+            Console.WriteLine("\t\tshould print ok\n");
+            Print(s.GetColumn("asafs@gmail.com", "b11", 2));
+            Console.WriteLine("\t\tshould print not ok\n");
+            Console.WriteLine("\n\n\n\n" + s.GetColumn("asafs@gmail.com","b1",1).Value.Count + "\n\n\n\n");
         }
+
         static void Print(Response res)
         {
-            string input = "";
+            string input = $"test {++testCount}  ";
             if (res.ErrorOccured)
-                input = res.ErrorMessage;
+                input += res.ErrorMessage;
             else
-                input = "no error  " + res.GetType().Name;
+                input += "no error  " + res.GetType().Name;
             Console.WriteLine($"\n    -  ----------   {input}   ----------   -\n");
         }
 
