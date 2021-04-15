@@ -34,13 +34,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             set => maxDone = value;
         }
 
-        //private static int taskNumber = 0;
-        //public static int TaskNumber
-        //{
-        //    get => taskNumber;
-        //    set => taskNumber += 1;
-        //}
-
         private List<Dictionary<int, Task>> columns; // backlogs , inProgress, done (generic updatable)
         public List<Dictionary<int, Task>> Columns
         {
@@ -49,7 +42,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         }
 
         
-        public Response AddTask(Task task) // getting a new task from task controller (through boardController) and add it here to the board. asaf & rafa
+        public Response AddTask(Task task)
         {
             if (Columns[0].Count == MaxBacklogs)
                 return new Response("Can not add Task, backlogs column got to its maximum limit");
@@ -80,8 +73,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response<Dictionary<int, Task>> getInProgess()
         {
-            //Console.WriteLine("-------------------------------" + Columns[1].Count + "-------------------------------");
-
             return Response<Dictionary<int, Task>>.FromValue(Columns[1]);
         }
 
@@ -146,7 +137,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         }
 
-        internal Response<string> getColumnName(int columnOrdinal) // todo - insert to diagram
+        internal Response<string> getColumnName(int columnOrdinal)
         {
             if (columnOrdinal == 0)
                 return Response<string>.FromValue("backlog");

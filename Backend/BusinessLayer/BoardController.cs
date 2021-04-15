@@ -308,7 +308,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 if (r.ErrorOccured)
                     return Response<IList<Task>>.FromError(r.ErrorMessage);
                 ret.AddRange(r.Value.Values);
-                //Console.WriteLine("-------------------------------" + r.Value.Count + "-------------------------------" );
             }
             return Response<IList<Task>>.FromValue(ret);    
         }

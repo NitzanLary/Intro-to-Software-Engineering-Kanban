@@ -26,26 +26,33 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         }
 
         /// <summary>
-        /// Limit the number of tasks in a specific column
+        /// check title string validity 
         /// </summary>
-        /// <param name="email">The email address of the user, must be logged in</param>
-        /// <param name="boardName">The name of the board</param>
-        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
-        /// <param name="limit">The new limit value. A value of -1 indicates no limit.</param>
-        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        /// <param name="title">the title given</param>
+        /// <returns>A response object. The response should contain a error message in case of false</returns>
         public Response<bool> isValidTitle(string title){
             if (title.Length > MAX_TITLE || title.Equals(""))
                 return Response<bool>.FromError("Task title should be at most 50 characters, not empty");
             return Response<bool>.FromValue(true);
         }
-
+        /// <summary>
+        /// check description validity 
+        /// </summary>
+        /// <param name="description">the given description</param>
+        /// <returns>A response object. The response should contain a error message in case of false</returns>
         public Response<bool> isValidDesc(string description)
         {
             if (description.Length > MAX_DESC)
                 return Response<bool>.FromError("Task description should be at most 300 characters");
             return Response<bool>.FromValue(true);
         }
-
+        /// <summary>
+        /// Add a new task and gives it its id.
+        /// </summary>
+        /// <param name="title">Title of the new task</param>
+        /// <param name="description">Description of the new task</param>
+        /// <param name="dueDate">The due date if the new task</param>
+        /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
         public Response<Task> AddTask(string title, string description, DateTime dueDate)
         {
             if (title == null || description == null)
@@ -63,14 +70,24 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             taskNumber += 1;
             return Response<Task>.FromValue(new Task(taskNumber, dueDate, title, description));
         }
-
+        /// <summary>
+        /// Update the due date of a task
+        /// </summary>
+        /// <param name="task">The task to be updated</param>
+        /// <param name="dueDate">The new due date of the task</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDueDate(Task task, DateTime NewDueDate)
         {
             if (NewDueDate < DateTime.Now)
                 return new Response("unvalid date - already passed");
             return task.UpdateTaskDueDate(NewDueDate);
         }
-
+        /// <summary>
+        /// Update task title
+        /// </summary>
+        /// <param name="task">The task to be updated</param>
+        /// <param name="title">New title for the task</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskTitle(Task task, string title)
         {
             if (title == null)
@@ -83,7 +100,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return task.UpdateTaskTitle(title);
     
         }
-
+        /// <summary>
+        /// Update the description of a task
+        /// </summary>
+        /// <param name="task">The task to be updated</param>
+        /// <param name="description">New description for the task</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDescription(Task task, string description)
         {
             if (description == null)
