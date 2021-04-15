@@ -91,6 +91,34 @@ namespace Test
             //Console.WriteLine(s.Login("Rafa@gmail.com", "Rf12345678").ErrorMessage);
             //Console.WriteLine(s.AddBoard("Rafa@gmail.com", "Semester B").ErrorMessage);
 
+            //// ------------- Asaf Tests -------------
+            Console.WriteLine(" \n\n Asaf Tests \n\n");
+            Print(s.Register("asafs@gmail.com", "Aa123"));
+            Console.WriteLine("\t\tshould print ok\n");
+            Print(s.Login("asafs@gmail.com", "Aa123"));
+            Console.WriteLine("\t\tshould print ok\n");
+            Print(s.Login("asafs@gmail.com", "Aa123"));
+            Console.WriteLine("\t\tshould print not ok\n");
+            Print(s.Login("asafs@gmail.com", "Aa1234"));
+            Console.WriteLine("\t\tshould print not ok\n");
+            Print(s.AddBoard("asafs@gmail.com",""));
+            Console.WriteLine("\t\tshould print not ok\n");
+            Print(s.AddBoard("asafs@gmail.com", ""));
+            Console.WriteLine("\t\tshould print not ok\n");
+            Print(s.AddBoard("asafs@gmail.com", "b1"));
+            Console.WriteLine("\t\tshould print ok\n");
+            Print(s.AddBoard("asafs@gmail.com", "b1"));
+            Console.WriteLine("\t\tshould print not ok\n");
+            Print(s.AddBoard("asafs@gmail.com", "b2"));
+            Console.WriteLine("\t\tshould print ok\n");
+            Print(s.AddTask("asafs@gmail.com", "", "", "", new DateTime()));
+            Console.WriteLine("\t\tshould print not ok\n");
+            Print(s.AddTask("asafs@gmail.com","b1", "", "", new DateTime()));
+            Console.WriteLine("\t\tshould print not ok\n");
+            Print(s.AddTask("asafs@gmail.com", "b1","title1","", DateTime.Parse("4-20-2021")));
+            Console.WriteLine("\t\tshould print ok\n");
+            Print(s.AddTask("asafs@gmail.com", "b1", "title1", "123", DateTime.Parse("4-20-2021")));
+            Console.WriteLine("\t\tshould print ok\n");
 
         }
         static void Print(Response res)
