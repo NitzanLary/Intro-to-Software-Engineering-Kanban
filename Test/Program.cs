@@ -135,7 +135,6 @@ namespace Test
             Console.WriteLine("\t\tshould print ok\n");
             Print(s.AddTask("asafs@gmail.com", "b1", "title1", "123", DateTime.Parse("4-20-2021")));
             Console.WriteLine("\t\tshould print ok\n");
-            Print(s.)
 
         }
         static void Print(Response res)
