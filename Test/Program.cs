@@ -76,5 +76,32 @@ namespace Test
                 input = "no error  " + res.GetType().Name;
             Console.WriteLine($"\n    -  ----------   {input}   ----------   -\n");
         }
+
+        static void init(Service s)
+        {
+            s.Register("Rafa@gmail.com", "Rf12345678");
+            s.Login("Rafa@gmail.com", "Rf12345678");
+        }
+
+        static void Register(Service s)
+        {
+
+        }
+
+        static void Task(Service s)
+        {
+
+        }
+
+        static void Column(Service s)
+        {
+
+        }
+
+        static void validation(Response r, bool expected)
+        {
+            if (r.ErrorOccured != expected)
+                throw new Exception();
+        }
     }
 }

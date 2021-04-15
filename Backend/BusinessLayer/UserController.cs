@@ -32,6 +32,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return instance;
         }
 
+        /// <summary>        
+        /// checks if the given email address is valid
+        /// </summary>
+        /// <param name="emailaddress">The email of the user to register</param>
+        /// <returns>A true if valid else false</returns>
         public bool IsValidEmail(string emailaddress)
         {
             try
@@ -46,6 +51,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             }
         }//
 
+        ///<summary>This method registers a new user to the system.</summary>
+        ///<param name="email">the user e-mail address, used as the username for logging the system.</param>
+        ///<param name="password">the user password.</param>
+        ///<returns cref="Response">The response of the action</returns>
         public Response Register(string email, string password)
         {
             if (users.ContainsKey(email))
@@ -70,6 +79,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return new Response();
         }
 
+        /// <summary>
+        /// Log in an existing user
+        /// </summary>
+        /// <param name="email">The email address of the user to login</param>
+        /// <param name="password">The password of the user to login</param>
+        /// <returns>A response object with a value set to the user, instead the response should contain a error message in case of an error</returns>
         public Response<User> Login(string email, string password)
         {
             if (!users.ContainsKey(email))
@@ -82,6 +97,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return users[email].Login(password);
         }
 
+        /// <summary>        
+        /// Log out an logged in user. 
+        /// </summary>
+        /// <param name="email">The email of the user to log out</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response Logout(string email)
         {
             if (!users.ContainsKey(email))

@@ -79,6 +79,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             throw new NotImplementedException();
         }
 
+        /// <summary>        
+        /// Checks if a user is logged in
+        /// </summary>
+        /// <param name="email">The email of the user</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         private Response IsLoggedIn(string email)
         {
             Response<bool> r = userController.isLoggedIn(email);
