@@ -11,7 +11,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 {
     class BoardController
     {
-        private static BoardController instance;
+        //private static BoardController instance;
 
                         // email            boardName 
         private Dictionary<string, Dictionary<string, Board>> boards;
@@ -21,16 +21,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
 
-        private BoardController()
+        public BoardController()
         {
             boards = new Dictionary<string, Dictionary<string, Board>>();
-            taskController = TaskController.GetInstance();
+            //taskController = TaskController.GetInstance();
+             taskController = new TaskController();
         }
 
-        public static BoardController GetInstance()
-        {
-            return instance == null ? new BoardController() : instance;
-        }
+        //public static BoardController GetInstance()
+        //{
+        //    return instance == null ? new BoardController() : instance;
+        //}
 
         private Response AllBoardsContainsBoardByEmail(string email, string boardName) // todo - valid input checker - add to diagram
         {
@@ -49,6 +50,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
             if (validArguments.ErrorOccured)
                 return validArguments;
+            if (columnOrdinal > 2)
+                return new Response("column ordinal dose not exist. max 2");
             return boards[email][boardName].limitColumn(columnOrdinal, limit);
         }
 
@@ -57,6 +60,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
             if (validArguments.ErrorOccured)
                 return Response<int>.FromError(validArguments.ErrorMessage);
+            if (columnOrdinal > 2)
+                return Response<int>.FromError("column ordinal dose not exist. max 2");
             return boards[email][boardName].getColumnLimit(columnOrdinal);
         }
 
@@ -68,6 +73,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 log.Debug(validArguments.ErrorMessage);
                 return Response<string>.FromError(validArguments.ErrorMessage);
             }
+            if (columnOrdinal > 2)
+                return Response<string>.FromError("column ordinal dose not exist. max 2");
             return boards[email][boardName].getColumnName(columnOrdinal);
         }
 
@@ -157,6 +164,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 log.Debug(validArguments.ErrorMessage);
                 return Response<Task>.FromError(validArguments.ErrorMessage);
             }
+            if (columnOrdinal > 2)
+                return Response<Task>.FromError("column ordinal dose not exist. max 2");
             Board b = boards[email][boardName];
             return b.advanceTask(taskId, columnOrdinal);
         }
@@ -170,6 +179,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Response<Dictionary<int, Task>> res = b.getColumn(columnOrdinal);
             if (res.ErrorOccured)
                 return Response<IList<Task>>.FromError(res.ErrorMessage);
+            if (columnOrdinal > 2)
+                return Response<IList<Task>>.FromError("column ordinal dose not exist. max 2");
             return Response<IList<Task>>.FromValue(res.Value.Values.ToList());
         }
 
