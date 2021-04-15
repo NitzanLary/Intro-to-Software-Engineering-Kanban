@@ -11,7 +11,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 {
     class BoardController
     {
-        //private static BoardController instance;
 
                         // email            boardName 
         private Dictionary<string, Dictionary<string, Board>> boards;
@@ -24,15 +23,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public BoardController()
         {
             boards = new Dictionary<string, Dictionary<string, Board>>();
-            //taskController = TaskController.GetInstance();
              taskController = new TaskController();
         }
 
-        //public static BoardController GetInstance()
-        //{
-        //    return instance == null ? new BoardController() : instance;
-        //}
-
+        /// <summary>
+        /// Check if user has a board in a given name, also inserting a new email address to all boards collections in case its missing
+        /// </summary>
+        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <returns>A response object. The response should contain a error message in case of missing board for user or invalid argments</returns>
         private Response AllBoardsContainsBoardByEmail(string email, string boardName) // todo - valid input checker - add to diagram
         {
             if (email == null || boardName == null || email.Length == 0 || boardName.Length == 0)
@@ -45,6 +44,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return new Response();
         }
 
+        /// <summary>
+        /// Limit the number of tasks in a specific column
+        /// </summary>
+        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="limit">The new limit value. A value of -1 indicates no limit.</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response LimitColumn(string email, string boardName, int columnOrdinal, int limit) 
         {
             Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
@@ -54,7 +61,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return new Response("column ordinal dose not exist. max 2");
             return boards[email][boardName].limitColumn(columnOrdinal, limit);
         }
-
+        /// <summary>
+        /// Get the limit of a specific column
+        /// </summary>
+        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <returns>The limit of the column.</returns>
         public Response<int> GetColumnLimit(string email, string boardName, int columnOrdinal)
         {
             Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
@@ -64,7 +77,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return Response<int>.FromError("column ordinal dose not exist. max 2");
             return boards[email][boardName].getColumnLimit(columnOrdinal);
         }
-
+        /// <summary>
+        /// Get the name of a specific column
+        /// </summary>
+        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <returns>The name of the column.</returns>
         public Response<string> GetColumnName(string email, string boardName, int columnOrdinal) 
         {
             Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
@@ -77,7 +96,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return Response<string>.FromError("column ordinal dose not exist. max 2");
             return boards[email][boardName].getColumnName(columnOrdinal);
         }
-
+        /// <summary>
+        /// Add a new task.
+        /// </summary>
+        /// <param name="email">Email of the user. The user must be logged in.</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="title">Title of the new task</param>
+        /// <param name="description">Description of the new task</param>
+        /// <param name="dueDate">The due date if the new task</param>
+        /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
         public Response<Task> AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
             if (title == null || title.Length == 0) // || description == null
@@ -98,7 +125,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return Response<Task>.FromError(res.ErrorMessage);
             return r;
         }
-
+        /// <summary>
+        /// Returns a task from by id given a specific column and board name.
+        /// </summary>
+        /// <param name="email">Email of user. Must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>
+        /// <returns>A response with the value of the task, The response should contain a error message in case of an error</returns>
         private Response<Task> TaskGetter(string email, string boardName, int columnOrdinal, int taskId) // todo - update in the diagram
         {
             Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
@@ -113,7 +147,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return Response<Task>.FromError($"coldn't find task id {taskId} in email {email} | board {boardName} | column {columnOrdinal}");
             return Response<Task>.FromValue(col[taskId]);
         }
-
+        /// <summary>
+        /// Update the due date of a task
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>
+        /// <param name="dueDate">The new due date of the column</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDueDate(string email, string boardName, int columnOrdinal, int taskId, DateTime dueDate) 
         {
             Response<Task> res = TaskGetter(email, boardName, columnOrdinal, taskId);
@@ -126,7 +168,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return new Response("task that is done, cnnot be change");
             return taskController.UpdateTaskDueDate(res.Value, dueDate);
         }
-
+        /// <summary>
+        /// Update task title
+        /// </summary>
+        /// <param name="email">Email of user. Must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>
+        /// <param name="title">New title for the task</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskTitle(string email, string boardName, int columnOrdinal, int taskId, string title) 
         {
             if (title == null || title.Length == 0)
@@ -141,7 +191,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return new Response("task that is done, cnnot be change");
             return taskController.UpdateTaskTitle(res.Value, title);
         }
-
+        /// <summary>
+        /// Update the description of a task
+        /// </summary>
+        /// <param name="email">Email of user. Must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>
+        /// <param name="description">New description for the task</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDescription(string email, string boardName, int columnOrdinal, int taskId, string description) 
         {
             if (description == null || description.Length == 0)
@@ -157,7 +215,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
             return taskController.UpdateTaskDescription(res.Value, description);
         }
-
+        /// <summary>
+        /// Advance a task to the next column
+        /// </summary>
+        /// <param name="email">Email of user. Must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AdvanceTask(string email, string boardName, int columnOrdinal, int taskId) 
         {
             Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
@@ -171,7 +236,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Board b = boards[email][boardName];
             return b.advanceTask(taskId, columnOrdinal);
         }
-
+        /// <summary>
+        /// Returns a column given it's name
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <returns>A response object with a value set to the Column, The response should contain a error message in case of an error</returns>
         public Response<IList<Task>> GetColumn(string email, string boardName, int columnOrdinal)
         {
             Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
@@ -185,7 +256,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return Response<IList<Task>>.FromError("column ordinal dose not exist. max 2");
             return Response<IList<Task>>.FromValue(res.Value.Values.ToList());
         }
-
+        /// <summary>
+        /// Adds a board to the specific user.
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="name">The name of the new board</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AddBoard(string email, string name) 
         {
             if (name == null || email == null || name.Length == 0 || email.Length == 0)
@@ -195,7 +271,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             boards[email].Add(name, new Board(name));
             return new Response();
         }
-
+        /// <summary>
+        /// Removes a board to the specific user.
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="name">The name of the board</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response RemoveBoard(string email, string name) 
         {
             Response validArguments = AllBoardsContainsBoardByEmail(email, name);
@@ -209,7 +290,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return new Response();
             
         }
-
+        /// <summary>
+        /// Returns all the In progress tasks of the user.
+        /// </summary>
+        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <returns>A response object with a value set to the list of tasks, The response should contain a error message in case of an error</returns>
         public Response<IList<Task>> InProgressTask(string email) 
         {
             if (email == null || email.Length == 0)
