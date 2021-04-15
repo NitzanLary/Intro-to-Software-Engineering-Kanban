@@ -27,29 +27,45 @@ namespace Test
             Print(s.Login("Rafa@gmail.com", "Rf12345678"));
             //Print(s.Login("Rafa123@gmail.com", "Rf12345678"));
             Print(s.Login("Rafa111111@gmail.com", "R12345678f"));
-            //Print(s.Logout("Rafa@gmailcom"));
-            //Print(s.Logout("Rafa@gmail.com"));
 
-            //Print(s.Logout("Rafagmail.com"));
-            //Print(s.Logout("Rada@gmail.com"));
-            //Print(s.Logout("Rafa111111@gmail.com"));
+            //Print(s.Register("Rafa@...@", "1234567Rfgmlks"));
+            //Print(s.Register("Rafa@gmail.com", "Rf12345678"));
+            //Print(s.Logout("Rafa@gmail.com"));
+            //Print(s.Logout("Rafa@gmail.com"));
+            //Print(s.Register("Rafa@gmail.com", "Rf12345678"));
+            //Print(s.Login("Rafa@gmail.com", "Rf12345678"));
+            //Print(s.Login("Rafa@gmail.com", "Rf12345678"));
+
+
 
             // --------------------- AddBoard Tests -----------------------
             Print(s.AddBoard("Rafa@gmail.com", "semester B"));
+
+            Print(s.AddBoard("Rafa@gmail.com", "semester B")); // ERR had board name already
+
             Print(s.AddBoard("Rafa@gmail.com", "semester A"));
             Print(s.AddBoard("Rafa111111@gmail.com", "semester B"));
+            Print(s.AddBoard("Rafa@gmail.com", "")); // ERR not legle board name
+
+            //Print(s.RemoveBoard("Rafa@gmail.com", "semester B")); 
+            //Print(s.RemoveBoard("Rafa@gmail.com", "semester B")); // ERR not had board name
+            //Print(s.RemoveBoard("Rafdsada@gmail.com", "semester B")); // ERR not had email 
+            //Print(s.RemoveBoard("Rafa@gmail.com", "semester A"));
+
+
+
 
             // --------------------- AddTask Tests -----------------------
 
-            Print(s.AddTask("Rafa@gmail.com", "semester B", "SE", "task 1", new DateTime(2021, 5, 14, 0, 0, 0)));
-            //Console.WriteLine(s.AddTask("Rafa@gmail.com", "semester B", "SE", "task 1", new DateTime(2021, 5, 14, 0, 0, 0)).Value.Id);
-            Print(s.AddTask("Rafa@gmail.com", "semester B", "SE", "", new DateTime(2021, 5, 14, 0, 0, 0))); // possible the same name for task???
-            //Console.WriteLine(s.AddTask("Rafa@gmail.com", "semester B", "SE", "", new DateTime(2021, 5, 14, 0, 0, 0)).Value.Id);
-            Print(s.AddTask("Rafa@gmail.com", "semester B", "SE", "task 2", new DateTime(2021, 5, 14, 0, 0, 0)));
-            //Console.WriteLine(s.AddTask("Rafa@gmail.com", "semester B", "SE", "task 2", new DateTime(2021, 5, 14, 0, 0, 0)).Value.Id);
-            Print(s.AddTask("Rafa@gmail.com", "semester B", "SE", "task 3", new DateTime(2021, 5, 14, 0, 0, 0))); 
-            Print(s.AddTask("Rafa@gmail.com", "semester A", "SE", "task 1", new DateTime(2021, 5, 14, 0, 0, 0))); 
-            Print(s.AddTask("Rafa111111@gmail.com", "semester B", "SE", "task 1", new DateTime(2021, 5, 14, 0, 0, 0)));
+            //Print(s.AddTask("Rafa@gmail.com", "semester B", "SE", "task 1", new DateTime(2021, 5, 14, 0, 0, 0)));
+            ////Console.WriteLine(s.AddTask("Rafa@gmail.com", "semester B", "SE", "task 1", new DateTime(2021, 5, 14, 0, 0, 0)).Value.Id);
+            //Print(s.AddTask("Rafa@gmail.com", "semester B", "SE", "", new DateTime(2021, 5, 14, 0, 0, 0))); // possible the same name for task???
+            ////Console.WriteLine(s.AddTask("Rafa@gmail.com", "semester B", "SE", "", new DateTime(2021, 5, 14, 0, 0, 0)).Value.Id);
+            //Print(s.AddTask("Rafa@gmail.com", "semester B", "SE", "task 2", new DateTime(2021, 5, 14, 0, 0, 0)));
+            ////Console.WriteLine(s.AddTask("Rafa@gmail.com", "semester B", "SE", "task 2", new DateTime(2021, 5, 14, 0, 0, 0)).Value.Id);
+            //Print(s.AddTask("Rafa@gmail.com", "semester B", "SE", "task 3", new DateTime(2021, 5, 14, 0, 0, 0)));
+            //Print(s.AddTask("Rafa@gmail.com", "semester A", "SE", "task 1", new DateTime(2021, 5, 14, 0, 0, 0)));
+            //Print(s.AddTask("Rafa111111@gmail.com", "semester B", "SE", "task 1", new DateTime(2021, 5, 14, 0, 0, 0)));
             //Print(s.AddTask("a1@gmail.com", "semester B", "SE", "test", new DateTime(2021, 5, 14, 0, 0, 0)));
             //Print(s.AddTask("Rafa111111@gmail.com", "semester C", "SE", "task 1", new DateTime(2021, 5, 14, 0, 0, 0)));
 
