@@ -112,7 +112,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return r;
-            log.Debug($"limit column successfully to {limit}");
+            log.Debug($"limit column successfully to {limit}"); // Todo: this is not true yet
             return boardController.LimitColumn(email, boardName, columnOrdinal, limit);
         }
 

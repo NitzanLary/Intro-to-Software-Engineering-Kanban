@@ -124,14 +124,18 @@ namespace Test
             validation(s.AddBoard("Rafa@gmail.com", null), true);
             validation(s.AddBoard("Rafa@gmail.com", "myBoard"), false);
             validation(s.AddBoard("Rafa@gmail.com", "myBoard"), true);
+            validation(s.AddBoard("Rafa@gmail.com", "myBoard2"), false);
             validation(s.AddTask(mail, null, "myTitle", "myDesc", date), true);
             validation(s.AddTask(mail, "myBoard", null, "myDesc", date), true);
-            validation(s.AddTask(mail, "myBoard", "myTitle", null, date), true);
-            validation(s.AddTask(mail, "myBoard", "myTitle1", "myDesc1", date), false);
-            validation(s.AddTask(mail, "myBoard", "myTitle2", "myDesc2", date), false);
-            Response<Task> rT1 = s.AddTask(mail, "myBoard", "myTitle1", "myDesc1", date);
-            Response<Task> rT2 = s.AddTask(mail, "myBoard", "myTitle2", "myDesc2", date);
-            
+            Response<Task> rB1T1 = s.AddTask(mail, "myBoard", "myTitle1", "myDesc1", date);
+            Response<Task> rB1T2 = s.AddTask(mail, "myBoard", "myTitle2", "myDesc2", date);
+            Response<Task> rB1T3 = s.AddTask(mail, "myBoard", "myTitle3", "myDesc3", date);
+            Response<Task> rB2T1 = s.AddTask(mail, "myBoard2", "myTitle1", "myDesc1", date);
+            validation(rB1T1, false); validation(rB1T2, false); validation(rB1T3, false); validation(rB2T1, false);
+            validation(s.LimitColumn(mail, "myBoard", 0, 1), true);
+            validation(s.LimitColumn(mail, "myBoard", 0, 3), false);
+            validation(s.AddTask(mail, "myBoard", "myTitle4", "myDesc4", date), true);
+
 
 
         }
