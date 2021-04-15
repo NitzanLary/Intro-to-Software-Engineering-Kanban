@@ -35,7 +35,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         private Response AllBoardsContainsBoardByEmail(string email, string boardName) // todo - valid input checker - add to diagram
         {
-            if (email.Length == 0 || boardName.Length == 0)
+            if (email.Length == 0 || boardName.Length == 0 || email == null || boardName == null)
                 return new Response("null value given");
             if (!boards.ContainsKey(email))
                 boards.Add(email, new Dictionary<string, Board>());
@@ -80,7 +80,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response<Task> AddTask(string email, string boardName, string title, string description, DateTime dueDate)
         {
-            if (title.Length == 0 || description.Length == 0)
+            if (title.Length == 0 || description.Length == 0 || title == null || description == null)
                 return Response<Task>.FromError("empty string given");
             Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
             if (validArguments.ErrorOccured)
@@ -127,7 +127,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response UpdateTaskTitle(string email, string boardName, int columnOrdinal, int taskId, string title) 
         {
-            if (title.Length == 0)
+            if (title.Length == 0 || title == null)
                 return Response<Task>.FromError("empty string given");
             Response<Task> res = TaskGetter(email, boardName, columnOrdinal, taskId);
             if (res.ErrorOccured)
@@ -142,7 +142,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response UpdateTaskDescription(string email, string boardName, int columnOrdinal, int taskId, string description) 
         {
-            if (description.Length == 0)
+            if (description.Length == 0 || description == null)
                 return Response<Task>.FromError("empty string given");
             Response<Task> res = TaskGetter(email, boardName, columnOrdinal, taskId);
             if (res.ErrorOccured)
@@ -208,7 +208,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response<IList<Task>> InProgressTask(string email) 
         {
-            if (email.Length == 0)
+            if (email.Length == 0 || email == null)
                 return Response<IList<Task>>.FromError("empty string given");
             if (!boards.ContainsKey(email))
                 return Response<IList<Task>>.FromError($"boards atribute doesn't contains the given email value {email}");
