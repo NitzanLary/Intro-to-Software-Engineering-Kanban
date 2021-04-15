@@ -20,23 +20,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             set => taskNumber = value;
         }
 
-        //private static TaskController taskController = null;
-
-        //This Class Is Singleton
         public TaskController()
         {
 
         }
 
-        //public static TaskController GetInstance()
-        //{
-        //    if (taskController == null)
-        //    {
-        //        taskController = new TaskController();
-        //    }
-        //    return taskController;
-        //}
-  
+        /// <summary>
+        /// Limit the number of tasks in a specific column
+        /// </summary>
+        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="limit">The new limit value. A value of -1 indicates no limit.</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response<bool> isValidTitle(string title){
             if (title.Length > MAX_TITLE || title.Equals(""))
                 return Response<bool>.FromError("Task title should be at most 50 characters, not empty");

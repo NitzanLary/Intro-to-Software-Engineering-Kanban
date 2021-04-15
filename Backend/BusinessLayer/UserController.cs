@@ -13,7 +13,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 {
     class UserController
     {
-        //private static UserController instance;
         private readonly PasswordController pc;
         private Dictionary<string, User> users;
 
@@ -22,17 +21,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public UserController()
         {
-            //pc = PasswordController.GetInstance();
             pc = new PasswordController();
             users = new Dictionary<string, User>();
         }
-
-        //public static UserController GetInstance()
-        //{
-        //    if (instance == null)
-        //        instance = new UserController();
-        //    return instance;
-        //}
 
         /// <summary>        
         /// checks if the given email address is valid
@@ -41,16 +32,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <returns>A true if valid else false</returns>
         public bool IsValidEmail(string emailaddress)
         {
-            //try
-            //{
-            //    MailAddress m = new MailAddress(emailaddress);
-
-            //    return m.Address == emailaddress;
-            //}
-            //catch (FormatException)
-            //{
-            //    return false;
-            //}
             return Regex.IsMatch(emailaddress, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
         }
 

@@ -313,6 +313,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return ConvertBusinessToServiceTasksCollection(returned.Value);
         }
 
+        /// <summary>
+        /// Converts a collection of BusinessLayer Tasks into collection of ServiceLayer Tasks
+        /// </summary>
+        /// <param name="lst">IList of BL Tasks</param>
+        /// <returns>A response object with a value set to the list of SL tasks</returns>
         private Response<IList<Task>> ConvertBusinessToServiceTasksCollection(IList<BusinessLayer.Task> lst)
         {
             IList<Task> ret = new List<Task>();
