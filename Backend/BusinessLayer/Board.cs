@@ -34,13 +34,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             set => maxDone = value;
         }
 
-        //private static int taskNumber = 0;
-        //public static int TaskNumber
-        //{
-        //    get => taskNumber;
-        //    set => taskNumber += 1;
-        //}
-
         private List<Dictionary<int, Task>> columns; // backlogs , inProgress, done (generic updatable)
         public List<Dictionary<int, Task>> Columns
         {
@@ -49,7 +42,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         }
 
         
-        public Response AddTask(Task task) // getting a new task from task controller (through boardController) and add it here to the board. asaf & rafa
+        public Response AddTask(Task task)
         {
             if (Columns[0].Count == MaxBacklogs)
                 return new Response("Can not add Task, backlogs column got to its maximum limit");
@@ -60,9 +53,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public Board(string name)
         {
             this.name = name;
-            this.MaxBacklogs = int.MaxValue;
-            this.MaxInProgress = int.MaxValue;
-            this.MaxDone = int.MaxValue;
+            this.MaxBacklogs = -1;
+            this.MaxInProgress = -1;
+            this.MaxDone = -1;
+            this.columns = new List<Dictionary<int,Task>>();
+            for (int i=0; i<3; i++)
+            {
+                this.columns.Add(new Dictionary<int, Task>());
+            }
         }
 
         public int getNumOfTasks()
@@ -78,23 +76,26 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return Response<Dictionary<int, Task>>.FromValue(Columns[1]);
         }
 
-        public Response advanceTask(int taskId)
+        public Response advanceTask(int taskId, int columnOrd)
         {
             if (!containsTask(taskId))
                 return new Response("Task dose not exist");
             if (Columns[2].ContainsKey(taskId))
                 return new Response("Task is already done");
-            
+            if (!Columns[columnOrd].ContainsKey(taskId))
+                return new Response("Task do not exist in this column");
             if (Columns[0].ContainsKey(taskId))
             {
                 if (Columns[1].Keys.Count == maxInProgress)
-                    return new Response("Can not advance Task, In Progress column got to its maximum limit");
+                    return new Response("Can not advance Task, 'In Progress' column got to its maximum limit");
                 Task task = Columns[0][taskId];
                 Columns[0].Remove(taskId);
                 Columns[1].Add(taskId, task);
             }
-            if (Columns[1].ContainsKey(taskId))
+            else if (Columns[1].ContainsKey(taskId))
             {
+                if (Columns[2].Keys.Count == MaxDone)
+                    return new Response("Can not advance Task, 'done' column got to its maximum limit");
                 Task task = Columns[1][taskId];
                 Columns[1].Remove(taskId);
                 Columns[2].Add(taskId, task);
@@ -136,10 +137,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         }
 
-        internal Response<string> getColumnName(int columnOrdinal) // todo - insert to diagram
+        internal Response<string> getColumnName(int columnOrdinal)
         {
             if (columnOrdinal == 0)
-                return Response<string>.FromValue("backlogs");
+                return Response<string>.FromValue("backlog");
             if (columnOrdinal == 1)
                 return Response<string>.FromValue("in progress");
             if (columnOrdinal == 2)

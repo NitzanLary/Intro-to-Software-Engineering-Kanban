@@ -11,8 +11,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
     {
         private int MIN_LEN;
         private int MAX_LEN;
-        private static PasswordController passwordController = null;
-        //private Response<bool> Response;
 
         public PasswordController()
         {
@@ -20,13 +18,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             this.MAX_LEN = 20;
         }
 
-        public static PasswordController GetInstance()
-        {
-            if (passwordController == null)
-                passwordController = new PasswordController();
-            return passwordController;
-        }
-
+        /// <summary>
+        /// Check validity of a given password
+        /// </summary>
+        /// <param name="password">The password we want to check if is valid</param>
+        ///  <returns>A response<bool> object. The response should contain an error message in case of missing board for user or invalid argments</returns>
         public Response<bool> isValid(string password)
         {
             bool flag1 = false;
@@ -55,11 +51,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             
         }
 
+        /// <summary>
+        /// Create a Password object from a given string type password 
+        /// </summary>
+        /// <param name="password">The password we want to create the object from</param>
+        /// <returns>A Response<Password> object</returns>
         public Response<Password> createPassword(string password)
         {
             Response<bool> r = isValid(password);
             if (r.ErrorOccured)
                 return Response<Password>.FromError(r.ErrorMessage);
+            if (password == null)
+                return Response<Password>.FromError("password can not be null");
             Password pass = new Password(password);
             return Response<Password>.FromValue(pass);
         } 

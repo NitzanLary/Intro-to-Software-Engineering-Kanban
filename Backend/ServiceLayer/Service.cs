@@ -23,8 +23,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
             log.Info("Starting up!");
 
-            userController = UserController.GetInstance();
-            boardController = BoardController.GetInstance();
+            userController = new UserController();
+            boardController = new BoardController();
         }
         ///<summary>This method loads the data from the persistance.
         ///         You should call this function when the program starts. </summary>
@@ -74,11 +74,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return userController.Logout(email);
         }
 
-        private void ValidateUserLoggin(string email)
-        {
-            throw new NotImplementedException();
-        }
-
+        /// <summary>        
+        /// Checks if a user is logged in
+        /// </summary>
+        /// <param name="email">The email of the user</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         private Response IsLoggedIn(string email)
         {
             Response<bool> r = userController.isLoggedIn(email);
@@ -106,13 +106,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <param name="limit">The new limit value. A value of -1 indicates no limit.</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-        public Response LimitColumn(string email, string boardName, int columnOrdinal, int limit)
+        public Response LimitColumn(string email, string boardName, int columnOrdinal, int limit) 
         {
             log.Info($"User {email} is trying to LimitColumn in board {boardName}, column {columnOrdinal} with limit: {limit}");
             Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return r;
-            log.Debug($"limit column successfully to {limit}");
+            log.Debug($"limit column successfully to {limit}"); // Todo: this is not true yet
             return boardController.LimitColumn(email, boardName, columnOrdinal, limit);
         }
 
@@ -123,7 +123,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="boardName">The name of the board</param>
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <returns>The limit of the column.</returns>
-        public Response<int> GetColumnLimit(string email, string boardName, int columnOrdinal)
+        public Response<int> GetColumnLimit(string email, string boardName, int columnOrdinal) 
         {
             log.Info($"User {email} is trying to GetColumnLimit in board {boardName}, column {columnOrdinal}");
             Response r = IsLoggedIn(email);
@@ -182,7 +182,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <param name="dueDate">The new due date of the column</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-        public Response UpdateTaskDueDate(string email, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
+        public Response UpdateTaskDueDate(string email, string boardName, int columnOrdinal, int taskId, DateTime dueDate) 
         {
             log.Info($"User {email} is trying to UpdateTaskDueDate");
             Response r = IsLoggedIn(email);
@@ -199,13 +199,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <param name="title">New title for the task</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-        public Response UpdateTaskTitle(string email, string boardName, int columnOrdinal, int taskId, string title)
+        public Response UpdateTaskTitle(string email, string boardName, int columnOrdinal, int taskId, string title) 
         {
             log.Info($"User {email} is trying to UpdateTaskTitle");
             Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return r;
-            return boardController.UpdateTaskTitle(email, boardName, columnOrdinal, taskId, title);
+            return boardController.UpdateTaskTitle(email, boardName, columnOrdinal, taskId, title); 
         }
         /// <summary>
         /// Update the description of a task
@@ -216,7 +216,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <param name="description">New description for the task</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-        public Response UpdateTaskDescription(string email, string boardName, int columnOrdinal, int taskId, string description)
+        public Response UpdateTaskDescription(string email, string boardName, int columnOrdinal, int taskId, string description) 
         {
             log.Info($"User {email} is trying to UpdateTaskDescription");
             Response r = IsLoggedIn(email);
@@ -232,7 +232,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-        public Response AdvanceTask(string email, string boardName, int columnOrdinal, int taskId)
+        public Response AdvanceTask(string email, string boardName, int columnOrdinal, int taskId) 
         {
             log.Info($"User {email} is trying to AdvanceTask in board {boardName}, column {columnOrdinal}, task {taskId}");
             Response r = IsLoggedIn(email);
@@ -247,13 +247,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="boardName">The name of the board</param>
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <returns>A response object with a value set to the Column, The response should contain a error message in case of an error</returns>
-        public Response<IList<Task>> GetColumn(string email, string boardName, int columnOrdinal)
+        public Response<IList<Task>> GetColumn(string email, string boardName, int columnOrdinal) 
         {
             log.Info($"User {email} is trying to GetColumn: {boardName}, {columnOrdinal}");
             Response r = IsLoggedIn(email);
             if (r.ErrorOccured)
                 return Response<IList<Task>>.FromError(r.ErrorMessage);
-            Response<IList<BusinessLayer.Task>> returned = boardController.InProgressTask(email);
+            Response<IList<BusinessLayer.Task>> returned = boardController.GetColumn(email,boardName,columnOrdinal);
             if (returned.ErrorOccured)
             {
                 log.Debug(returned.ErrorMessage);
@@ -298,7 +298,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         /// <param name="email">Email of the user. Must be logged in</param>
         /// <returns>A response object with a value set to the list of tasks, The response should contain a error message in case of an error</returns>
-        public Response<IList<Task>> InProgressTasks(string email)
+        public Response<IList<Task>> InProgressTasks(string email) 
         {
             log.Info($"{email} is Trying to get InProgressTasks");
             Response r = IsLoggedIn(email);
@@ -313,6 +313,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return ConvertBusinessToServiceTasksCollection(returned.Value);
         }
 
+        /// <summary>
+        /// Converts a collection of BusinessLayer Tasks into collection of ServiceLayer Tasks
+        /// </summary>
+        /// <param name="lst">IList of BL Tasks</param>
+        /// <returns>A response object with a value set to the list of SL tasks</returns>
         private Response<IList<Task>> ConvertBusinessToServiceTasksCollection(IList<BusinessLayer.Task> lst)
         {
             IList<Task> ret = new List<Task>();

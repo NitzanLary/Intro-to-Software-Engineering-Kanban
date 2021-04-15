@@ -16,10 +16,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         internal User(string email)
         {
             this.Email = email;
-
-
-
-            log.Info("Logger test!");
         }
     }
 }
