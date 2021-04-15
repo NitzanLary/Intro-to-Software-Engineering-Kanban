@@ -52,6 +52,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response<Task> AddTask(string title, string description, DateTime dueDate)
         {
+            if (title == null || description == null)
+            {
+                return Response<Task>.FromError("argument can not be null");
+            }
             Response<bool> titleValidRes = isValidTitle(title);
             if (titleValidRes.ErrorOccured)
                 return Response<Task>.FromError(titleValidRes.ErrorMessage);
@@ -73,6 +77,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response UpdateTaskTitle(Task task, string title)
         {
+            if (title == null)
+            {
+                return Response<Task>.FromError("argument can not be null");
+            }
             Response<bool> titleValidRes = isValidTitle(title);
             if (titleValidRes.ErrorOccured)
                 return Response<Task>.FromError(titleValidRes.ErrorMessage);
@@ -82,6 +90,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response UpdateTaskDescription(Task task, string description)
         {
+            if (description == null)
+            {
+                return Response<Task>.FromError("argument can not be null");
+            }
             Response<bool> descValidRes = isValidDesc(description);
             if (descValidRes.ErrorOccured)
                 return Response<Task>.FromError(descValidRes.ErrorMessage);

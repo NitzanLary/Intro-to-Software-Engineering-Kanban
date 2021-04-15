@@ -60,6 +60,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Response<bool> r = isValid(password);
             if (r.ErrorOccured)
                 return Response<Password>.FromError(r.ErrorMessage);
+            if (password == null)
+                return Response<Password>.FromError("password can not be null");
             Password pass = new Password(password);
             return Response<Password>.FromValue(pass);
         } 

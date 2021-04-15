@@ -60,9 +60,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public Board(string name)
         {
             this.name = name;
-            this.MaxBacklogs = int.MaxValue;
-            this.MaxInProgress = int.MaxValue;
-            this.MaxDone = int.MaxValue;
+            this.MaxBacklogs = -1;
+            this.MaxInProgress = -1;
+            this.MaxDone = -1;
             this.columns = new List<Dictionary<int,Task>>();
             for (int i=0; i<3; i++)
             {
@@ -80,7 +80,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response<Dictionary<int, Task>> getInProgess()
         {
-            Console.WriteLine("-------------------------------" + Columns[1].Count + "-------------------------------");
+            //Console.WriteLine("-------------------------------" + Columns[1].Count + "-------------------------------");
 
             return Response<Dictionary<int, Task>>.FromValue(Columns[1]);
         }
