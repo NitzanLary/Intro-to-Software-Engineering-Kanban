@@ -80,26 +80,31 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response<Dictionary<int, Task>> getInProgess()
         {
+            Console.WriteLine("-------------------------------" + Columns[1].Count + "-------------------------------");
+
             return Response<Dictionary<int, Task>>.FromValue(Columns[1]);
         }
 
-        public Response advanceTask(int taskId)
+        public Response advanceTask(int taskId, int columnOrd)
         {
             if (!containsTask(taskId))
                 return new Response("Task dose not exist");
             if (Columns[2].ContainsKey(taskId))
                 return new Response("Task is already done");
-            
+            if (!Columns[columnOrd].ContainsKey(taskId))
+                return new Response("Task do not exist in this column");
             if (Columns[0].ContainsKey(taskId))
             {
                 if (Columns[1].Keys.Count == maxInProgress)
-                    return new Response("Can not advance Task, In Progress column got to its maximum limit");
+                    return new Response("Can not advance Task, 'In Progress' column got to its maximum limit");
                 Task task = Columns[0][taskId];
                 Columns[0].Remove(taskId);
                 Columns[1].Add(taskId, task);
             }
-            if (Columns[1].ContainsKey(taskId))
+            else if (Columns[1].ContainsKey(taskId))
             {
+                if (Columns[2].Keys.Count == MaxDone)
+                    return new Response("Can not advance Task, 'done' column got to its maximum limit");
                 Task task = Columns[1][taskId];
                 Columns[1].Remove(taskId);
                 Columns[2].Add(taskId, task);
@@ -144,11 +149,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         internal Response<string> getColumnName(int columnOrdinal) // todo - insert to diagram
         {
             if (columnOrdinal == 0)
-                return Response<string>.FromValue("Backlogs");
+                return Response<string>.FromValue("backlog");
             if (columnOrdinal == 1)
-                return Response<string>.FromValue("In Progress");
+                return Response<string>.FromValue("in progress");
             if (columnOrdinal == 2)
-                return Response<string>.FromValue("Done");
+                return Response<string>.FromValue("done");
             return Response<string>.FromError("there is no such column number");
 
         }

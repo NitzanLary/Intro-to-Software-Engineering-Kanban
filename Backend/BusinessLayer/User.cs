@@ -34,6 +34,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             if (!IsPasswordCorrect(password))
                 return Response<User>.FromError("Incorrect Password");
+            if (isLoggedIn)
+                return Response<User>.FromError("User is already loogged in");
             IsLoggedIn = true;
             return Response<User>.FromValue(this);
         }
@@ -50,6 +52,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response logout()
         {
+            if (!isLoggedIn)
+                return Response<User>.FromError("User is not loogged in");
             IsLoggedIn = false;
             return new Response();
         }

@@ -13,11 +13,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
     {
         readonly private int MAX_TITLE = 50;
         readonly private int MAX_DESC = 300;
-        private int taskNumber = 1;
+        private int taskNumber = 0;
         public int TaskNumber
         {
             get => taskNumber;
-            //set => taskNumber += 1;
+            set => taskNumber = value;
         }
 
         private static TaskController taskController = null;
@@ -58,13 +58,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Response<bool> descValidRes = isValidDesc(description);
             if(descValidRes.ErrorOccured)
                 return Response<Task>.FromError(descValidRes.ErrorMessage);
+            if (dueDate < DateTime.Now)
+                return Response<Task>.FromError("due Date must be later then now");
             taskNumber += 1;
             return Response<Task>.FromValue(new Task(taskNumber, dueDate, title, description));
         }
 
         public Response UpdateTaskDueDate(Task task, DateTime NewDueDate)
         {
-            if (NewDueDate < new DateTime())
+            if (NewDueDate < DateTime.Now)
                 return new Response("unvalid date - already passed");
             return task.UpdateTaskDueDate(NewDueDate);
         }
