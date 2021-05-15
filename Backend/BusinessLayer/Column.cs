@@ -9,16 +9,27 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
     class Column
     {
         private Dictionary<int, Task> tasks;
+        public List<Task> Tasks
+        {
+            get => tasks.Values.ToList();
+        }
+        //private ColumnDTO dto;
         private int maxTasks;
         public int MaxTasks
         {
             get => maxTasks;
-            set => maxTasks = value;
+            set
+            {
+                //if (persisted)
+                //    dto.MaxTasks = value;
+                maxTasks = value;
+            }
         }
 
         public Column()
         {
             tasks = new Dictionary<int, Task>();
+            MaxTasks = -1;
         }
 
         public Task addTask(DateTime dueDate, string title, string description, string assignee)
@@ -53,5 +64,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 throw new ArgumentException($"Task ID: {taskId} not found");
             return updateFunc(task);
         }
+
     }
 }

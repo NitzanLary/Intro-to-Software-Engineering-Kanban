@@ -89,9 +89,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Task(DateTime dueDate, string title, string description, string assignee)
         {
-            id = indexer;
-            indexer++;
-
+            id = indexer++;
             DueDate = dueDate;
             Title = title;
             Description = description;
