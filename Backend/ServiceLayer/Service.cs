@@ -100,6 +100,22 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return new Response();
         }
 
+        private Response emailExist(string email)
+        {
+            return userController.containsEmail(email);
+        }
+
+        /// <summary>        
+        /// Checks if the "creatorEmail" is the creator of the board name
+        /// </summary>
+        /// <param name="creatorEmail">The email of the creator user</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        private Response isCreator(string creatorEmail, string boardName)
+        {
+            return boardController.isCreator(creatorEmail, boardName);
+        }
+
         /// <summary>
         /// Limit the number of tasks in a specific column
         /// </summary>
@@ -113,6 +129,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             log.Info($"User {userEmail} is trying to LimitColumn in board {boardName}, column {columnOrdinal} with limit: {limit}");
             Response r = IsLoggedIn(userEmail);
+            if (r.ErrorOccured)
+                return r;
+            r = emailExist(creatorEmail);
+            if (r.ErrorOccured)
+                return r;
+            r = isCreator(creatorEmail, boardName);
             if (r.ErrorOccured)
                 return r;
             log.Debug($"limit column successfully to {limit}"); // Todo: this is not true yet
@@ -133,6 +155,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response r = IsLoggedIn(userEmail);
             if (r.ErrorOccured)
                 return Response<int>.FromError(r.ErrorMessage);
+            r = emailExist(creatorEmail);
+            if (r.ErrorOccured)
+                return Response<int>.FromError(r.ErrorMessage);
+            r = isCreator(creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return Response<int>.FromError(r.ErrorMessage);
             return boardController.GetColumnLimit(userEmail, creatorEmail, boardName, columnOrdinal); // TODO this func evry one can do
         }
 
@@ -148,6 +176,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             log.Info($"User {userEmail} is trying to GetColumnName in board {boardName}, column {columnOrdinal}");
             Response r = IsLoggedIn(userEmail);
+            if (r.ErrorOccured)
+                return Response<string>.FromError(r.ErrorMessage);
+            r = emailExist(creatorEmail);
+            if (r.ErrorOccured)
+                return Response<string>.FromError(r.ErrorMessage);
+            r = isCreator(creatorEmail, boardName);
             if (r.ErrorOccured)
                 return Response<string>.FromError(r.ErrorMessage);
             return boardController.GetColumnName(userEmail, creatorEmail, boardName, columnOrdinal);// TODO every one cad do this
@@ -167,6 +201,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             log.Info($"User {userEmail} is trying to AddTask: {boardName}, {title}, {description}, {dueDate}");
             Response r = IsLoggedIn(userEmail);
+            if (r.ErrorOccured)
+                return Response<Task>.FromError(r.ErrorMessage);
+            r = emailExist(creatorEmail);
+            if (r.ErrorOccured)
+                return Response<Task>.FromError(r.ErrorMessage);
+            r = isCreator(creatorEmail, boardName);
             if (r.ErrorOccured)
                 return Response<Task>.FromError(r.ErrorMessage);
 
@@ -195,6 +235,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response r = IsLoggedIn(userEmail);
             if (r.ErrorOccured)
                 return r;
+            r = emailExist(creatorEmail);
+            if (r.ErrorOccured)
+                return r ;
+            r = isCreator(creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return r ;
             return boardController.UpdateTaskDueDate(userEmail, creatorEmail, boardName, columnOrdinal, taskId, dueDate); // TODO CHECK: only assginee can update
         }
         /// <summary>
@@ -211,6 +257,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             log.Info($"User {userEmail} is trying to UpdateTaskTitle");
             Response r = IsLoggedIn(userEmail);
+            if (r.ErrorOccured)
+                return r;
+            r = emailExist(creatorEmail);
+            if (r.ErrorOccured)
+                return r;
+            r = isCreator(creatorEmail, boardName);
             if (r.ErrorOccured)
                 return r;
             return boardController.UpdateTaskTitle(userEmail, creatorEmail, boardName, columnOrdinal, taskId, title);  // TODO CHECK: only assginee can update
@@ -231,6 +283,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response r = IsLoggedIn(userEmail);
             if (r.ErrorOccured)
                 return r;
+            r = emailExist(creatorEmail);
+            if (r.ErrorOccured)
+                return r;
+            r = isCreator(creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return r;
             return boardController.UpdateTaskDescription(userEmail, creatorEmail, boardName, columnOrdinal, taskId, description);  // TODO CHECK: only assginee can update
         }
         /// <summary>
@@ -248,7 +306,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response r = IsLoggedIn(userEmail);
             if (r.ErrorOccured)
                 return r;
-            return boardController.AdvanceTask(userEmail, creatorEmail, boardName, columnOrdinal, taskId); // TODO CHECK: only assginee can update
+            r = emailExist(creatorEmail);
+            if (r.ErrorOccured)
+                return r;
+            r = isCreator(creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return r;
+            return boardController.AdvanceTask(userEmail, creatorEmail, boardName, columnOrdinal, taskId); // TODO CHECK: only assginee can advence
         }
         /// <summary>
         /// Returns a column given it's name
@@ -262,6 +326,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             log.Info($"User {userEmail} is trying to GetColumn: {boardName}, {columnOrdinal}");
             Response r = IsLoggedIn(userEmail);
+            if (r.ErrorOccured)
+                return Response<IList<Task>>.FromError(r.ErrorMessage);
+            r = emailExist(creatorEmail);
+            if (r.ErrorOccured)
+                return Response<IList<Task>>.FromError(r.ErrorMessage);
+            r = isCreator(creatorEmail, boardName);
             if (r.ErrorOccured)
                 return Response<IList<Task>>.FromError(r.ErrorMessage);
             Response<IList<BusinessLayer.Task>> returned = boardController.GetColumn(userEmail, creatorEmail, boardName,columnOrdinal); // TODO evryone of the members can apply
@@ -301,6 +371,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response RemoveBoard(string userEmail, string creatorEmail, string boardName)
         {
             Response r = IsLoggedIn(userEmail);
+            if (r.ErrorOccured)
+                return r;
+            r = emailExist(creatorEmail);
+            if (r.ErrorOccured)
+                return r;
+            r = isCreator(creatorEmail, boardName);
             if (r.ErrorOccured)
                 return r;
             return boardController.RemoveBoard(userEmail, creatorEmail, boardName);// TODO: ONLY creator can removed
@@ -361,6 +437,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response JoinBoard(string userEmail, string creatorEmail, string boardName)
         {
+            Response r = IsLoggedIn(userEmail);
+            if (r.ErrorOccured)
+                return r;
+            r = emailExist(creatorEmail);
+            if (r.ErrorOccured)
+                return r;
+            r = isCreator(creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return r;
             throw new NotImplementedException();
         }
 
@@ -381,6 +466,15 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AssignTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string emailAssignee)
         {
+            Response r = IsLoggedIn(userEmail);
+            if (r.ErrorOccured)
+                return r;
+            r = emailExist(creatorEmail);
+            if (r.ErrorOccured)
+                return r;
+            r = isCreator(creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return r;
             throw new NotImplementedException();
         }
 
@@ -391,6 +485,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the board, instead the response should contain a error message in case of an error</returns>
         public Response<IList<String>> GetBoardNames(string userEmail)
         {
+            Response r = IsLoggedIn(userEmail);
+            if (r.ErrorOccured)
+                return Response<IList<String>>.FromError(r.ErrorMessage);
             throw new NotImplementedException();
         }
 

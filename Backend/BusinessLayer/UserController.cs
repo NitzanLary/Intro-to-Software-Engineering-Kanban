@@ -104,6 +104,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return users[email].logout();
         }
 
+        internal Response containsEmail(string email)
+        {
+            if (email == null)
+                return new Response("Null is not optional");
+            if (!users.ContainsKey(email))
+            {
+                string s = $"User {email} not found";
+                log.Warn(s);
+                return new Response(s);
+            }
+            return new Response();
+        }
+
         public Response<User> getUserByEmail(string email)
         {
             if (email == null)
