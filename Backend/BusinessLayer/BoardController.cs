@@ -12,10 +12,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
     class BoardController
     {
 
-                        // email            boardName 
+                        // email creator            boardName 
         private Dictionary<string, Dictionary<string, Board>> boards;
+        //                 email members
+        private Dictionary<string, List<Board>> members;
 
-        private TaskController taskController;
 
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -23,22 +24,23 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public BoardController()
         {
             boards = new Dictionary<string, Dictionary<string, Board>>();
-             taskController = new TaskController();
+            members = new Dictionary<string, List<Board>>();
         }
 
         /// <summary>
         /// Check if user has a board in a given name, also inserting a new email address to all boards collections in case its missing
         /// </summary>
-        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="userEmail">The email address of the user, must be logged in</param>
+        /// <param name="creatorEmail">The email address of the board's creator user</param>
         /// <param name="boardName">The name of the board</param>
         /// <returns>A response object. The response should contain a error message in case of missing board for user or invalid argments</returns>
-        
+
         // TODO: check if creatorEmail is valid too
         private Response AllBoardsContainsBoardByEmail(string userEmail, string creatorEmail, string boardName) 
         {
-            if (email == null || boardName == null || email.Length == 0 || boardName.Length == 0)
+            if (userEmail == null || creatorEmail == null || boardName == null || userEmail.Length == 0 || creatorEmail.Length == 0 || boardName.Length == 0)
                 return new Response("null value given");
-            if (!boards.ContainsKey(email))
+            if (!boards.ContainsKey(email)) // TODO: ask Asaf why this is neccessary 
                 boards.Add(email, new Dictionary<string, Board>());
             if (!boards[email].ContainsKey(boardName))
                 //return Response<bool>.FromError($"user {email} doesn't possess board name {boardName}");
