@@ -9,13 +9,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 {
     class Task
     {
+        private static int indexer = 0;
+        readonly private int MAX_TITLE = 50;
+        readonly private int MAX_DESC = 300;
+        private bool persisted;
+
         private readonly int id;
         public int ID
         {
             get => id;
         }
 
-        private DateTime creationTime;
+        private readonly DateTime creationTime;
         public DateTime CreationTime
         {
             get => creationTime;
@@ -24,49 +29,94 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public DateTime DueDate
         {
             get => dueDate;
-            set => dueDate = value;
+            set
+            {
+                if (value < DateTime.Now)
+                    throw new ArgumentException("Invalid Date");
+                //if (persisted)
+                //    dto.DueDate = value;
+                dueDate = value;
+            }
         }
         private string title;
         public string Title
         {
             get => title;
-            set => title = value;
+            set
+            {
+                if (value == null || value.Length > MAX_TITLE || value.Length == 0)
+                    throw new ArgumentException($"Title Must Be Between 1 To {MAX_TITLE} Characters");
+                //if (persisted)
+                //    dto.Title = value;
+                title = value;
+            }
         }
         private string description;
         public string Description
         {
             get => description;
-            set => description = value;
-        } 
-
-        public Task(int ID, DateTime dueDate, string title, string description)
-        {
-            this.id = ID;
-            this.dueDate = dueDate;
-            this.title = title;
-            this.description = description;
-            this.creationTime = DateTime.Now;
+            set
+            {
+                if (value == null || value.Length > MAX_DESC)
+                    throw new ArgumentException($"Description Must Be Between 1 To {MAX_DESC} Characters");
+                //if (persisted)
+                //    dto.Description = value;
+                description = value;
+            }
         }
 
-        
-
-        public Response UpdateTaskDueDate(DateTime newDueDate)
+        private string assignee;
+        public string Assignee
         {
-            DueDate = newDueDate;
-            return new Response();
+            get => assignee;
+            set
+            {
+                //if (persisted)
+                //    dto.Assignee = value;
+                assignee = value;
+            }
+            
         }
 
-        public Response UpdateTaskTitle(string newTitle)
+        //private TaskDTO dto;
+        //private TaskDTO DTO
+        //{
+        //    set
+        //    {
+        //        dto = value;
+        //    }
+        //}
+
+        public Task(DateTime dueDate, string title, string description, string assignee)
         {
-            Title = newTitle;
-            return new Response();
+            id = indexer;
+            indexer++;
+
+            DueDate = dueDate;
+            Title = title;
+            Description = description;
+            Assignee = assignee;
+            persisted = false;
+            // TODO: creating DTO object?
         }
 
-        public Response UpdateTaskDescription(string newDescription)
-        {
-            Description = newDescription;
-            return new Response();
-        }
+        //public Response UpdateTaskDueDate(DateTime newDueDate)
+        //{
+        //    DueDate = newDueDate;
+        //    return new Response();
+        //}
+
+        //public Response UpdateTaskTitle(string newTitle)
+        //{
+        //    Title = newTitle;
+        //    return new Response();
+        //}
+
+        //public Response UpdateTaskDescription(string newDescription)
+        //{
+        //    Description = newDescription;
+        //    return new Response();
+        //}
 
     }
 }
