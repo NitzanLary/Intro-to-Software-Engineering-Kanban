@@ -160,5 +160,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return flag;
         }
 
+        internal Response<Task> AddTask(DateTime dueDate, string title, string description, string userEmail)
+        {
+            Task t;
+            try
+            {
+                t = new Task(dueDate, title, description, userEmail);
+                // TODO ADD to column this task
+            }
+            catch(ArgumentException a)
+            {
+                return Response<Task>.FromError(a.Message);
+            }
+            return Response<Task>.FromValue(t);
+        }
     }
 }

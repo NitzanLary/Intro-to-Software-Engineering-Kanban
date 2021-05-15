@@ -208,7 +208,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 return Response<Task>.FromError(rT.ErrorMessage);
             BusinessLayer.Task task = rT.Value;
             log.Debug($"task {title} added successfully to board {boardName}");
-            return Response<Task>.FromValue(new Task(task.ID, task.CreationTime, task.Title, task.Description, task.DueDate)); // TODO change to the new Task they gave us
+            return Response<Task>.FromValue(new Task(task.ID, task.CreationTime, task.Title, task.Description, task.DueDate, task.Assignee)); // TODO change to the new Task they gave us
         }
 
 
@@ -380,7 +380,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             IList<Task> ret = new List<Task>();
             foreach(BusinessLayer.Task t in lst)
             {
-                Task toAdd = new Task(t.ID, t.CreationTime, t.Title, t.Description, t.DueDate);
+                Task toAdd = new Task(t.ID, t.CreationTime, t.Title, t.Description, t.DueDate, t.Assignee);
                 ret.Add(toAdd);
             }
             return Response<IList<Task>>.FromValue(ret);
