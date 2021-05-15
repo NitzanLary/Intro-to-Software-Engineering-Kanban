@@ -24,7 +24,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public BoardController()
         {
             boards = new Dictionary<string, Dictionary<string, Board>>();
-            members = new Dictionary<string, List<Board>>();
+            members = new Dictionary<string, List<string>>();
         }
 
         /// <summary>        
@@ -40,6 +40,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return new Response("There is no board that is named: " + boardName + " that is related to this email: " + creatorEmail);
             }
             return new Response();
+        }
+
+        internal void addNewUserToMembers(string userEmail)
+        {
+            members.Add(userEmail, new List<string>());
         }
 
 
@@ -327,6 +332,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             if (boards[email].ContainsKey(name))
                 return new Response($"user {email} already has board named {name}");
             boards[email].Add(name, new Board(name));
+            members[email].Add(name);
             return new Response();
         }
         /// <summary>
@@ -390,6 +396,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             {
                 return new Response("The user is already joined to this board");
             }
+            members[userEmail].Add(boardName);
+            return new Response();
         }
 
         /// <summary>
@@ -402,6 +410,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <param name="taskId">The task to be updated identified task ID</param>        
         /// <param name="emailAssignee">Email of the user to assign to task to</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        /// 
+
+        // TODO throw nitzan: onlt task assignee can use this
         public Response AssignTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string emailAssignee)
         {
             throw new NotImplementedException();
@@ -412,9 +423,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// </summary>
         /// <param name="userEmail">The email of the user. Must be logged-in.</param>
         /// <returns>A response object with a value set to the board, instead the response should contain a error message in case of an error</returns>
+        
         public Response<IList<String>> GetBoardNames(string userEmail)
         {
-            throw new NotImplementedException();
+            return Response<IList<String>>.FromValue(members[userEmail]);
         }
     }
 }
