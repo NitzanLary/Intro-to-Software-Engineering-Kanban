@@ -22,6 +22,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             {
                 //if (persisted)
                 //    dto.MaxTasks = value;
+                if (value < MaxTasks)
+                    throw new ArgumentException("There are already more tasks in this column from the limit you put");
+
                 maxTasks = value;
             }
         }
@@ -35,7 +38,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public Task addTask(DateTime dueDate, string title, string description, string assignee)
         {
             if (tasks.Count >= MaxTasks)
-                throw new ArgumentOutOfRangeException($"Max number of tasks allowed in this coloumn is {MaxTasks}");
+                throw new ArgumentException($"Max number of tasks allowed in this coloumn is {MaxTasks}");
             Task task = new Task(dueDate, title, description, assignee);
             tasks.Add(task.ID, task);
             return task;
