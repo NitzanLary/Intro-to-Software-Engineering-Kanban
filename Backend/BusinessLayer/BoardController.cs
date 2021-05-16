@@ -17,6 +17,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         //             email members,  board name
         private Dictionary<string, List<Board>> members;
 
+        private readonly int DONE_COLUMN;
+
 
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -88,7 +90,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             //    return validArguments;
             if (userEmail != creatorEmail)
                 return new Response("Only creator can limit columns");
-            if (columnOrdinal > 2)
+            if (columnOrdinal > DONE_COLUMN)
                 return new Response("column ordinal dose not exist. max 2");
             return boards[userEmail][boardName].limitColumn(columnOrdinal, limit);
         }
@@ -106,8 +108,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             //    return Response<int>.FromError(validArguments.ErrorMessage);
             if (!members[userEmail].Contains(boards[creatorEmail][boardName]))
                 return Response<int>.FromError("The user is not a board member");
-            if (columnOrdinal > 2)
-                return Response<int>.FromError("column ordinal dose not exist. max 2");
+            if (columnOrdinal > DONE_COLUMN)
+                return Response<int>.FromError("column ordinal dose not exist. max " + DONE_COLUMN);
 
             return boards[userEmail][boardName].getColumnLimit(columnOrdinal);
         }
@@ -134,8 +136,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 log.Debug("The user is not a board member");
                 return Response<string>.FromError("The user is not a board member");
             }
-            if (columnOrdinal > 2)
-                return Response<string>.FromError("column ordinal dose not exist. max 2");
+            if (columnOrdinal > DONE_COLUMN)
+                return Response<string>.FromError("column ordinal dose not exist. max " + DONE_COLUMN);
             return boards[userEmail][boardName].getColumnName(columnOrdinal);
         }
         /// <summary>
@@ -178,40 +180,44 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <returns>A response with the value of the task, The response should contain a error message in case of an error</returns>
 
-        private Response memberAssignee(string email, string creatorEmail, string boardName, int columnOrdinal, int taskId)
+        private Response<Task> TaskGetter(string email, string creatorEmail, string boardName, int columnOrdinal, int taskId)
         {
             if (!members[email].Contains(boards[creatorEmail][boardName]))
             {
                 log.Debug("The user is not a board member");
                 return Response<Task>.FromError("The user is not a board member");
             }
+            if (columnOrdinal > DONE_COLUMN || columnOrdinal < 0)
+                return Response<Task>.FromError("there is no such column number");
+
             try
             {
-                Task t = boards[creatorEmail][boardName].Columns[columnOrdinal].getTask(taskId);
+                Task t = boards[creatorEmail][boardName].Columns[columnOrdinal].GetTask(taskId);
+                return Response<Task>.FromValue(t);
             }
             catch(ArgumentException e)
             {
-                return new Response(e.Message);
+                return Response<Task>.FromError($"coldn't find task id {taskId} in email {email} | board {boardName} | column {columnOrdinal}");
             }
+            
             
         }
         
 
-        //TODO: change to Column - fix throw nitzan
-        private Response<Task> TaskGetter(string email, string creatorEmail, string boardName, int columnOrdinal, int taskId) // todo - update in the diagram
-        {
-            Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
-            if (validArguments.ErrorOccured)
-                return Response<Task>.FromError(validArguments.ErrorMessage);
-            Board b = boards[email][boardName];
-            Response<Dictionary<int, Task>> res = b.getColumn(columnOrdinal);
-            if (res.ErrorOccured)
-                return Response<Task>.FromError(res.ErrorMessage);
-            Dictionary<int, Task> col = res.Value;
-            if (!col.ContainsKey(taskId))
-                return Response<Task>.FromError($"coldn't find task id {taskId} in email {email} | board {boardName} | column {columnOrdinal}");
-            return Response<Task>.FromValue(col[taskId]);
-        }
+        //private Response<Task> TaskGetter(string email, string creatorEmail, string boardName, int columnOrdinal, int taskId) // todo - update in the diagram
+        //{
+        //    Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
+        //    if (validArguments.ErrorOccured)
+        //        return Response<Task>.FromError(validArguments.ErrorMessage);
+        //    Board b = boards[email][boardName];
+        //    Response<Dictionary<int, Task>> res = b.getColumn(columnOrdinal);
+        //    if (res.ErrorOccured)
+        //        return Response<Task>.FromError(res.ErrorMessage);
+        //    Dictionary<int, Task> col = res.Value;
+        //    if (!col.ContainsKey(taskId))
+        //        return Response<Task>.FromError($"coldn't find task id {taskId} in email {email} | board {boardName} | column {columnOrdinal}");
+        //    return Response<Task>.FromValue(col[taskId]);
+        //}
         /// <summary>
         /// Update the due date of a task
         /// </summary>
@@ -226,15 +232,25 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public Response UpdateTaskDueDate(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, DateTime dueDate) 
         {
             // TODO: check only assignee
-            Response<Task> res = TaskGetter(userEmail, boardName, columnOrdinal, taskId);
+            Response<Task> res = TaskGetter(userEmail, creatorEmail, boardName, columnOrdinal, taskId);
             if (res.ErrorOccured)
             {
                 log.Error(res.ErrorMessage);
                 return res;
             }
-            if (columnOrdinal > 1)
+            if (userEmail != res.Value.Assignee)
+                return new Response("only the assignee of the task can update");
+            if (columnOrdinal == DONE_COLUMN)
                 return new Response("task that is done, cnnot be change");
-            return taskController.UpdateTaskDueDate(res.Value, dueDate);
+            try
+            {
+                res.Value.DueDate = dueDate;
+            }
+            catch(ArgumentException e)
+            {
+                return new Response(e.Message);
+            }
+            return new Response();
         }
         /// <summary>
         /// Update task title
@@ -253,13 +269,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
             if (title == null || title.Length == 0)
                 return Response<Task>.FromError("empty string given");
-            Response<Task> res = TaskGetter(email, boardName, columnOrdinal, taskId);
+            Response<Task> res = TaskGetter(userEmail, creatorEmail, boardName, columnOrdinal, taskId);
             if (res.ErrorOccured)
             {
                 log.Debug(res.ErrorMessage);
                 return res;
             }
-            if (columnOrdinal > 1)
+            if (columnOrdinal == DONE_COLUMN)
                 return new Response("task that is done, cnnot be change");
             return taskController.UpdateTaskTitle(res.Value, title);
         }
@@ -280,7 +296,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
             if (description == null || description.Length == 0)
                 return Response<Task>.FromError("empty string given");
-            Response<Task> res = TaskGetter(email, boardName, columnOrdinal, taskId);
+            Response<Task> res = TaskGetter(userEmail, creatorEmail, boardName, columnOrdinal, taskId);
             if (res.ErrorOccured)
             {
                 log.Debug(res.ErrorMessage);

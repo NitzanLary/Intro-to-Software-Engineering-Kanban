@@ -133,13 +133,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return Response<int>.FromValue(Columns[columnOrdinal].MaxTasks);
         }
 
-        public Response<Dictionary<int, Task>> getColumn(int columnOrdinal)
-        {
-            if (columnOrdinal > 2 || columnOrdinal < 0)
-                return Response<Dictionary<int, Task>>.FromError("there is no such column number");
-            return Response<Dictionary<int, Task>>.FromValue(Columns[columnOrdinal]);
+        //public Response<Dictionary<int, Task>> getColumn(int columnOrdinal)
+        //{
+        //    if (columnOrdinal > 2 || columnOrdinal < 0)
+        //        return Response<Dictionary<int, Task>>.FromError("there is no such column number");
+        //    return Response<Dictionary<int, Task>>.FromValue(Columns[columnOrdinal]);
 
-        }
+        //}
 
         public Response<string> getColumnName(int columnOrdinal)
         {
