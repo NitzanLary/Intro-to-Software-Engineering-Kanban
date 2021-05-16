@@ -107,26 +107,30 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             if (columnOrdinal > 2 || columnOrdinal < 0)
                 return new Response("there is no such column number");
-            if (Columns[columnOrdinal].Count > limit)
-                return new Response("There are already more tasks in this column from the limit you put");
-            if (columnOrdinal == 0)
-                MaxBacklogs = limit;
-            if (columnOrdinal == 1)
-                MaxInProgress = limit;
-            if (columnOrdinal == 2)
-                MaxDone = limit;
+            try
+            {
+                Columns[columnOrdinal].MaxTasks = limit;
+            }
+            catch(ArgumentException e)
+            {
+                return new Response(e.Message);
+            }
+            
+                    //return new Response();
+            //if (columnOrdinal == 0)
+            //    MaxBacklogs = limit;
+            //if (columnOrdinal == 1)
+            //    MaxInProgress = limit;
+            //if (columnOrdinal == 2)
+            //    MaxDone = limit;
             return new Response();
         }
 
         public Response<int> getColumnLimit(int columnOrdinal)
         {
-            if (columnOrdinal == 0)
-                return Response<int>.FromValue(MaxBacklogs);
-            if (columnOrdinal == 1)
-                return Response<int>.FromValue(MaxInProgress);
-            if (columnOrdinal == 2)
-                return Response<int>.FromValue(MaxDone);
-            return Response<int>.FromError("there is no such column number");
+            if (columnOrdinal > 2 || columnOrdinal < 0)
+                return Response<int>.FromError("there is no such column number");
+            return Response<int>.FromValue(Columns[columnOrdinal].MaxTasks);
         }
 
         public Response<Dictionary<int, Task>> getColumn(int columnOrdinal)
@@ -137,7 +141,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         }
 
-        internal Response<string> getColumnName(int columnOrdinal)
+        public Response<string> getColumnName(int columnOrdinal)
         {
             if (columnOrdinal == 0)
                 return Response<string>.FromValue("backlog");
@@ -165,8 +169,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Task t;
             try
             {
-                t = new Task(dueDate, title, description, userEmail);
-                // TODO ADD to column this task
+                t = Columns[0].addTask(dueDate, title, description, userEmail);
             }
             catch(ArgumentException a)
             {

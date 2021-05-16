@@ -178,8 +178,27 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <returns>A response with the value of the task, The response should contain a error message in case of an error</returns>
 
+        private Response memberAssignee(string email, string creatorEmail, string boardName, int columnOrdinal, int taskId)
+        {
+            if (!members[email].Contains(boards[creatorEmail][boardName]))
+            {
+                log.Debug("The user is not a board member");
+                return Response<Task>.FromError("The user is not a board member");
+            }
+            try
+            {
+                Task t = boards[creatorEmail][boardName].Columns[columnOrdinal].getTask(taskId);
+            }
+            catch(ArgumentException e)
+            {
+                return new Response(e.Message);
+            }
+            
+        }
+        
+
         //TODO: change to Column - fix throw nitzan
-        private Response<Task> TaskGetter(string email, string boardName, int columnOrdinal, int taskId) // todo - update in the diagram
+        private Response<Task> TaskGetter(string email, string creatorEmail, string boardName, int columnOrdinal, int taskId) // todo - update in the diagram
         {
             Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
             if (validArguments.ErrorOccured)
