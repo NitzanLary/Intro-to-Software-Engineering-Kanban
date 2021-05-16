@@ -68,5 +68,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return updateFunc(task);
         }
 
+        public Task GetTask(int taskId)
+        {
+            Task task;
+            if (!tasks.TryGetValue(taskId, out task))
+                throw new ArgumentException($"Task ID: {taskId} not found");
+            return task;
+        }
+
     }
 }
