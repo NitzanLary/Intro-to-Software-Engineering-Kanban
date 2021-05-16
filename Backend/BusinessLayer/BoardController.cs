@@ -42,6 +42,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return new Response();
         }
 
+        /// <summary>        
+        /// add new user that registered to the to the members with empty list
+        /// </summary>
+        /// <param name="userEmail">The email of the user</param>
         internal void addNewUserToMembers(string userEmail)
         {
             members.Add(userEmail, new List<Board>());
@@ -86,7 +90,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return new Response("Only creator can limit columns");
             if (columnOrdinal > 2)
                 return new Response("column ordinal dose not exist. max 2");
-            // TODO: creatorEmail is userEmail  
             return boards[userEmail][boardName].limitColumn(columnOrdinal, limit);
         }
         /// <summary>

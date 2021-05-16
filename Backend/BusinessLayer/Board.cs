@@ -34,11 +34,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             set => maxDone = value;
         }
 
-        private List<Dictionary<int, Task>> columns; // backlogs , inProgress, done (generic updatable)
-        public List<Dictionary<int, Task>> Columns
+        private List<Column> columns; // backlogs , inProgress, done (generic updatable)
+        public List<Column> Columns
         {
             get => columns;
-            set => columns = value;
+            //set => columns = value; 
         }
 
         
