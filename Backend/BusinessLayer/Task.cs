@@ -98,23 +98,5 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             // TODO: creating DTO object?
         }
 
-        //public Response UpdateTaskDueDate(DateTime newDueDate)
-        //{
-        //    DueDate = newDueDate;
-        //    return new Response();
-        //}
-
-        //public Response UpdateTaskTitle(string newTitle)
-        //{
-        //    Title = newTitle;
-        //    return new Response();
-        //}
-
-        //public Response UpdateTaskDescription(string newDescription)
-        //{
-        //    Description = newDescription;
-        //    return new Response();
-        //}
-
     }
 }
