@@ -229,7 +229,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
 
         // TODO throw nitzan: onlt task assignee can use this
-        public Response UpdateTaskDueDate(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, DateTime dueDate) 
+        public Response UpdateTask<T>(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, Func<Task, T> updateFunc) 
         {
             // TODO: check only assignee
             Response<Task> res = TaskGetter(userEmail, creatorEmail, boardName, columnOrdinal, taskId);
@@ -244,13 +244,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return new Response("task that is done, cnnot be change");
             try
             {
-                res.Value.DueDate = dueDate;
+                updateFunc(res.Value);
             }
             catch(ArgumentException e)
             {
                 return new Response(e.Message);
             }
             return new Response();
+        }
+
+        public Response UpdateTaskDueDate(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
+        {
+            return UpdateTask<DateTime>(userEmail, creatorEmail, boardName, columnOrdinal, taskId, (task) => task.DueDate = dueDate);
         }
         /// <summary>
         /// Update task title
@@ -265,19 +270,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         // TODO throw nitzan: onlt task assignee can use this
         public Response UpdateTaskTitle(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string title) 
         {
-            // TODO: check only assignee
-
-            if (title == null || title.Length == 0)
-                return Response<Task>.FromError("empty string given");
-            Response<Task> res = TaskGetter(userEmail, creatorEmail, boardName, columnOrdinal, taskId);
-            if (res.ErrorOccured)
-            {
-                log.Debug(res.ErrorMessage);
-                return res;
-            }
-            if (columnOrdinal == DONE_COLUMN)
-                return new Response("task that is done, cnnot be change");
-            return taskController.UpdateTaskTitle(res.Value, title);
+            return UpdateTask<string>(userEmail, creatorEmail, boardName, columnOrdinal, taskId, (task) => task.Title = title);
         }
         /// <summary>
         /// Update the description of a task
@@ -292,20 +285,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         // TODO throw nitzan: onlt task assignee can use this
         public Response UpdateTaskDescription(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string description) 
         {
-            // TODO: check only assignee
-
-            if (description == null || description.Length == 0)
-                return Response<Task>.FromError("empty string given");
-            Response<Task> res = TaskGetter(userEmail, creatorEmail, boardName, columnOrdinal, taskId);
-            if (res.ErrorOccured)
-            {
-                log.Debug(res.ErrorMessage);
-                return res;
-            }
-            if (columnOrdinal > 1)
-                return new Response("task that is done, cnnot be change");
-
-            return taskController.UpdateTaskDescription(res.Value, description);
+            return UpdateTask<string>(userEmail, creatorEmail, boardName, columnOrdinal, taskId, (task) => task.Description = description);
         }
         /// <summary>
         /// Advance a task to the next column

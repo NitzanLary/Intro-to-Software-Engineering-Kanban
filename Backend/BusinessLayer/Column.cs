@@ -73,7 +73,5 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return updateFunc(task);
         }
 
-
-
     }
 }
