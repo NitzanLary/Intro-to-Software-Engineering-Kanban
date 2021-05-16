@@ -59,6 +59,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             update<string>(taskId, (task) => task.Description = desc);
         }
 
+        public Task GetTask(int taskId)
+        {
+            return update<Task>(taskId, (task) => task);
+        }
+
         // A generic funtion to update a task's property
         public T update<T>(int taskId, Func<Task,T> updateFunc)
         {
@@ -68,13 +73,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return updateFunc(task);
         }
 
-        public Task GetTask(int taskId)
-        {
-            Task task;
-            if (!tasks.TryGetValue(taskId, out task))
-                throw new ArgumentException($"Task ID: {taskId} not found");
-            return task;
-        }
+
 
     }
 }
