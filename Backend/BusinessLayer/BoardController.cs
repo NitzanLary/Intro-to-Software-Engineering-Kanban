@@ -299,16 +299,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         // TODO throw nitzan: onlt task assignee can use this
         public Response AdvanceTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId) 
         {
-            Response validArguments = AllBoardsContainsBoardByEmail(userEmail, boardName);
-            if (validArguments.ErrorOccured)
-            {
-                log.Debug(validArguments.ErrorMessage);
-                return Response<Task>.FromError(validArguments.ErrorMessage);
-            }
-            if (columnOrdinal > 2)
-                return Response<Task>.FromError("column ordinal dose not exist. max 2");
-            Board b = boards[userEmail][boardName];
-            return b.advanceTask(taskId, columnOrdinal);
+            Board b = boards[creatorEmail][boardName];
+            return UpdateTask<Response>(userEmail, creatorEmail, boardName, columnOrdinal, taskId, (task) => b.advanceTask(task));
         }
         /// <summary>
         /// Returns a column given it's name
