@@ -19,14 +19,44 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         private readonly int DONE_COLUMN;
 
-
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
 
         public BoardController()
         {
             boards = new Dictionary<string, Dictionary<string, Board>>();
             members = new Dictionary<string, List<Board>>();
+        }
+
+        /// <summary>        
+        /// Checks args validities.
+        /// </summary>
+        /// <param name="userEmail">The email of the user</param>
+        /// <param name="creatorEmail">The email of the creator user</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <returns>A response<T> object according tho the <c>apply</c> function. The response should contain a error message in case of an error</returns>
+        private Response CheckArgs(string userEmail, string creatorEmail, string boardName)
+        {
+            Response r = isCreator(creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return r;
+            return isMember(userEmail, creatorEmail, boardName);
+        }
+
+        /// <summary>        
+        /// Checks if 'userEmail' is a member in the board 
+        /// Pre condition: there is a board named <c>boardName</c> created by <c>creatorEmail</c>
+        /// </summary>
+        /// <param name="userEmail">The email of the user</param>
+        /// <param name="creatorEmail">The email of the creator user</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        private Response isMember(string userEmail, string creatorEmail, string boardName)
+        {
+            if (!members.ContainsKey(userEmail))
+                return new Response($"Could not find {userEmail}");
+            if (!members[userEmail].Contains(boards[creatorEmail][boardName]))
+                return new Response($"{userEmail} is not a member in this board");
+            return new Response();
         }
 
         /// <summary>        
@@ -37,10 +67,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         internal Response isCreator(string creatorEmail, string boardName)
         {
+            if (!boards.ContainsKey(creatorEmail))
+                return new Response($"{creatorEmail} has no boards");
+
             if (!boards[creatorEmail].ContainsKey(boardName))
-            {
                 return new Response("There is no board that is named: " + boardName + " that is related to this email: " + creatorEmail);
-            }
+            
             return new Response();
         }
 
@@ -55,27 +87,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
 
         /// <summary>
-        /// Check if user has a board in a given name, also inserting a new email address to all boards collections in case its missing
-        /// </summary>
-        /// <param name="userEmail">The email address of the user, must be logged in</param>
-        /// <param name="creatorEmail">The email address of the board's creator user</param>
-        /// <param name="boardName">The name of the board</param>
-        /// <returns>A response object. The response should contain a error message in case of missing board for user or invalid argments</returns>
-
-        // TODO: check if creatorEmail is valid too
-        //private Response AllBoardsContainsBoardByEmail(string userEmail, string creatorEmail, string boardName) 
-        //{
-        //    if (userEmail == null || creatorEmail == null || boardName == null || userEmail.Length == 0 || creatorEmail.Length == 0 || boardName.Length == 0)
-        //        return new Response("null value given");
-        //    if (!boards.ContainsKey(userEmail)) // TODO: ask Asaf why this is neccessary 
-        //        boards.Add(userEmail, new Dictionary<string, Board>());
-        //    if (!boards[userEmail].ContainsKey(boardName))
-        //        //return Response<bool>.FromError($"user {email} doesn't possess board name {boardName}");
-        //        return new Response($"user {email} doesn't possess board name {boardName}");
-        //    return new Response();
-        //}
-
-        /// <summary>
         /// Limit the number of tasks in a specific column
         /// </summary>
         /// <param name="email">The email address of the user, must be logged in</param>
@@ -85,15 +96,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response LimitColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int limit) 
         {
-            //Response validArguments = AllBoardsContainsBoardByEmail(userEmail, boardName);
-            //if (validArguments.ErrorOccured)
-            //    return validArguments;
+            Response r = CheckArgs(userEmail, creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return r;
             if (userEmail != creatorEmail)
-                return new Response("Only creator can limit columns");
+                return Response<Object>.FromError("Only creator can limit columns");
             if (columnOrdinal > DONE_COLUMN)
-                return new Response("column ordinal dose not exist. max 2");
-            return boards[userEmail][boardName].limitColumn(columnOrdinal, limit);
+                return Response<Object>.FromError("column ordinal dose not exist. max 2");
+            return Response<Object>.FromValue(boards[userEmail][boardName].LimitColumn(columnOrdinal, limit));
         }
+
         /// <summary>
         /// Get the limit of a specific column
         /// </summary>
@@ -103,18 +115,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <returns>The limit of the column.</returns>
         public Response<int> GetColumnLimit(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
         {
-            //Response validArguments = AllBoardsContainsBoardByEmail(userEmail, boardName);
-            //if (validArguments.ErrorOccured)
-            //    return Response<int>.FromError(validArguments.ErrorMessage);
+            Response r = CheckArgs(userEmail, creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return Response<int>.FromError(r.ErrorMessage);
             if (!members[userEmail].Contains(boards[creatorEmail][boardName]))
                 return Response<int>.FromError("The user is not a board member");
             if (columnOrdinal > DONE_COLUMN)
                 return Response<int>.FromError("column ordinal dose not exist. max " + DONE_COLUMN);
 
-            return boards[userEmail][boardName].getColumnLimit(columnOrdinal);
+            return boards[userEmail][boardName].GetColumnLimit(columnOrdinal);
         }
-
-
 
         /// <summary>
         /// Get the name of a specific column
@@ -125,12 +135,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <returns>The name of the column.</returns>
         public Response<string> GetColumnName(string userEmail, string creatorEmail, string boardName, int columnOrdinal) 
         {
-            //Response validArguments = AllBoardsContainsBoardByEmail(userEmail, boardName);
-            //if (validArguments.ErrorOccured)
-            //{
-            //    log.Debug(validArguments.ErrorMessage);
-            //    return Response<string>.FromError(validArguments.ErrorMessage);
-            //}
+            Response r = CheckArgs(userEmail, creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return Response<string>.FromError(r.ErrorMessage);
             if (!members[userEmail].Contains(boards[creatorEmail][boardName]))
             {
                 log.Debug("The user is not a board member");
@@ -138,8 +145,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             }
             if (columnOrdinal > DONE_COLUMN)
                 return Response<string>.FromError("column ordinal dose not exist. max " + DONE_COLUMN);
-            return boards[userEmail][boardName].getColumnName(columnOrdinal);
+            return boards[userEmail][boardName].GetColumnName(columnOrdinal);
         }
+
         /// <summary>
         /// Add a new task.
         /// </summary>
@@ -149,16 +157,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <param name="description">Description of the new task</param>
         /// <param name="dueDate">The due date if the new task</param>
         /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
-        
         public Response<Task> AddTask(string userEmail, string creatorEmail, string boardName, string title, string description, DateTime dueDate)
         {
-            if (title == null || title.Length == 0) // || description == null
-                return Response<Task>.FromError("empty string given");
-            if (!members[userEmail].Contains(boards[creatorEmail][boardName]))
-            {
-                log.Debug("The user is not a board member");
-                return Response<Task>.FromError("The user is not a board member");
-            }
+            Response r = CheckArgs(userEmail, creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return Response<Task>.FromError(r.ErrorMessage);
             Board b = boards[creatorEmail][boardName];
             Response<Task> task = b.AddTask(dueDate, title, description, userEmail);
             if (!task.ErrorOccured)
@@ -172,24 +175,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         }
 
         /// <summary>
-        /// Returns a task from by id given a specific column and board name.
+        /// Returns a task by id from a given specific column and a board name.
         /// </summary>
         /// <param name="email">Email of user. Must be logged in</param>
         /// <param name="boardName">The name of the board</param>
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <returns>A response with the value of the task, The response should contain a error message in case of an error</returns>
-
-        private Response<Task> TaskGetter(string email, string creatorEmail, string boardName, int columnOrdinal, int taskId)
+        private Response<Task> TaskGetter(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId)
         {
-            if (!members[email].Contains(boards[creatorEmail][boardName]))
-            {
-                log.Debug("The user is not a board member");
-                return Response<Task>.FromError("The user is not a board member");
-            }
+            Response r = CheckArgs(userEmail, creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return Response<Task>.FromError(r.ErrorMessage);
             if (columnOrdinal > DONE_COLUMN || columnOrdinal < 0)
                 return Response<Task>.FromError("there is no such column number");
-
             try
             {
                 Task t = boards[creatorEmail][boardName].Columns[columnOrdinal].GetTask(taskId);
@@ -197,27 +196,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             }
             catch(ArgumentException e)
             {
-                return Response<Task>.FromError($"coldn't find task id {taskId} in email {email} | board {boardName} | column {columnOrdinal}");
+                return Response<Task>.FromError($"coldn't find task id {taskId} in email {userEmail} | board {boardName} | column {columnOrdinal}");
             }
-            
             
         }
         
-
-        //private Response<Task> TaskGetter(string email, string creatorEmail, string boardName, int columnOrdinal, int taskId) // todo - update in the diagram
-        //{
-        //    Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
-        //    if (validArguments.ErrorOccured)
-        //        return Response<Task>.FromError(validArguments.ErrorMessage);
-        //    Board b = boards[email][boardName];
-        //    Response<Dictionary<int, Task>> res = b.getColumn(columnOrdinal);
-        //    if (res.ErrorOccured)
-        //        return Response<Task>.FromError(res.ErrorMessage);
-        //    Dictionary<int, Task> col = res.Value;
-        //    if (!col.ContainsKey(taskId))
-        //        return Response<Task>.FromError($"coldn't find task id {taskId} in email {email} | board {boardName} | column {columnOrdinal}");
-        //    return Response<Task>.FromValue(col[taskId]);
-        //}
         /// <summary>
         /// Update the due date of a task
         /// </summary>
@@ -227,11 +210,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <param name="dueDate">The new due date of the column</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-
-        // TODO throw nitzan: onlt task assignee can use this
         public Response UpdateTask<T>(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, Func<Task, T> updateFunc) 
         {
-            // TODO: check only assignee
+            Response r = CheckArgs(userEmail, creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return r;
             Response<Task> res = TaskGetter(userEmail, creatorEmail, boardName, columnOrdinal, taskId);
             if (res.ErrorOccured)
             {
@@ -241,7 +224,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             if (userEmail != res.Value.Assignee)
                 return new Response("only the assignee of the task can update");
             if (columnOrdinal == DONE_COLUMN)
-                return new Response("task that is done, cnnot be change");
+                return new Response("task that is done, cannot be change");
             try
             {
                 updateFunc(res.Value);
@@ -257,6 +240,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             return UpdateTask<DateTime>(userEmail, creatorEmail, boardName, columnOrdinal, taskId, (task) => task.DueDate = dueDate);
         }
+
         /// <summary>
         /// Update task title
         /// </summary>
@@ -266,12 +250,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <param name="title">New title for the task</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-
-        // TODO throw nitzan: onlt task assignee can use this
         public Response UpdateTaskTitle(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string title) 
         {
             return UpdateTask<string>(userEmail, creatorEmail, boardName, columnOrdinal, taskId, (task) => task.Title = title);
         }
+
         /// <summary>
         /// Update the description of a task
         /// </summary>
@@ -282,11 +265,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <param name="description">New description for the task</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         
-        // TODO throw nitzan: onlt task assignee can use this
         public Response UpdateTaskDescription(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string description) 
         {
             return UpdateTask<string>(userEmail, creatorEmail, boardName, columnOrdinal, taskId, (task) => task.Description = description);
         }
+
         /// <summary>
         /// Advance a task to the next column
         /// </summary>
@@ -296,12 +279,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
 
-        // TODO throw nitzan: onlt task assignee can use this
         public Response AdvanceTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId) 
         {
+            Response r = CheckArgs(userEmail, creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return r;
             Board b = boards[creatorEmail][boardName];
-            return UpdateTask<Response>(userEmail, creatorEmail, boardName, columnOrdinal, taskId, (task) => b.advanceTask(task));
+            return UpdateTask<Response>(userEmail, creatorEmail, boardName, columnOrdinal, taskId, 
+                (task) => {
+                if (columnOrdinal == DONE_COLUMN) // Nitzan: added this condition because 'Board' doesnt have DONE_COLUMN as a magic number.
+                        throw new ArgumentException("Cannot advance a task from 'Done' columne");
+                return b.AdvanceTask(task, columnOrdinal);
+                });
         }
+
         /// <summary>
         /// Returns a column given it's name
         /// </summary>
@@ -311,14 +302,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <returns>A response object with a value set to the Column, The response should contain a error message in case of an error</returns>
         public Response<IList<Task>> GetColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
         {
-            //Response validArguments = AllBoardsContainsBoardByEmail(userEmail, boardName);
-            //if (validArguments.ErrorOccured)
-            //    return Response<IList<Task>>.FromError(validArguments.ErrorMessage);
-            if (!members[userEmail].Contains(boards[creatorEmail][boardName]))
-            {
-                log.Debug("The user is not a board member");
-                return Response<IList<Task>>.FromError("The user is not a board member");
-            }
+            Response r = CheckArgs(userEmail, creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return Response<IList<Task>>.FromError(r.ErrorMessage);
             Board b = boards[userEmail][boardName];
             Response<Dictionary<int, Task>> res = b.getColumn(columnOrdinal);
             if (res.ErrorOccured)
@@ -437,6 +423,43 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             return Response<IList<String>>.FromValue(members[userEmail].Select((b) => b.Name).ToList());
         }
+
+
+        //private Response<Task> TaskGetter(string email, string creatorEmail, string boardName, int columnOrdinal, int taskId) // todo - update in the diagram
+        //{
+        //    Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
+        //    if (validArguments.ErrorOccured)
+        //        return Response<Task>.FromError(validArguments.ErrorMessage);
+        //    Board b = boards[email][boardName];
+        //    Response<Dictionary<int, Task>> res = b.getColumn(columnOrdinal);
+        //    if (res.ErrorOccured)
+        //        return Response<Task>.FromError(res.ErrorMessage);
+        //    Dictionary<int, Task> col = res.Value;
+        //    if (!col.ContainsKey(taskId))
+        //        return Response<Task>.FromError($"coldn't find task id {taskId} in email {email} | board {boardName} | column {columnOrdinal}");
+        //    return Response<Task>.FromValue(col[taskId]);
+        //}
+
+
+        /// <summary>
+        /// Check if user has a board in a given name, also inserting a new email address to all boards collections in case its missing
+        /// </summary>
+        /// <param name="userEmail">The email address of the user, must be logged in</param>
+        /// <param name="creatorEmail">The email address of the board's creator user</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <returns>A response object. The response should contain a error message in case of missing board for user or invalid argments</returns
+        // TODO: check if creatorEmail is valid too
+        //private Response AllBoardsContainsBoardByEmail(string userEmail, string creatorEmail, string boardName) 
+        //{
+        //    if (userEmail == null || creatorEmail == null || boardName == null || userEmail.Length == 0 || creatorEmail.Length == 0 || boardName.Length == 0)
+        //        return new Response("null value given");
+        //    if (!boards.ContainsKey(userEmail)) // TODO: ask Asaf why this is neccessary 
+        //        boards.Add(userEmail, new Dictionary<string, Board>());
+        //    if (!boards[userEmail].ContainsKey(boardName))
+        //        //return Response<bool>.FromError($"user {email} doesn't possess board name {boardName}");
+        //        return new Response($"user {email} doesn't possess board name {boardName}");
+        //    return new Response();
+        //}
 
 
     }

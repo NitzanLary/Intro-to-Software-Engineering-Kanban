@@ -26,6 +26,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             userController = new UserController();
             boardController = new BoardController();
         }
+
         ///<summary>This method loads the data from the persistance.
         ///         You should call this function when the program starts. </summary>
         public Response LoadData()
@@ -56,19 +57,21 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return r;
 
         }
-        private Response checkArgs(string userEmail, string creatorEmail, string boardName)
-        {
-            Response r = IsLoggedIn(userEmail);
-            if (r.ErrorOccured)
-                return r;
-            r = emailExist(creatorEmail);
-            if (r.ErrorOccured)
-                return r;
-            r = isCreator(creatorEmail, boardName);
-            if (r.ErrorOccured)
-                return r;
-            return r;
-        }
+
+        //private Response checkArgs(string userEmail, string creatorEmail, string boardName)
+        //{
+        //    Response r = IsLoggedIn(userEmail);
+        //    if (r.ErrorOccured)
+        //        return r;
+        //    r = emailExist(creatorEmail);
+        //    if (r.ErrorOccured)
+        //        return r;
+        //    r = isCreator(creatorEmail, boardName);
+        //    if (r.ErrorOccured)
+        //        return r;
+        //    return r;
+        //}
+
         /// Log in an existing user
         /// </summary>
         /// <param name="userEmail">The email address of the user to login</param>
@@ -117,6 +120,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return new Response();
         }
 
+        private Response<T> IsLoggedInAndApply<T>(string email, Func<Response<T>> func)
+        {
+            Response r = IsLoggedIn(email);
+            if (r.ErrorOccured)
+                return Response<T>.FromError(r.ErrorMessage);
+            return func();
+        }
+
         private Response emailExist(string email)
         {
             return userController.containsEmail(email);
@@ -145,10 +156,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response LimitColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int limit)
         {
             log.Info($"User {userEmail} is trying to LimitColumn in board {boardName}, column {columnOrdinal} with limit: {limit}");
+
             Response r = checkArgs(userEmail, creatorEmail, boardName);
             if (r.ErrorOccured)
                 return r;
-            log.Debug($"limit column successfully to {limit}"); // Todo: this is not true yet
+            //log.Debug($"limit column successfully to {limit}"); // Todo: this is not true yet
             return boardController.LimitColumn(userEmail, creatorEmail, boardName, columnOrdinal, limit);// TODO: this func just the creator can do
         }
 
