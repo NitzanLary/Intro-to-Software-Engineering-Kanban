@@ -1,4 +1,5 @@
 ﻿using IntroSE.Kanban.Backend.ServiceLayer;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 {
     class Board
     {
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private string name;
         public string Name
         {

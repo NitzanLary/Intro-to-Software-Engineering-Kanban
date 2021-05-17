@@ -48,11 +48,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             log.Info($"User {userEmail} is trying to Register");
             Response r = userController.Register(userEmail, password);
-            if (r.ErrorOccured)
-            {
-                log.Debug(r.ErrorMessage);
-                return r;
-            }
+            WriteToLog(r, $"{userEmail} succesfully registered");
             boardController.addNewUserToMembers(userEmail);
             return r;
         }
@@ -82,6 +78,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response r = userController.Login(userEmail, password);
             if (r.ErrorOccured)
                 return Response<User>.FromError(r.ErrorMessage);
+            WriteToLog(r, $"{userEmail} login successfully");
             return Response<User>.FromValue(new User(userEmail));
         }
         /// <summary>        
@@ -92,7 +89,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response Logout(string userEmail)
         {
             log.Info($"User {userEmail} is trying to Logout");
-            return userController.Logout(userEmail);
+            Response r = userController.Logout(userEmail);
+            WriteToLog(r, $"{userEmail} logged out successfully");
+            return r;
         }
 
         /// <summary>        
@@ -171,9 +170,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The limit of the column.</returns>
         public Response<int> GetColumnLimit(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
         {
-
             log.Info($"User {userEmail} is trying to GetColumnLimit in board {boardName}, column {columnOrdinal}");
-            return boardController.GetColumnLimit(userEmail, creatorEmail, boardName, columnOrdinal); // TODO this func evry one can do
+            Response<int> r = boardController.GetColumnLimit(userEmail, creatorEmail, boardName, columnOrdinal);
+            WriteToLog(r, $"GetColumnLimit finished successfully");
+            return r;
         }
 
         /// <summary>
@@ -187,7 +187,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response<string> GetColumnName(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
         {
             log.Info($"User {userEmail} is trying to GetColumnName in board {boardName}, column {columnOrdinal}");
-            return boardController.GetColumnName(userEmail, creatorEmail, boardName, columnOrdinal);// TODO every one cad do this
+            Response<string> r = boardController.GetColumnName(userEmail, creatorEmail, boardName, columnOrdinal);// TODO every one cad do this
+            WriteToLog(r, $"GetColumnName finished successfully");
+            return r;
         }
 
         /// <summary>
@@ -206,7 +208,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
             Response<BusinessLayer.Task> rT = boardController.AddTask(userEmail, creatorEmail, boardName, title, description, dueDate); // TODO all board memeber can addTAsk
             if (rT.ErrorOccured)
+            {
+                log.Error(rT.ErrorMessage);
                 return Response<Task>.FromError(rT.ErrorMessage);
+            }
             BusinessLayer.Task task = rT.Value;
             log.Debug($"task {title} added successfully to board {boardName}");
             return Response<Task>.FromValue(new Task(task.ID, task.CreationTime, task.Title, task.Description, task.DueDate, task.Assignee)); // TODO change to the new Task they gave us
@@ -229,7 +234,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response r = IsLoggedIn(userEmail);
             if (r.ErrorOccured)
                 return r;
-            return boardController.UpdateTaskDueDate(userEmail, creatorEmail, boardName, columnOrdinal, taskId, dueDate); // TODO CHECK: only assginee can update
+            r = boardController.UpdateTaskDueDate(userEmail, creatorEmail, boardName, columnOrdinal, taskId, dueDate); // TODO CHECK: only assginee can update
+            WriteToLog(r, $"Task updated successfully");
+            return r;
         }
         /// <summary>
         /// Update task title
@@ -247,7 +254,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response r = IsLoggedIn(userEmail);
             if (r.ErrorOccured)
                 return r;
-            return boardController.UpdateTaskTitle(userEmail, creatorEmail, boardName, columnOrdinal, taskId, title);  // TODO CHECK: only assginee can update
+            r = boardController.UpdateTaskTitle(userEmail, creatorEmail, boardName, columnOrdinal, taskId, title);  // TODO CHECK: only assginee can update
+            WriteToLog(r, $"Task updated successfully");
+            return r;
         }
         /// <summary>
         /// Update the description of a task
@@ -265,7 +274,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response r = IsLoggedIn(userEmail);
             if (r.ErrorOccured)
                 return r;
-            return boardController.UpdateTaskDescription(userEmail, creatorEmail, boardName, columnOrdinal, taskId, description);  // TODO CHECK: only assginee can update
+            r = boardController.UpdateTaskDescription(userEmail, creatorEmail, boardName, columnOrdinal, taskId, description);  // TODO CHECK: only assginee can update
+            WriteToLog(r, $"Task updated successfully");
+            return r;
         }
         /// <summary>
         /// Advance a task to the next column
@@ -282,7 +293,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response r = IsLoggedIn(userEmail);
             if (r.ErrorOccured)
                 return r;
-            return boardController.AdvanceTask(userEmail, creatorEmail, boardName, columnOrdinal, taskId); // TODO CHECK: only assginee can advence
+            r = boardController.AdvanceTask(userEmail, creatorEmail, boardName, columnOrdinal, taskId); // TODO CHECK: only assginee can advence
+            WriteToLog(r, $"Task updated successfully");
+            return r;
         }
         /// <summary>
         /// Returns a column given it's name
@@ -299,11 +312,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             if (r.ErrorOccured)
                 return Response<IList<Task>>.FromError(r.ErrorMessage);
             Response<IList<BusinessLayer.Task>> returned = boardController.GetColumn(userEmail, creatorEmail, boardName,columnOrdinal); // TODO evryone of the members can apply
-            if (returned.ErrorOccured)
-            {
-                log.Debug(returned.ErrorMessage);
-                return Response<IList<Task>>.FromError(returned.ErrorMessage);
-            }
+            WriteToLog(returned, $"GetColumn finished successfully");
             return ConvertBusinessToServiceTasksCollection(returned.Value);
         }
         /// <summary>
@@ -319,11 +328,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             if (r.ErrorOccured)
                 return r;
             r = boardController.AddBoard(userEmail, boardName);
-            if (r.ErrorOccured)
-                log.Error(r.ErrorMessage);
-            log.Info($"Borad for user {userEmail} succesfully added");
+            WriteToLog(r, $"Borad for user {userEmail} succesfully added");
             return r;
-
         }
         /// <summary>
         /// Removes a board.
@@ -337,7 +343,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response r = IsLoggedIn(userEmail);
             if (r.ErrorOccured)
                 return r;
-            return boardController.RemoveBoard(userEmail, creatorEmail, boardName);// TODO: ONLY creator can removed
+            r =  boardController.RemoveBoard(userEmail, creatorEmail, boardName);// TODO: ONLY creator can removed
+            WriteToLog(r, $"RemoveBoard finished successfully");
+            return r;
         }
         /// <summary>
         /// Returns all the in-progress tasks of the logged-in user is assigned to.
@@ -353,9 +361,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response<IList<BusinessLayer.Task>> returned = boardController.InProgressTask(userEmail); // TODO CHECK: All members can to this BUT JUST he is assigneed to and from all boards
             if (returned.ErrorOccured)
             {
-                log.Error(returned.ErrorMessage);
                 return Response<IList<Task>>.FromError(returned.ErrorMessage);
             }
+            WriteToLog(r, $"InProgressTasks finished successfully");
             return ConvertBusinessToServiceTasksCollection(returned.Value);
         }
 
@@ -373,6 +381,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 ret.Add(toAdd);
             }
             return Response<IList<Task>>.FromValue(ret);
+        }
+
+        private void WriteToLog(Response r, string msg)
+        {
+            if (r.ErrorOccured)
+                log.Error(r.ErrorMessage);
+            else log.Info(msg);
         }
 
 
@@ -398,7 +413,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response r = IsLoggedIn(userEmail);
             if (r.ErrorOccured)
                 return r;
-            throw new NotImplementedException();
+            r = boardController.JoinBoard(userEmail, creatorEmail, boardName);
+            WriteToLog(r, $"{userEmail} joined to the board");
+            return r;
         }
 
         /// <summary>
@@ -416,7 +433,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response r = IsLoggedIn(userEmail);
             if (r.ErrorOccured)
                 return r;
-            throw new NotImplementedException();
+            r = boardController.AssignTask(userEmail, creatorEmail, boardName, columnOrdinal, taskId, emailAssignee);
+            WriteToLog(r, $"{userEmail} assgined task successfully");
+            return r;
         }
 
         /// <summary>
@@ -429,7 +448,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             Response r = IsLoggedIn(userEmail);
             if (r.ErrorOccured)
                 return Response<IList<String>>.FromError(r.ErrorMessage);
-            return boardController.GetBoardNames(userEmail);
+            Response<IList<String>> r2 = boardController.GetBoardNames(userEmail);
+            WriteToLog(r2, "GetBoardNames finished successfully");
+            return r2;
         }
 
     }
