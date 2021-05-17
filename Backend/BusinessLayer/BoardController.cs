@@ -15,7 +15,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                         // email creator            boardName 
         private Dictionary<string, Dictionary<string, Board>> boards;
         //             email members,  board name
-        private Dictionary<string, List<Board>> members;
+        private Dictionary<string, HashSet<Board>> members;
 
         private readonly int DONE_COLUMN;
 
@@ -24,7 +24,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public BoardController()
         {
             boards = new Dictionary<string, Dictionary<string, Board>>();
-            members = new Dictionary<string, List<Board>>();
+            members = new Dictionary<string, HashSet<Board>>();
         }
 
         /// <summary>        
@@ -82,7 +82,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <param name="userEmail">The email of the user</param>
         internal void addNewUserToMembers(string userEmail)
         {
-            members.Add(userEmail, new List<Board>());
+            members.Add(userEmail, new HashSet<Board>());
         }
 
 
@@ -103,6 +103,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return Response<Object>.FromError("Only creator can limit columns");
             if (columnOrdinal > DONE_COLUMN)
                 return Response<Object>.FromError("column ordinal dose not exist. max 2");
+            log.Debug($"limit column successfully to {limit}");
             return Response<Object>.FromValue(boards[userEmail][boardName].LimitColumn(columnOrdinal, limit));
         }
 
@@ -281,16 +282,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Response AdvanceTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId) 
         {
+            if (columnOrdinal == DONE_COLUMN) // Nitzan: added this condition because 'Board' doesnt have DONE_COLUMN as a magic number.
+                return new Response("Cannot advance a task from 'Done' columne");
             Response r = CheckArgs(userEmail, creatorEmail, boardName);
             if (r.ErrorOccured)
                 return r;
             Board b = boards[creatorEmail][boardName];
-            return UpdateTask<Response>(userEmail, creatorEmail, boardName, columnOrdinal, taskId, 
-                (task) => {
-                if (columnOrdinal == DONE_COLUMN) // Nitzan: added this condition because 'Board' doesnt have DONE_COLUMN as a magic number.
-                        throw new ArgumentException("Cannot advance a task from 'Done' columne");
-                return b.AdvanceTask(task, columnOrdinal);
-                });
+            return UpdateTask<Response>(userEmail, creatorEmail, boardName, columnOrdinal, taskId, (task) => b.AdvanceTask(task, columnOrdinal));
         }
 
         /// <summary>
@@ -307,7 +305,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return Response<IList<Task>>.FromError(r.ErrorMessage);
             if (columnOrdinal > DONE_COLUMN)
                 return Response<IList<Task>>.FromError("column ordinal dose not exist. max 2");
-            return boards[userEmail][boardName].GetColumne(columnOrdinal);
+            return boards[userEmail][boardName].GetColumn(columnOrdinal);
         }
 
         /// <summary>
@@ -327,6 +325,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             members[email].Add(board);
             return new Response();
         }
+
         /// <summary>
         /// Removes a board to the specific user.
         /// </summary>
@@ -345,32 +344,42 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             if (r.ErrorOccured)
                 return r;
 
-            // TODO: remove all columns and tasks related to this board from the data base
-            boards[userEmail].Remove(boardName);
+            return RemoveBoardHelper(creatorEmail, boardName);
+        }
+
+        private Response RemoveBoardHelper(string creatorEmail, string boardName)
+        {
+            // TODO: remove all columns and tasks related to this board from the data base (on delete cascade)
+            Board board = boards[creatorEmail][boardName];
+            boards[creatorEmail].Remove(boardName);
+            foreach(KeyValuePair<string, HashSet<Board>> entry in members)
+            {
+                if (entry.Value.Contains(board))
+                    members[entry.Key].Remove(board);
+            }
+            // delete from data base
             return new Response();
         }
+
         /// <summary>
         /// Returns all the In progress tasks of the user.
+        /// note: 'email' is in members because it was registered.
         /// </summary>
         /// <param name="email">Email of the user. Must be logged in</param>
         /// <returns>A response object with a value set to the list of tasks, The response should contain a error message in case of an error</returns>
-        
+
         //TODO: complicated for now.. todo after all things fix
         public Response<IList<Task>> InProgressTask(string email) 
         {
-            if (email == null || email.Length == 0)
-                return Response<IList<Task>>.FromError("empty string given");
-            if (!boards.ContainsKey(email))
-                return Response<IList<Task>>.FromError($"boards atribute doesn't contains the given email value {email}");
-            List<Task> ret = new List<Task>();
-            foreach(Board b in boards[email].Values)
+           List<Task> tasks = new List<Task>();
+            foreach(Board board in members[email])
             {
-                Response<Dictionary<int,Task>> r = b.getInProgess();
+                Response<IList<Task>> r = board.GetColumn(1); // 1 is the column ordinal of inProgress
                 if (r.ErrorOccured)
                     return Response<IList<Task>>.FromError(r.ErrorMessage);
-                ret.AddRange(r.Value.Values);
+                tasks.AddRange(r.Value.Where((task) => task.Assignee == email).ToList());
             }
-            return Response<IList<Task>>.FromValue(ret);    
+            return Response<IList<Task>>.FromValue(tasks);
         }
 
         /// <summary>

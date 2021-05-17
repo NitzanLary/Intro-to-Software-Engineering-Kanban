@@ -113,7 +113,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         }
 
         // pre condition: valid columnOrdinal
-        internal Response<IList<Task>> GetColumne(int columnOrdinal)
+        internal Response<IList<Task>> GetColumn(int columnOrdinal)
         {
             return Response<IList<Task>>.FromValue(Columns[columnOrdinal].Tasks);
         }

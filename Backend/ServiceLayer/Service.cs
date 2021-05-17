@@ -55,7 +55,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
             boardController.addNewUserToMembers(userEmail);
             return r;
-
         }
 
         //private Response checkArgs(string userEmail, string creatorEmail, string boardName)
@@ -156,7 +155,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response LimitColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int limit)
         {
             log.Info($"User {userEmail} is trying to LimitColumn in board {boardName}, column {columnOrdinal} with limit: {limit}");
-            //log.Debug($"limit column successfully to {limit}"); // Todo: this is not true yet
+            Response r = IsLoggedIn(userEmail);
+            if (r.ErrorOccured)
+                return r;
             return boardController.LimitColumn(userEmail, creatorEmail, boardName, columnOrdinal, limit);// TODO: this func just the creator can do
         }
 
@@ -170,6 +171,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The limit of the column.</returns>
         public Response<int> GetColumnLimit(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
         {
+
             log.Info($"User {userEmail} is trying to GetColumnLimit in board {boardName}, column {columnOrdinal}");
             return boardController.GetColumnLimit(userEmail, creatorEmail, boardName, columnOrdinal); // TODO this func evry one can do
         }
@@ -224,6 +226,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response UpdateTaskDueDate(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
         {
             log.Info($"User {userEmail} is trying to UpdateTaskDueDate");
+            Response r = IsLoggedIn(userEmail);
+            if (r.ErrorOccured)
+                return r;
             return boardController.UpdateTaskDueDate(userEmail, creatorEmail, boardName, columnOrdinal, taskId, dueDate); // TODO CHECK: only assginee can update
         }
         /// <summary>
@@ -239,6 +244,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response UpdateTaskTitle(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string title)
         {
             log.Info($"User {userEmail} is trying to UpdateTaskTitle");
+            Response r = IsLoggedIn(userEmail);
+            if (r.ErrorOccured)
+                return r;
             return boardController.UpdateTaskTitle(userEmail, creatorEmail, boardName, columnOrdinal, taskId, title);  // TODO CHECK: only assginee can update
         }
         /// <summary>
@@ -254,6 +262,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response UpdateTaskDescription(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string description)
         {
             log.Info($"User {userEmail} is trying to UpdateTaskDescription");
+            Response r = IsLoggedIn(userEmail);
+            if (r.ErrorOccured)
+                return r;
             return boardController.UpdateTaskDescription(userEmail, creatorEmail, boardName, columnOrdinal, taskId, description);  // TODO CHECK: only assginee can update
         }
         /// <summary>
@@ -268,6 +279,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response AdvanceTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId)
         {
             log.Info($"User {userEmail} is trying to AdvanceTask in board {boardName}, column {columnOrdinal}, task {taskId}");
+            Response r = IsLoggedIn(userEmail);
+            if (r.ErrorOccured)
+                return r;
             return boardController.AdvanceTask(userEmail, creatorEmail, boardName, columnOrdinal, taskId); // TODO CHECK: only assginee can advence
         }
         /// <summary>
@@ -281,6 +295,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response<IList<Task>> GetColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
         {
             log.Info($"User {userEmail} is trying to GetColumn: {boardName}, {columnOrdinal}");
+            Response r = IsLoggedIn(userEmail);
+            if (r.ErrorOccured)
+                return Response<IList<Task>>.FromError(r.ErrorMessage);
             Response<IList<BusinessLayer.Task>> returned = boardController.GetColumn(userEmail, creatorEmail, boardName,columnOrdinal); // TODO evryone of the members can apply
             if (returned.ErrorOccured)
             {
@@ -317,7 +334,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response RemoveBoard(string userEmail, string creatorEmail, string boardName)
         {
-
+            Response r = IsLoggedIn(userEmail);
+            if (r.ErrorOccured)
+                return r;
             return boardController.RemoveBoard(userEmail, creatorEmail, boardName);// TODO: ONLY creator can removed
         }
         /// <summary>
@@ -376,13 +395,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response JoinBoard(string userEmail, string creatorEmail, string boardName)
         {
+            Response r = IsLoggedIn(userEmail);
+            if (r.ErrorOccured)
+                return r;
             throw new NotImplementedException();
         }
-
-
-        
-
-
 
         /// <summary>
         /// Assigns a task to a user
@@ -396,6 +413,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AssignTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string emailAssignee)
         {
+            Response r = IsLoggedIn(userEmail);
+            if (r.ErrorOccured)
+                return r;
             throw new NotImplementedException();
         }
 
