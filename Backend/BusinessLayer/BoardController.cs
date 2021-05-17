@@ -89,7 +89,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <summary>
         /// Limit the number of tasks in a specific column
         /// </summary>
-        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="userEmail">The email address of the user, must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
         /// <param name="boardName">The name of the board</param>
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <param name="limit">The new limit value. A value of -1 indicates no limit.</param>
@@ -110,7 +111,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <summary>
         /// Get the limit of a specific column
         /// </summary>
-        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="userEmail">The email address of the user, must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
         /// <param name="boardName">The name of the board</param>
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <returns>The limit of the column.</returns>
@@ -130,7 +132,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <summary>
         /// Get the name of a specific column
         /// </summary>
-        /// <param name="email">The email address of the user, must be logged in</param>
+        /// <param name="userEmail">The email address of the user, must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
         /// <param name="boardName">The name of the board</param>
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <returns>The name of the column.</returns>
@@ -152,7 +155,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <summary>
         /// Add a new task.
         /// </summary>
-        /// <param name="email">Email of the user. The user must be logged in.</param>
+        /// <param name="userEmail">Email of the user. The user must be logged in.</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
         /// <param name="boardName">The name of the board</param>
         /// <param name="title">Title of the new task</param>
         /// <param name="description">Description of the new task</param>
@@ -170,6 +174,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return task;
         }
 
+        /// <summary>
+        /// Store a new task in the DB.
+        /// </summary>
+        /// <param name="userEmail">Email of the user thet apply the function.</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="creatorEmail">Email of the user thet create the board that containing the task</param>
+        /// <param name="value">The task that need to be stored</param>
+        /// <returns>A response object, with an error message in case of an error</returns>
         private Response storeTask(string userEmail, string creatorEmail, string boardName, Task value)
         {
             throw new NotImplementedException();
@@ -178,7 +191,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <summary>
         /// Returns a task by id from a given specific column and a board name.
         /// </summary>
-        /// <param name="email">Email of user. Must be logged in</param>
+        /// <param name="userEmail">Email of user. Must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
         /// <param name="boardName">The name of the board</param>
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <param name="taskId">The task to be updated identified task ID</param>
@@ -201,15 +215,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             }
             
         }
-        
+
         /// <summary>
-        /// Update the due date of a task
+        /// A generic function that first check if the args are valid, and than apply the relevant function according what is needs to update
         /// </summary>
-        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="userEmail">Email of the user. Must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
         /// <param name="boardName">The name of the board</param>
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <param name="taskId">The task to be updated identified task ID</param>
-        /// <param name="dueDate">The new due date of the column</param>
+        /// <param name="updateFunc">A generic function, according to the argument it received updates what is relevant </param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTask<T>(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, Func<Task, T> updateFunc) 
         {
@@ -236,7 +251,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             }
             return new Response();
         }
-
+        /// <summary>
+        /// Update the due date of a task
+        /// </summary>
+        /// <param name="userEmail">Email of the current user. Must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>
+        /// <param name="dueDate">The new due date of the column</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDueDate(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
         {
             return UpdateTask<DateTime>(userEmail, creatorEmail, boardName, columnOrdinal, taskId, (task) => task.DueDate = dueDate);
@@ -245,7 +269,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <summary>
         /// Update task title
         /// </summary>
-        /// <param name="email">Email of user. Must be logged in</param>
+        /// <param name="userEmail">Email of user. Must be logged in</param>
+        ///<param name="creatorEmail">Email of the board creator</param>
         /// <param name="boardName">The name of the board</param>
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <param name="taskId">The task to be updated identified task ID</param>
@@ -259,13 +284,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <summary>
         /// Update the description of a task
         /// </summary>
-        /// <param name="email">Email of user. Must be logged in</param>
+        /// <param name="userEmail">Email of user. Must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
         /// <param name="boardName">The name of the board</param>
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <param name="description">New description for the task</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-        
         public Response UpdateTaskDescription(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string description) 
         {
             return UpdateTask<string>(userEmail, creatorEmail, boardName, columnOrdinal, taskId, (task) => task.Description = description);
@@ -274,12 +299,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <summary>
         /// Advance a task to the next column
         /// </summary>
-        /// <param name="email">Email of user. Must be logged in</param>
+        /// <param name="userEmail">Email of user. Must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
         /// <param name="boardName">The name of the board</param>
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-
         public Response AdvanceTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId) 
         {
             if (columnOrdinal == DONE_COLUMN) // Nitzan: added this condition because 'Board' doesnt have DONE_COLUMN as a magic number.
@@ -294,7 +319,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <summary>
         /// Returns a column given it's name
         /// </summary>
-        /// <param name="email">Email of the user. Must be logged in</param>
+        /// <param name="userEmail">Email of the user. Must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
         /// <param name="boardName">The name of the board</param>
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <returns>A response object with a value set to the Column, The response should contain a error message in case of an error</returns>
@@ -329,8 +355,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <summary>
         /// Removes a board to the specific user.
         /// </summary>
-        /// <param name="email">Email of the user. Must be logged in</param>
-        /// <param name="name">The name of the board</param>
+        /// <param name="userEmail">Email of the user. Must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
+        /// <param name="boardName">The name of the board</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response RemoveBoard(string userEmail, string creatorEmail, string boardName)
         {
@@ -347,6 +374,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return RemoveBoardHelper(creatorEmail, boardName);
         }
 
+        /// <summary>
+        /// Removes a board to the specific user and remove it from all the members.
+        /// </summary>
+        /// <param name="creatorEmail">Email of the user that create the board.</param>
+        /// <param boardName="boardName">The name of the board</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         private Response RemoveBoardHelper(string creatorEmail, string boardName)
         {
             // TODO: remove all columns and tasks related to this board from the data base (on delete cascade)

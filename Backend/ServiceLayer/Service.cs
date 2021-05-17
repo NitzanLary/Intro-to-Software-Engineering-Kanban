@@ -118,14 +118,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return new Response();
         }
 
-        private Response<T> IsLoggedInAndApply<T>(string email, Func<Response<T>> func)
-        {
-            Response r = IsLoggedIn(email);
-            if (r.ErrorOccured)
-                return Response<T>.FromError(r.ErrorMessage);
-            return func();
-        }
-
         //private Response emailExist(string email)
         //{
         //    return userController.containsEmail(email);
