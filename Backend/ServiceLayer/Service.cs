@@ -13,9 +13,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
     {
         private UserController userController;
         private BoardController boardController;
-
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         public Service()
         {
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
@@ -33,11 +31,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             throw new NotImplementedException();
         }
+
         ///<summary>Removes all persistent data.</summary>
         public Response DeleteData()
         {
             throw new NotImplementedException();
         }
+
         /// <summary>
         /// Registers a new user.
         /// </summary>
@@ -53,20 +53,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return r;
         }
 
-        //private Response checkArgs(string userEmail, string creatorEmail, string boardName)
-        //{
-        //    Response r = IsLoggedIn(userEmail);
-        //    if (r.ErrorOccured)
-        //        return r;
-        //    r = emailExist(creatorEmail);
-        //    if (r.ErrorOccured)
-        //        return r;
-        //    r = isCreator(creatorEmail, boardName);
-        //    if (r.ErrorOccured)
-        //        return r;
-        //    return r;
-        //}
-
         /// Log in an existing user
         /// </summary>
         /// <param name="userEmail">The email address of the user to login</param>
@@ -81,6 +67,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             WriteToLog(r, $"{userEmail} login successfully");
             return Response<User>.FromValue(new User(userEmail));
         }
+
         /// <summary>        
         /// Log out an logged-in user. 
         /// </summary>
@@ -117,22 +104,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 
             return new Response();
         }
-
-        //private Response emailExist(string email)
-        //{
-        //    return userController.containsEmail(email);
-        //}
-
-        /// <summary>        
-        /// Checks if the "creatorEmail" is the creator of the board name
-        /// </summary>
-        /// <param name="creatorEmail">The email of the creator user</param>
-        /// <param name="boardName">The name of the board</param>
-        /// <returns>A response object. The response should contain a error message in case of an error</returns>
-        //private Response isCreator(string creatorEmail, string boardName)
-        //{
-        //    return boardController.isCreator(creatorEmail, boardName);
-        //}
 
         /// <summary>
         /// Limit the number of tasks in a specific column
@@ -209,7 +180,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return Response<Task>.FromValue(new Task(task.ID, task.CreationTime, task.Title, task.Description, task.DueDate, task.Assignee)); // TODO change to the new Task they gave us
         }
 
-
         /// <summary>
         /// Update the due date of a task
         /// </summary>
@@ -230,6 +200,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             WriteToLog(r, $"Task updated successfully");
             return r;
         }
+
         /// <summary>
         /// Update task title
         /// </summary>
@@ -250,6 +221,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             WriteToLog(r, $"Task updated successfully");
             return r;
         }
+
         /// <summary>
         /// Update the description of a task
         /// </summary>
@@ -270,6 +242,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             WriteToLog(r, $"Task updated successfully");
             return r;
         }
+
         /// <summary>
         /// Advance a task to the next column
         /// </summary>
@@ -289,6 +262,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             WriteToLog(r, $"Task updated successfully");
             return r;
         }
+
         /// <summary>
         /// Returns a column given it's name
         /// </summary>
@@ -307,6 +281,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             WriteToLog(returned, $"GetColumn finished successfully");
             return ConvertBusinessToServiceTasksCollection(returned.Value);
         }
+
         /// <summary>
         /// Creates a new board for the logged-in user.
         /// </summary>
@@ -323,6 +298,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             WriteToLog(r, $"Borad for user {userEmail} succesfully added");
             return r;
         }
+
         /// <summary>
         /// Removes a board.
         /// </summary>
@@ -339,6 +315,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             WriteToLog(r, $"RemoveBoard finished successfully");
             return r;
         }
+
         /// <summary>
         /// Returns all the in-progress tasks of the logged-in user is assigned to.
         /// </summary>
