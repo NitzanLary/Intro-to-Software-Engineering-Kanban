@@ -112,6 +112,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return Response<Task>.FromValue(task);
         }
 
+        // pre condition: valid columnOrdinal
+        internal Response<IList<Task>> GetColumne(int columnOrdinal)
+        {
+            return Response<IList<Task>>.FromValue(Columns[columnOrdinal].Tasks);
+        }
+
         //public Response advanceTask(int taskId, int columnOrd)
         //{
         //    if (!containsTask(taskId))

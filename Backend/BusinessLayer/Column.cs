@@ -9,7 +9,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
     class Column
     {
         private Dictionary<int, Task> tasks;
-        public List<Task> Tasks
+        public IList<Task> Tasks
         {
             get => tasks.Values.ToList();
         }

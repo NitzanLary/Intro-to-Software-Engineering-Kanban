@@ -305,14 +305,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Response r = CheckArgs(userEmail, creatorEmail, boardName);
             if (r.ErrorOccured)
                 return Response<IList<Task>>.FromError(r.ErrorMessage);
-            Board b = boards[userEmail][boardName];
-            Response<Dictionary<int, Task>> res = b.getColumn(columnOrdinal);
-            if (res.ErrorOccured)
-                return Response<IList<Task>>.FromError(res.ErrorMessage);
-            if (columnOrdinal > 2)
+            if (columnOrdinal > DONE_COLUMN)
                 return Response<IList<Task>>.FromError("column ordinal dose not exist. max 2");
-            return Response<IList<Task>>.FromValue(res.Value.Values.ToList());
+            return boards[userEmail][boardName].GetColumne(columnOrdinal);
         }
+
         /// <summary>
         /// Adds a board to the specific user.
         /// </summary>
@@ -336,23 +333,21 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <param name="email">Email of the user. Must be logged in</param>
         /// <param name="name">The name of the board</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-        public Response RemoveBoard(string userEmail, string creatorEmail, string name) 
+        public Response RemoveBoard(string userEmail, string creatorEmail, string boardName)
         {
-            //Response validArguments = AllBoardsContainsBoardByEmail(userEmail, name);
-            //if (validArguments.ErrorOccured)
-            //{
-            //    log.Debug(validArguments.ErrorMessage);
-            //    return Response<Task>.FromError(validArguments.ErrorMessage);
-            //}
             if (userEmail != creatorEmail)
             {
                 log.Debug("The user is not the board creator");
                 return Response<Task>.FromError("The user is not the board creator");
             }
 
-            boards[userEmail].Remove(name);
+            Response r = CheckArgs(userEmail, creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return r;
+
+            // TODO: remove all columns and tasks related to this board from the data base
+            boards[userEmail].Remove(boardName);
             return new Response();
-            
         }
         /// <summary>
         /// Returns all the In progress tasks of the user.
@@ -387,6 +382,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response JoinBoard(string userEmail, string creatorEmail, string boardName)
         {
+            Response r = CheckArgs(userEmail, creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return r;
+
             if (members[userEmail].Contains(boards[creatorEmail][boardName]))
             {
                 return new Response("The user is already joined to this board");
@@ -397,6 +396,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         /// <summary>
         /// Assigns a task to a user
+        /// Asumption: only task's assignee can assign other board member to the task
         /// </summary>
         /// <param name="userEmail">Email of the current user. Must be logged in</param>
         /// <param name="creatorEmail">Email of the board creator</param>
@@ -405,12 +405,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <param name="taskId">The task to be updated identified task ID</param>        
         /// <param name="emailAssignee">Email of the user to assign to task to</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-        /// 
-
-        // TODO throw nitzan: onlt task assignee can use this
         public Response AssignTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string emailAssignee)
         {
-            throw new NotImplementedException();
+            return UpdateTask<string>(userEmail, creatorEmail, boardName, columnOrdinal, taskId, (task) => task.Assignee = emailAssignee);
         }
 
         /// <summary>
@@ -418,7 +415,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// </summary>
         /// <param name="userEmail">The email of the user. Must be logged-in.</param>
         /// <returns>A response object with a value set to the board, instead the response should contain a error message in case of an error</returns>
-        
         public Response<IList<String>> GetBoardNames(string userEmail)
         {
             return Response<IList<String>>.FromValue(members[userEmail].Select((b) => b.Name).ToList());
