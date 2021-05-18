@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
