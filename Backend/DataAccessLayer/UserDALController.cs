@@ -10,9 +10,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     class UserDALController : DALController
     {
-        private const string MessageTableName = "Users";
+        private const string UsersTableName = "Users";
 
-        public UserDALController() : base(MessageTableName)
+        public UserDALController() : base(UsersTableName)
         {
 
         }

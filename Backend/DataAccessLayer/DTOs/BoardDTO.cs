@@ -9,30 +9,29 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 {
     internal class BoardDTO : DTO
     {
-        public const string CreatorColumnName = "Creator";
-        public const string BoardNameColumnName = "BoardName";
         public const string MaxBacklogsColumnName = "MBL";
         public const string MaxInProgressColumnName = "MIP";
         public const string MaxInDoneColumnName = "MID";
 
+
         private string _boardname;
-        public string Boardname { get => _boardname; set { _boardname = value; _controller.update(_boardname, _creator, BoardNameColumnName, value ); } }
+        public string Boardname { get => _boardname; set { _boardname = value; _controller.update(_boardname, _boardcreator, BoardNameColumnName, value ); } }
 
 
-        private string _creator;
-        public string Creator { get => _creator; set { _creator = value; _creator.update(_boardname, _creator, CreatorColumnName, value); } }
+        private string _boardcreator;
+        public string Creator { get => _boardcreator; set { _boardcreator = value; _controller.update(_boardname, _boardcreator, CreatorColumnName, value); } }
 
 
         private int _maxBackLog;
-        public int MaxBackLog { get => _maxBackLog; set { _maxBackLog = value; _maxBackLog.update(_boardname, _creator, MaxBacklogsColumnName, value); } }
+        public int MaxBackLog { get => _maxBackLog; set { _maxBackLog = value; _controller.update(_boardname, _creator, MaxBacklogsColumnName, value); } }
 
 
         private int _maxInProgress;
-        public int MaxInProgress { get => _maxInProgress; set { _maxInProgress = value; _maxInProgress.update(_boardname, _creator, MaxInProgressColumnName, value); } }
+        public int MaxInProgress { get => _maxInProgress; set { _maxInProgress = value; _controller.update(_boardname, _creator, MaxInProgressColumnName, value); } }
 
 
         private int _maxInDone;
-        public int MaxInDone { get => _maxInDone; set { _maxInDone = value; _maxInDone.update(_boardname, _creator, MaxInDoneColumnName, value); } }
+        public int MaxInDone { get => _maxInDone; set { _maxInDone = value; _controller.update(_boardname, _creator, MaxInDoneColumnName, value); } }
 
 
         private List<string> _boardMembers;
@@ -53,6 +52,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
             _maxInDone = maxInDone;
             _boardMembers = boardMembers;
             _columns = columns;
+        }
+
+        public int AddBoardMemeber(string newMemeber)
+        {
+
         }
 
     }

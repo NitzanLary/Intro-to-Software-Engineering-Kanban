@@ -9,9 +9,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     class TaskDTO : DTO
     {
-        public const string CreatorColumnName = "BoardCreator";
-        public const string BoardNameColumnName = "BoardName";
-        public const string ColumnColumnName = "Column";
+        public const string ColumnOrdinalColumnName = "Column";
         public const string IdColumnName = "id";
         public const string CreationTimeColumnName = "CreationTime";
         public const string dueDateColumnName = "DueDate";
@@ -29,8 +27,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public string Creator { get => _creator; set { _creator = value; _creator.update(_boardname, _creator, CreatorColumnName, value); } }
 
 
-        private int _column;
-        public int _column { get => _column; set { _column = value; _column.update(_boardname, _creator, ColumnColumnName, value); } }
+        private int _columnOrdinal;
+        public int ColumnOrdinal { get => _columnOrdinal; set { _columnOrdinal = value; _controller.update(_boardname, _creator, ColumnOrdinalColumnName, value); } }
 
 
         private int _maxDesc;

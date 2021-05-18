@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
@@ -23,7 +22,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
 
 
-        public bool Update(long id, string attributeName, string attributeValue)
+        public bool Update(string boardName, string creator, string attributeName, string attributeValue)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -31,7 +30,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where id={id}"
+                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where boardName = {boardName} and creator = {creator}"
                 };
                 try
                 {
@@ -56,7 +55,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
 
 
-        public bool Update(long id, string attributeName, long attributeValue)
+        public bool Update(string boardName, string creator, string attributeName, long attributeValue)
         {
             int res = -1;
             using (var connection = new SQLiteConnection(_connectionString))
@@ -64,7 +63,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where id={id}"
+                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where boardName = {boardName} and creator = {creator}"
                 };
                 try
                 {
@@ -83,13 +82,44 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return res > 0;
         }
 
-        protected List<DTO> Select()
+        public bool Update(string username, string attributeName, string attributeValue)
+        {
+            int res = -1;
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand
+                {
+                    Connection = connection,
+                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where email={username}"
+                };
+                try
+                {
+
+                    command.Parameters.Add(new SQLiteParameter(attributeName, attributeValue));
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                }
+                catch
+                {
+                    //log
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+
+            }
+            return res > 0;
+        }
+
+        protected List<DTO> Select(string query)
         {
             List<DTO> results = new List<DTO>();
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
-                command.CommandText = $"select * from {_tableName};";
+                command.CommandText = query;
                 SQLiteDataReader dataReader = null;
                 try
                 {
@@ -115,6 +145,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
             }
             return results;
+        }
+
+        protected List<DTO> Select()
+        {
+            string query = $"select * from {_tableName};";
+            return Select(query);
         }
 
         protected abstract DTO ConvertReaderToObject(SQLiteDataReader reader);
