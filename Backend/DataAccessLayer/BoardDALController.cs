@@ -1,6 +1,7 @@
 ﻿using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,5 +10,63 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     class BoardDALController : DALController
     {
+        private const string BoardTableName = "Board";
+
+        public BoardDALController() : base(BoardTableName)
+        {
+
+        }
+
+
+        public List<BoardDTO> SelectAllForums()
+        {
+            List<BoardDTO> result = Select().Cast<BoardDTO>().ToList();
+
+            return result;
+        }
+
+
+
+        public bool Insert(BoardDTO board)
+        {
+
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                int res = -1;
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                try
+                {
+                    connection.Open();
+                    command.CommandText = $"INSERT INTO {BoardTableName} ({DTO.IDColumnName} ,{BoardDTO.BoardNameColumnName}) " +
+                        $"VALUES (@idVal,@nameVal);";
+
+                    SQLiteParameter idParam = new SQLiteParameter(@"idVal", board.Id);
+                    SQLiteParameter titleParam = new SQLiteParameter(@"nameVal", board.Boardname);
+
+                    command.Parameters.Add(idParam);
+                    command.Parameters.Add(titleParam);
+                    command.Prepare();
+
+                    res = command.ExecuteNonQuery();
+                }
+                catch
+                {
+                    //log error
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+                return res > 0;
+            }
+        }
+
+        protected override DTO ConvertReaderToObject(SQLiteDataReader reader)
+        {
+            BoardDTO result = new BoardDTO(reader.GetString(0), reader.GetString(1), reader.GetInt32(2), reader.GetInt32(3), reader.GetInt32(4));
+            return result;
+
+        }
     }
 }
