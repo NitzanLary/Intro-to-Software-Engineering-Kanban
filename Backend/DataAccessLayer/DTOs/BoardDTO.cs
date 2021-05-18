@@ -35,17 +35,24 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
         public int MaxInDone { get => _maxInDone; set { _maxInDone = value; _maxInDone.update(_boardname, _creator, MaxInDoneColumnName, value); } }
 
 
+        private List<string> _boardMembers;
+        public List<string> BoardMembers { get => _boardMembers; }
+
+        private List<ColumnDTO> _columns;
+        public List<ColumnDTO> Columns { get => _columns; }
 
 
 
 
-        public BoardDTO(string creator, string boardname, int maxBackLog, int maxInProgress, int maxInDone) : base(new BoardDALController())
+        public BoardDTO(string creator, string boardname, int maxBackLog, int maxInProgress, int maxInDone, List<string> boardMembers, List<ColumnDTO> columns) : base(new BoardDALController())
         {
             _boardname = boardname;
             _creator = creator;
             _maxBackLog = maxBackLog;
             _maxInProgress = maxInProgress;
             _maxInDone = maxInDone;
+            _boardMembers = boardMembers;
+            _columns = columns;
         }
 
     }
