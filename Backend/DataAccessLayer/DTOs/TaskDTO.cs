@@ -9,13 +9,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     class TaskDTO : DTO
     {
-        public const string ColumnOrdinalColumnName = "Column";
+        public const string BoardNameColumnName = "boardName";
+        public const string CreatorColumnName = "boardCreator";
+        public const string ColumnOrdinalColumnName = "column";
         public const string IdColumnName = "id";
-        public const string CreationTimeColumnName = "CreationTime";
-        public const string dueDateColumnName = "DueDate";
-        public const string TitleColumnName = "Title";
-        public const string DescriptionColumnName = "Description";
-        public const string AsigneeColumnName = "Asignee";
+        public const string CreationTimeColumnName = "creationTime";
+        public const string dueDateColumnName = "dueDate";
+        public const string TitleColumnName = "title";
+        public const string DescriptionColumnName = "description";
+        public const string AsigneeColumnName = "asignee";
         public const string StatusColumnName = "status";
         public const string TasksNumberColumnName = "tasksNumber";
 
@@ -30,6 +32,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         private int _columnOrdinal;
         public int ColumnOrdinal { get => _columnOrdinal; set { _columnOrdinal = value; _controller.update(_boardname, _creator, ColumnOrdinalColumnName, value); } }
 
+        private string _title;
+        public string Title { get => _title; set { _controller.Update(_boardname, _creator, TitleColumnName, value; _title = value; } }
+
+        private string _description;
+        public string Description { get => _description; set { _controller.Update(_boardname, _creator,DescriptionColumnName, value); _description = value; } }
 
         private int _maxDesc;
         public int MaxInProgress { get => _maxDesc; set { _maxDesc = value; _maxDesc.update(_boardname, _creator, MaxDescColumnName, value); } }
@@ -43,7 +50,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
 
 
-        public ColumnDTO(string creator, string boardname, int maxTitle, int maxDesc, int tasksNumber) : base(new BoardDALController())
+        public ColumnDTO(string creator, string boardname, int maxTitle, int maxDesc, int tasksNumber) : base(new ColumnDALController())
         {
             _boardname = boardname;
             _creator = creator;

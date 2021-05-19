@@ -12,12 +12,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     class BoardDALController : DALController
     {
         private const string BoardsTableName = "Boards";
-        private const string TasksTableName = "Tasks";
+
         private const string BoardMembersTableName = "BoardMemebers";
+        private const string MemberColumnName = "memberEmail";
+
+
+        private ColumnDALController _columnDALController;
 
         public BoardDALController() : base(BoardsTableName)
         {
-
+            _columnDALController = new ColumnDALController();
         }
 
 
@@ -26,14 +30,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             List<BoardDTO> result = Select().Cast<BoardDTO>().ToList();
             foreach (BoardDTO b in result)
             {
-                for (int i = 0; i < b.Columns.Count; i++)
-                {
-                    string getAllTasksQuery = $"select * from {TasksTableName} " +
-                        $"where {DTO.BoardNameColumnName} = {b.Boardname} and {DTO.CreatorColumnName} = {b.Creator} " +
-                        $"and {TaskDTO.ColumnOrdinalColumnName} = {i};";
-                    b.Columns[0].Tasks = Select(getAllTasksQuery).Cast<TaskDTO>().ToList();
-                    b.Columns[0]
-                }
+                b.Columns = _columnDALController.SelectAllColumnsForBoard(b.Boardname, b.Creator);
+                b.BoardMembers = SelectAllBoardMembers(b.Boardname, b.Creator);
             }
             return result;
         }
@@ -111,10 +109,42 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         protected override DTO ConvertReaderToObject(SQLiteDataReader reader)
         {
-            if (reader.GetSchemaTable().TableName.Equals(TasksTableName))
-                return new TaskDTO();
             return new BoardDTO((long)reader.GetValue(0), reader.GetString(1));
+        }
 
+
+        protected List<string> SelectAllBoardMembers(string boardName, string creator)
+        {
+            List<string> results = new List<string>();
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                command.CommandText = $"SELECT {MemberColumnName} FROM {BoardMembersTableName} WHERE {BoardDTO.CreatorColumnName} = {creator} and {BoardDTO.BoardNameColumnName} = {boardName}";
+                SQLiteDataReader dataReader = null;
+                try
+                {
+                    connection.Open();
+                    dataReader = command.ExecuteReader();
+
+                    while (dataReader.Read())
+                    {
+                        results.Add(dataReader.GetString(0));
+
+                    }
+                }
+                finally
+                {
+                    if (dataReader != null)
+                    {
+                        dataReader.Close();
+                    }
+
+                    command.Dispose();
+                    connection.Close();
+                }
+
+            }
+            return results;
         }
     }
 }

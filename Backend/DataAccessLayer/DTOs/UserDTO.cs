@@ -7,7 +7,23 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    class UserDTO : DTO
+    internal class UserDTO : DTO
     {
+        public const string EmailColumnName = "email";
+        public const string PasswordColumnName = "password";
+
+
+        private string _email;
+        public string Email { get => _email; set { _controller.Update(_email, EmailColumnName, value); _email = value; } }
+
+        private string _password;
+        public string Password { get => _password; set { _controller.Update(_email, PasswordColumnName, value); _password = value; } }
+
+
+        public UserDTO(string email, string password) : base(new UserDALController())
+        {
+            _email = email;
+            _password = password;
+        }
     }
 }

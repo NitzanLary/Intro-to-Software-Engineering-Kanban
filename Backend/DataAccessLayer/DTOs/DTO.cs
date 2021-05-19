@@ -8,9 +8,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 {
     internal abstract class DTO
     {
-        public const string CreatorColumnName = "BoardCreator";
-        public const string BoardNameColumnName = "BoardName";
-
         protected DALController _controller;
         protected DTO(DALController controller)
         {
