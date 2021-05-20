@@ -12,7 +12,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
     {
         public const string CreatorColumnName = "boardCreator";
         public const string BoardNameColumnName = "boardName";
-        public const string TasksNumberColumnName = "tasksNumber";
+        public const string MaxTasksNumberColumnName = "maxTasks";
+        public const string ColumnOrdinalColumName = "columnOridnal";
 
         private string _boardname;
         public string Boardname { get => _boardname; set { _boardname = value; _controller.Update(_boardname, _creator, BoardNameColumnName, value); } }

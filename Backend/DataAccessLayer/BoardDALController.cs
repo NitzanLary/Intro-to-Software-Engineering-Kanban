@@ -48,14 +48,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"INSERT INTO {MessageTableName} ({DTO.foreignIDColumnName} ,{ForumDTO.ForumNameColumnName}) " +
-                        $"VALUES (@idVal,@nameVal);";
+                    command.CommandText = $"INSERT INTO {BoardsTableName} ({BoardDTO.CreatorColumnName} ,{BoardDTO.BoardNameColumnName}) " +
+                        $"VALUES (@creatorVal,@boardnameVal);";
 
-                    SQLiteParameter idParam = new SQLiteParameter(@"idVal", board.Id);
-                    SQLiteParameter titleParam = new SQLiteParameter(@"nameVal", board.Name);
+                    SQLiteParameter creatorParam = new SQLiteParameter(@"creatorVal", board.Creator);
+                    SQLiteParameter boardnameParam = new SQLiteParameter(@"boardnameVal", board.Boardname);
 
-                    command.Parameters.Add(idParam);
-                    command.Parameters.Add(titleParam);
+                    command.Parameters.Add(creatorParam);
+                    command.Parameters.Add(boardnameParam);
                     command.Prepare();
 
                     res = command.ExecuteNonQuery();
@@ -73,7 +73,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
-        public bool InsertNewBoardMember(string newMemeber)
+        public bool InsertNewBoardMember(BoardDTO board, string newMemeber)
         {
             using (var connection = new SQLiteConnection(_connectionString))
             {
@@ -82,14 +82,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"INSERT INTO {MessageTableName} ({DTO.foreignIDColumnName} ,{ForumDTO.ForumNameColumnName}) " +
-                        $"VALUES (@idVal,@nameVal);";
+                    command.CommandText = $"INSERT INTO {BoardMembersTableName} ({MemberColumnName}, {BoardDTO.BoardNameColumnName} ,{BoardDTO.CreatorColumnName}) " +
+                        $"VALUES (@creatorVal,@boardnameVal,@boardMemberVal);";
 
-                    SQLiteParameter idParam = new SQLiteParameter(@"idVal", board.Id);
-                    SQLiteParameter titleParam = new SQLiteParameter(@"nameVal", board.Name);
+                    SQLiteParameter creatorParam = new SQLiteParameter(@"creatorVal", board.Creator);
+                    SQLiteParameter boardnameParam = new SQLiteParameter(@"boardnameVal", board.Boardname);
+                    SQLiteParameter boardMemberParam = new SQLiteParameter(@"boardMemberVal", newMemeber);
 
-                    command.Parameters.Add(idParam);
-                    command.Parameters.Add(titleParam);
+                    command.Parameters.Add(creatorParam);
+                    command.Parameters.Add(boardnameParam);
+                    command.Parameters.Add(boardMemberParam);
                     command.Prepare();
 
                     res = command.ExecuteNonQuery();

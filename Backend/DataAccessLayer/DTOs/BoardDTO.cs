@@ -41,7 +41,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 
         public int AddBoardMemeber(string newMemeber)
         {
-
+            throw new NotImplementedException();
         }
 
     }

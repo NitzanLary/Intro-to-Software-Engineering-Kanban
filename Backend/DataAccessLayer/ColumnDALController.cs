@@ -33,7 +33,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return result;
         }
 
-        public bool InsertNewTask(TaskDTO board)
+        public bool InsertNewColumn(ColumnDTO column)
         {
             using (var connection = new SQLiteConnection(_connectionString))
             {
@@ -42,7 +42,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"INSERT INTO {MessageTableName} ({DTO.foreignIDColumnName} ,{ForumDTO.ForumNameColumnName}) " +
+                    command.CommandText = $"INSERT INTO {ColumnsTableName} ({ColumnDTO.foreignIDColumnName} ,{ForumDTO.ForumNameColumnName}) " +
                         $"VALUES (@idVal,@nameVal);";
 
                     SQLiteParameter idParam = new SQLiteParameter(@"idVal", board.Id);
