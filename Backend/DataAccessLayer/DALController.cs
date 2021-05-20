@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    internal abstract class DALController
+    public abstract class DALController
     {
         protected readonly string _connectionString;
         private readonly string _tableName;
@@ -18,99 +18,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "database.db"));
             this._connectionString = $"Data Source={path}; Version=3;";
             this._tableName = tableName;
-        }
-
-
-
-        public bool Update(string boardName, string creator, string attributeName, string attributeValue)
-        {
-            int res = -1;
-            using (var connection = new SQLiteConnection(_connectionString))
-            {
-                SQLiteCommand command = new SQLiteCommand
-                {
-                    Connection = connection,
-                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where boardName = {boardName} and creator = {creator}"
-                };
-                try
-                {
-
-                    command.Parameters.Add(new SQLiteParameter(attributeName, attributeValue));
-                    connection.Open();
-                    res = command.ExecuteNonQuery();
-                }
-                catch
-                {
-                    //log
-                }
-                finally
-                {
-                    command.Dispose();
-                    connection.Close();
-                }
-
-            }
-            return res > 0;
-        }
-
-
-
-        public bool Update(string boardName, string creator, string attributeName, long attributeValue)
-        {
-            int res = -1;
-            using (var connection = new SQLiteConnection(_connectionString))
-            {
-                SQLiteCommand command = new SQLiteCommand
-                {
-                    Connection = connection,
-                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where boardName = {boardName} and creator = {creator}"
-                };
-                try
-                {
-                    command.Parameters.Add(new SQLiteParameter(attributeName, attributeValue));
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                }
-                finally
-                {
-                    command.Dispose();
-                    connection.Close();
-
-                }
-
-            }
-            return res > 0;
-        }
-
-        public bool Update(string username, string attributeName, string attributeValue)
-        {
-            int res = -1;
-            using (var connection = new SQLiteConnection(_connectionString))
-            {
-                SQLiteCommand command = new SQLiteCommand
-                {
-                    Connection = connection,
-                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where email={username}"
-                };
-                try
-                {
-
-                    command.Parameters.Add(new SQLiteParameter(attributeName, attributeValue));
-                    connection.Open();
-                    res = command.ExecuteNonQuery();
-                }
-                catch
-                {
-                    //log
-                }
-                finally
-                {
-                    command.Dispose();
-                    connection.Close();
-                }
-
-            }
-            return res > 0;
         }
 
         protected List<DTO> Select(string query)
@@ -156,7 +63,136 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         protected abstract DTO ConvertReaderToObject(SQLiteDataReader reader);
 
-        public bool Delete(DTO DTOObj)
+        public bool Update(string firstKey, string firstKeyColumnName, string secondKey, string secondKeyColumnName, string attributeName, string attributeValue)
+        {
+            int res = -1;
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand
+                {
+                    Connection = connection,
+                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeValue} " +
+                    $"where {firstKeyColumnName} = '{firstKey}' and {secondKeyColumnName} = '{secondKey}'"
+                };
+                try
+                {
+
+                    command.Parameters.Add(new SQLiteParameter(attributeName, attributeValue));
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+
+            }
+            return res > 0;
+        }
+        public bool Update(string firstKey, string firstKeyColumnName, string secondKey, string secondKeyColumnName
+            , int thirdKey, string thirdKeyColumnName, string attributeName, string attributeValue)
+        {
+            int res = -1;
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand
+                {
+                    Connection = connection,
+                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeValue} " +
+                    $"where {firstKeyColumnName} = '{firstKey}' and {secondKeyColumnName} = '{secondKey}'" +
+                    $" and {thirdKeyColumnName} = '{thirdKey}'"
+                };
+                try
+                {
+
+                    command.Parameters.Add(new SQLiteParameter(attributeName, attributeValue));
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+
+            }
+            return res > 0;
+        }
+
+        public bool Update(string firstKey, string firstKeyColumnName, string secondKey, string secondKeyColumnName
+            , int thirdKey, string thirdKeyColumnName, string attributeName, int attributeValue)
+        {
+            int res = -1;
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand
+                {
+                    Connection = connection,
+                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeValue} " +
+                    $"where {firstKeyColumnName} = '{firstKey}' and {secondKeyColumnName} = '{secondKey}'" +
+                    $" and {thirdKeyColumnName} = '{thirdKey}'"
+                };
+                try
+                {
+
+                    command.Parameters.Add(new SQLiteParameter(attributeName, attributeValue));
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+
+            }
+            return res > 0;
+        }
+        public bool Update(string firstKey, string firstKeyColumnName, string attributeName, string attributeValue)
+        {
+            int res = -1;
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand
+                {
+                    Connection = connection,
+                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeName} where {firstKeyColumnName}='{firstKey}'"
+                };
+                try
+                {
+                    command.Parameters.Add(new SQLiteParameter(attributeName, attributeValue));
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+
+                }
+            }
+            return res > 0;
+        }
+
+
+        public bool Delete(string query)
         {
             int res = -1;
 
@@ -165,7 +201,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 var command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"delete from {_tableName} where id={DTOObj.Id}"
+                    CommandText = query
                 };
                 try
                 {

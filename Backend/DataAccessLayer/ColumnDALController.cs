@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    internal class ColumnDALController : DALController
+    public class ColumnDALController : DALController
     {
         private const string ColumnsTableName = "Columns";
 
@@ -23,7 +23,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         internal List<ColumnDTO> SelectAllColumnsForBoard(string boardname, string creator)
         {
-            string query = $"SELECT * FROM {ColumnsTableName} WHERE {ColumnDTO.CreatorColumnName} = {creator} and {ColumnDTO.BoardNameColumnName} = {boardname}";
+            string query = $"SELECT * FROM {ColumnsTableName} " +
+                $"WHERE {ColumnDTO.CreatorColumnName} = '{creator}' and {ColumnDTO.BoardNameColumnName} =  '{boardname}'" +
+                $" ORDER BY {ColumnDTO.ColumnOrdinalColumName}";
             List<ColumnDTO> result = Select(query).Cast<ColumnDTO>().ToList();
             int columnOrdinal = 0;
             foreach (ColumnDTO c in result)
@@ -62,9 +64,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
                     res = command.ExecuteNonQuery();
                 }
-                catch
+                catch (Exception e)
                 {
                     //log error
+                    Console.WriteLine(e.Message);
                 }
                 finally
                 {
@@ -79,5 +82,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             return new ColumnDTO(reader.GetString(0), reader.GetString(1), reader.GetInt32(2), reader.GetInt32(3), null);
         }
+
+
     }
 }

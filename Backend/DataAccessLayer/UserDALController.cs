@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    class UserDALController : DALController
+    public class UserDALController : DALController
     {
         private const string UsersTableName = "Users";
 
@@ -27,7 +27,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
 
 
-        public bool Insert(UserDTO user)
+        public bool InsertNewUser(UserDTO user)
         {
 
             using (var connection = new SQLiteConnection(_connectionString))
@@ -49,9 +49,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
                     res = command.ExecuteNonQuery();
                 }
-                catch
+                catch (Exception e)
                 {
                     //log error
+                    Console.WriteLine(e.Message);
                 }
                 finally
                 {

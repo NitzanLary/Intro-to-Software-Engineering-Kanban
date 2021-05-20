@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 {
-    internal abstract class DTO
+    public abstract class DTO
     {
         protected DALController _controller;
         protected DTO(DALController controller)

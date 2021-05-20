@@ -4,16 +4,15 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
-using System.Data.SQLite;
 using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    class BoardDALController : DALController
+    public class BoardDALController : DALController
     {
         private const string BoardsTableName = "Boards";
 
-        private const string BoardMembersTableName = "BoardMemebers";
+        private const string BoardMembersTableName = "BoardMembers";
         private const string MemberColumnName = "memberEmail";
 
 
@@ -43,6 +42,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
             using (var connection = new SQLiteConnection(_connectionString))
             {
+                Console.WriteLine(_connectionString);
                 int res = -1;
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 try
@@ -60,9 +60,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
                     res = command.ExecuteNonQuery();
                 }
-                catch
+                catch (Exception e)
                 {
                     //log error
+                    Console.WriteLine(e.Message);
                 }
                 finally
                 {
@@ -121,7 +122,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 SQLiteCommand command = new SQLiteCommand(null, connection);
-                command.CommandText = $"SELECT {MemberColumnName} FROM {BoardMembersTableName} WHERE {BoardDTO.CreatorColumnName} = {creator} and {BoardDTO.BoardNameColumnName} = {boardName}";
+                command.CommandText = $"SELECT {MemberColumnName} FROM {BoardMembersTableName} WHERE {BoardDTO.CreatorColumnName} = '{creator}' and {BoardDTO.BoardNameColumnName} = '{boardName}'";
                 SQLiteDataReader dataReader = null;
                 try
                 {
@@ -147,6 +148,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
             }
             return results;
+        }
+
+
+        public bool Delete(BoardDTO board)
+        {
+            string query = $"DELETE FROM {BoardsTableName} WHERE {BoardDTO.BoardNameColumnName} = '{board.Boardname}' " +
+                $"and {BoardDTO.CreatorColumnName} = '{board.Creator}'";
+            return Delete(query);
         }
     }
 }

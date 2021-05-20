@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    class TaskDALController : DALController
+    public class TaskDALController : DALController
     {
         private const string TasksTableName = "Tasks";
 
@@ -39,8 +39,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 {
                     connection.Open();
                     command.CommandText = $"INSERT INTO {TasksTableName} ({TaskDTO.IdColumnName} ,{TaskDTO.ColumnOrdinalColumnName}," +
-                        $" {TaskDTO.CreationTimeColumnName}, {TaskDTO.dueDateColumnName}, {TaskDTO.TitleColumnName}, {TaskDTO.DescriptionColumnName}), " +
-                        $"{TaskDTO.AssigneeColumnName}, {TaskDTO.BoardNameColumnName}, {TaskDTO.CreatorColumnName} " +
+                        $" {TaskDTO.CreationTimeColumnName}, {TaskDTO.dueDateColumnName}, {TaskDTO.TitleColumnName}, {TaskDTO.DescriptionColumnName}, " +
+                        $"{TaskDTO.AssigneeColumnName}, {TaskDTO.BoardNameColumnName}, {TaskDTO.CreatorColumnName}) " +
                         $"VALUES (@idVal, @columnOrdinalVal, @creationTimeVal, @dueTimeVal, @titleVal, @descriptionVal, @assigneeVal, " +
                         $"@boardNameVal, @boardCreatorVal);";
 
@@ -68,9 +68,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
                     res = command.ExecuteNonQuery();
                 }
-                catch
+                catch (Exception e)
                 {
                     //log error
+                    Console.WriteLine(e.Message);
                 }
                 finally
                 {
@@ -81,11 +82,20 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
+        public bool Delete(TaskDTO task)
+        {
+            string query = $"DELETE FROM {TasksTableName} WHERE {TaskDTO.BoardNameColumnName} = '{task.Boardname}' " +
+                $"and {TaskDTO.CreatorColumnName} = '{task.Creator}' and {TaskDTO.IdColumnName} = '{task.TaskID}'";
+            return Delete(query);
+        }
+
 
         protected override DTO ConvertReaderToObject(SQLiteDataReader reader)
         {
             return new TaskDTO(reader.GetString(7), reader.GetString(8), reader.GetInt32(1), reader.GetInt32(0),
                     reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetString(3), reader.GetString(2));
         }
+
+
     }
 }

@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 {
-    internal class BoardDTO : DTO
+    public class BoardDTO : DTO
     {
         public const string CreatorColumnName = "boardCreator";
         public const string BoardNameColumnName = "boardName";
 
 
         private string _boardname;
-        public string Boardname { get => _boardname; set { _controller.Update(_boardname, _creator, BoardNameColumnName, value ); _boardname = value; } }
+        public string Boardname { get => _boardname; set { _controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, BoardNameColumnName, value ); _boardname = value; } }
 
 
         private string _creator;
-        public string Creator { get => _creator; set { _controller.Update(_boardname, _creator, CreatorColumnName, value); _creator = value; } }
+        public string Creator { get => _creator; set { _controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, CreatorColumnName, value); _creator = value; } }
 
 
 

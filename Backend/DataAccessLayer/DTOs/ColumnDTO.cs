@@ -8,26 +8,27 @@ using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
 
 namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
-    internal class ColumnDTO : DTO
+    public class ColumnDTO : DTO
     {
         public const string CreatorColumnName = "boardCreator";
         public const string BoardNameColumnName = "boardName";
         public const string MaxTasksNumberColumnName = "maxTasks";
-        public const string ColumnOrdinalColumName = "columnOridnal";
+        public const string ColumnOrdinalColumName = "columnOrdinal";
 
         private string _boardname;
-        public string Boardname { get => _boardname; set { _boardname = value; _controller.Update(_boardname, _creator, BoardNameColumnName, value); } }
+        public string Boardname { get => _boardname; set { _boardname = value; _controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _columnOrdinal, ColumnOrdinalColumName, BoardNameColumnName, value); } }
 
 
         private string _creator;
-        public string Creator { get => _creator; set { _creator = value; _controller.Update(_boardname, _creator, CreatorColumnName, value); } }
-
-
-        private int _maxTasksNumber;
-        public int MaxTasksNumber { get => _maxTasksNumber; set { _maxTasksNumber = value; _controller.Update(_boardname, _creator, MaxTasksNumberColumnName, value); } }
+        public string Creator { get => _creator; set { _creator = value; _controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _columnOrdinal, ColumnOrdinalColumName, CreatorColumnName, value); } }
 
         private int _columnOrdinal;
         public int ColumnOrdinal { get => _columnOrdinal; }
+
+        private int _maxTasksNumber;
+        public int MaxTasksNumber { get => _maxTasksNumber; set { _maxTasksNumber = value; _controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _columnOrdinal, ColumnOrdinalColumName, MaxTasksNumberColumnName, value); } }
+
+        
 
 
 
