@@ -36,7 +36,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
 
         private string _title;
-        public string Title { get => _title; set { _controller.Update(_boardname, _creator, TitleColumnName, value; _title = value; } }
+        public string Title { get => _title; set { _controller.Update(_boardname, _creator, TitleColumnName, value); _title = value; } }
 
 
         private string _description;
