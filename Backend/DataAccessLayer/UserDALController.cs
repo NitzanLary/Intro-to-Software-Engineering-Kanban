@@ -37,14 +37,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"INSERT INTO {MessageTableName} ({DTO.IDColumnName} ,{ForumDTO.ForumNameColumnName}) " +
-                        $"VALUES (@idVal,@nameVal);";
+                    command.CommandText = $"INSERT INTO {UsersTableName} ({UserDTO.EmailColumnName} ,{UserDTO.PasswordColumnName}) " +
+                        $"VALUES (@emailVal,@passwordVal);";
 
-                    SQLiteParameter idParam = new SQLiteParameter(@"idVal", user.Id);
-                    SQLiteParameter titleParam = new SQLiteParameter(@"nameVal", user.Name);
+                    SQLiteParameter emailParam = new SQLiteParameter(@"emailVal", user.Email);
+                    SQLiteParameter passwordParam = new SQLiteParameter(@"passwordVal", user.Password);
 
-                    command.Parameters.Add(idParam);
-                    command.Parameters.Add(titleParam);
+                    command.Parameters.Add(emailParam);
+                    command.Parameters.Add(passwordParam);
                     command.Prepare();
 
                     res = command.ExecuteNonQuery();
@@ -64,9 +64,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         protected override DTO ConvertReaderToObject(SQLiteDataReader reader)
         {
-            UserDTO result = new UserDTO((long)reader.GetValue(0), reader.GetString(1));
-            return result;
-
+            return new UserDTO(reader.GetString(0), reader.GetString(1));
         }
     }
 }

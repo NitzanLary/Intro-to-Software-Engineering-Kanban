@@ -38,14 +38,32 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"INSERT INTO {MessageTableName} ({DTO.foreignIDColumnName} ,{ForumDTO.ForumNameColumnName}) " +
-                        $"VALUES (@idVal,@nameVal);";
+                    command.CommandText = $"INSERT INTO {TasksTableName} ({TaskDTO.IdColumnName} ,{TaskDTO.ColumnOrdinalColumnName}," +
+                        $" {TaskDTO.CreationTimeColumnName}, {TaskDTO.dueDateColumnName}, {TaskDTO.TitleColumnName}, {TaskDTO.DescriptionColumnName}), " +
+                        $"{TaskDTO.AssigneeColumnName}, {TaskDTO.BoardNameColumnName}, {TaskDTO.CreatorColumnName} " +
+                        $"VALUES (@idVal, @columnOrdinalVal, @creationTimeVal, @dueTimeVal, @titleVal, @descriptionVal, @assigneeVal, " +
+                        $"@boardNameVal, @boardCreatorVal);";
 
-                    SQLiteParameter idParam = new SQLiteParameter(@"idVal", board.Id);
-                    SQLiteParameter titleParam = new SQLiteParameter(@"nameVal", board.Name);
+                    SQLiteParameter idParam = new SQLiteParameter(@"idVal", task.TaskID);
+                    SQLiteParameter columnOrdParam = new SQLiteParameter(@"columnOrdinalVal", task.ColumnOrdinal);
+                    SQLiteParameter creationTimeParam = new SQLiteParameter(@"creationTimeVal", task.CreationTime);
+                    SQLiteParameter dueTimeParam = new SQLiteParameter(@"dueTimeVal", task.DueTime);
+                    SQLiteParameter titleParam = new SQLiteParameter(@"titleVal", task.Title);
+                    SQLiteParameter descriptionParam = new SQLiteParameter(@"descriptionVal", task.Description);
+                    SQLiteParameter assigneeParam = new SQLiteParameter(@"assigneeVal", task.Assignee);
+                    SQLiteParameter boardNameParam = new SQLiteParameter(@"boardNameVal", task.Boardname);
+                    SQLiteParameter boardCreatorParam = new SQLiteParameter(@"boardCreatorVal", task.Creator);
+
 
                     command.Parameters.Add(idParam);
+                    command.Parameters.Add(columnOrdParam);
+                    command.Parameters.Add(creationTimeParam);
+                    command.Parameters.Add(dueTimeParam);
                     command.Parameters.Add(titleParam);
+                    command.Parameters.Add(descriptionParam);
+                    command.Parameters.Add(assigneeParam);
+                    command.Parameters.Add(boardNameParam);
+                    command.Parameters.Add(boardCreatorParam);
                     command.Prepare();
 
                     res = command.ExecuteNonQuery();
@@ -66,8 +84,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         protected override DTO ConvertReaderToObject(SQLiteDataReader reader)
         {
-            //return new TaskDTO((long)reader.GetValue(0), reader.GetString(1));
-            throw new NotImplementedException();
+            return new TaskDTO(reader.GetString(7), reader.GetString(8), reader.GetInt32(1), reader.GetInt32(0),
+                    reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetString(3), reader.GetString(2));
         }
     }
 }

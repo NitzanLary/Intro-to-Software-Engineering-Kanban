@@ -31,7 +31,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 
 
 
-        public BoardDTO(string creator, string boardname, int maxBackLog, int maxInProgress, int maxInDone, List<string> boardMembers, List<ColumnDTO> columns) : base(new BoardDALController())
+        public BoardDTO(string creator, string boardname, List<string> boardMembers, List<ColumnDTO> columns) : base(new BoardDALController())
         {
             _boardname = boardname;
             _creator = creator;

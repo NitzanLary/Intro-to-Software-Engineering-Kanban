@@ -111,7 +111,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         protected override DTO ConvertReaderToObject(SQLiteDataReader reader)
         {
-            return new BoardDTO((long)reader.GetValue(0), reader.GetString(1));
+            return new BoardDTO(reader.GetString(0), reader.GetString(1), null, null);
         }
 
 

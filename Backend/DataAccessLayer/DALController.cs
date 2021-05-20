@@ -153,6 +153,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return Select(query);
         }
 
+
         protected abstract DTO ConvertReaderToObject(SQLiteDataReader reader);
 
         public bool Delete(DTO DTOObj)

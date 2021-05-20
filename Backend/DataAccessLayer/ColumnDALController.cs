@@ -42,14 +42,22 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"INSERT INTO {ColumnsTableName} ({ColumnDTO.foreignIDColumnName} ,{ForumDTO.ForumNameColumnName}) " +
-                        $"VALUES (@idVal,@nameVal);";
+                    command.CommandText = $"INSERT INTO {ColumnsTableName} ({ColumnDTO.CreatorColumnName}" +
+                        $"               ,{ColumnDTO.BoardNameColumnName}, {ColumnDTO.ColumnOrdinalColumName}, {ColumnDTO.MaxTasksNumberColumnName}) " +
+                        $"VALUES (@boardCreatorVal, @boardNameVal, @columnOrdinalVal, @maxTasksVal);";
 
-                    SQLiteParameter idParam = new SQLiteParameter(@"idVal", board.Id);
-                    SQLiteParameter titleParam = new SQLiteParameter(@"nameVal", board.Name);
+                    SQLiteParameter creatorParam = new SQLiteParameter(@"boardCreatorVal", column.Creator);
+                    SQLiteParameter boardNameParam = new SQLiteParameter(@"boardNameVal", column.Boardname);
+                    SQLiteParameter columnOrdParam = new SQLiteParameter(@"columnOrdinalVal", column.ColumnOrdinal);
+                    SQLiteParameter maxTasksParm = new SQLiteParameter(@"maxTasksVal", column.MaxTasksNumber);
 
-                    command.Parameters.Add(idParam);
-                    command.Parameters.Add(titleParam);
+
+                    command.Parameters.Add(creatorParam);
+                    command.Parameters.Add(boardNameParam);
+                    command.Parameters.Add(columnOrdParam);
+                    command.Parameters.Add(maxTasksParm);
+
+
                     command.Prepare();
 
                     res = command.ExecuteNonQuery();
@@ -68,8 +76,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
 
         protected override DTO ConvertReaderToObject(SQLiteDataReader reader)
-        { 
-            return new TaskDTO((long)reader.GetValue(0), reader.GetString(1));
+        {
+            return new ColumnDTO(reader.GetString(0), reader.GetString(1), reader.GetInt32(2), reader.GetInt32(3), null);
         }
     }
 }

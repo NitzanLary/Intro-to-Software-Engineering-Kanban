@@ -24,7 +24,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
 
         private int _maxTasksNumber;
-        public int MaxTasksNumber { get => _maxTasksNumber; set { _maxTasksNumber = value; _controller.Update(_boardname, _creator, TasksNumberColumnName, value); } }
+        public int MaxTasksNumber { get => _maxTasksNumber; set { _maxTasksNumber = value; _controller.Update(_boardname, _creator, MaxTasksNumberColumnName, value); } }
+
+        private int _columnOrdinal;
+        public int ColumnOrdinal { get => _columnOrdinal; }
+
+
+
 
 
         private List<TaskDTO> _tasks;
@@ -33,12 +39,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
 
 
-        public ColumnDTO(string creator, string boardname, int maxTitle, int maxDesc, int tasksNumber, List<TaskDTO> tasks) : base(new ColumnDALController())
-            {
-                _boardname = boardname;
-                _creator = creator;
-                _maxTasksNumber = tasksNumber;
-                _tasks = tasks;
-            }
+        public ColumnDTO(string creator, string boardname, int columnOrdinal, int maxTasks, List<TaskDTO> tasks) : base(new ColumnDALController())
+        {
+            _creator = creator;
+            _boardname = boardname;
+            _columnOrdinal = columnOrdinal;
+            _maxTasksNumber = maxTasks;
+            _tasks = tasks;
+
+        }
     }
 }
