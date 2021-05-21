@@ -71,15 +71,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return new Response(e.Message);
             }
             
-                    //return new Response();
-            //if (columnOrdinal == 0)
-            //    MaxBacklogs = limit;
-            //if (columnOrdinal == 1)
-            //    MaxInProgress = limit;
-            //if (columnOrdinal == 2)
-            //    MaxDone = limit;
-            return new Response();
-        }
+//                    //return new Response();
+//            //if (columnOrdinal == 0)
+//            //    MaxBacklogs = limit;
+//            //if (columnOrdinal == 1)
+//            //    MaxInProgress = limit;
+//            //if (columnOrdinal == 2)
+//            //    MaxDone = limit;
+//            return new Response();
+//        }
 
         public Response<int> GetColumnLimit(int columnOrdinal)
         {
@@ -98,7 +98,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return Response<string>.FromValue("done");
             return Response<string>.FromError("there is no such column number");
 
-        }
+//        }
 
         internal Response<Task> AddTask(DateTime dueDate, string title, string description, string userEmail)
         {

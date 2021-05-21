@@ -1,23 +1,23 @@
-﻿using IntroSE.Kanban.Backend.ServiceLayer;
-using log4net;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿//using IntroSE.Kanban.Backend.ServiceLayer;
+//using log4net;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Reflection;
+//using System.Text;
+//using System.Threading.Tasks;
 
-namespace IntroSE.Kanban.Backend.BusinessLayer
-{
-    class BoardController
-    {
+//namespace IntroSE.Kanban.Backend.BusinessLayer
+//{
+//    class BoardController
+//    {
 
                         // email creator            boardName 
         private Dictionary<string, Dictionary<string, Board>> boards;
         //             email members,  board name
         private Dictionary<string, HashSet<Board>> members;
 
-        private readonly int DONE_COLUMN;
+//        private readonly int DONE_COLUMN;
 
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
