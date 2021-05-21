@@ -34,8 +34,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             {
                 if (value < DateTime.Now)
                     throw new ArgumentException("Invalid Date");
-                //if (persisted)
-                //    dto.DueDate = value;
+                if (persisted)
+                    dto.DueTime = value.ToString();
                 dueDate = value;
             }
         }
@@ -102,7 +102,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public Task(TaskDTO taskDTO)
         {
             id = taskDTO.TaskID;
-            //DueDate = taskDTO.DueTime;
+            DueDate = DateTime.Parse(taskDTO.DueTime); // TODO: check if this OK?
             Title = taskDTO.Title;
             Description = taskDTO.Description;
             Assignee = taskDTO.Assignee;
