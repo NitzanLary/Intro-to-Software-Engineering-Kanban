@@ -3,6 +3,7 @@ using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -66,22 +67,23 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             {
                 Columns[columnOrdinal].MaxTasks = limit;
             }
-            catch(ArgumentException e)
+            catch (ArgumentException e)
             {
                 return new Response(e.Message);
             }
+        
             
-                    //return new Response();
-            //if (columnOrdinal == 0)
-            //    MaxBacklogs = limit;
-            //if (columnOrdinal == 1)
-            //    MaxInProgress = limit;
-            //if (columnOrdinal == 2)
-            //    MaxDone = limit;
+//                    //return new Response();
+//            //if (columnOrdinal == 0)
+//            //    MaxBacklogs = limit;
+//            //if (columnOrdinal == 1)
+//            //    MaxInProgress = limit;
+//            //if (columnOrdinal == 2)
+//            //    MaxDone = limit;
             return new Response();
-        }
+    }
 
-        public Response<int> GetColumnLimit(int columnOrdinal)
+    public Response<int> GetColumnLimit(int columnOrdinal)
         {
             if (columnOrdinal > 2 || columnOrdinal < 0)
                 return Response<int>.FromError("there is no such column number");

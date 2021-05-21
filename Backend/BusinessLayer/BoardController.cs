@@ -12,7 +12,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
     class BoardController
     {
 
-                        // email creator            boardName 
+        // email creator            boardName 
         private Dictionary<string, Dictionary<string, Board>> boards;
         //             email members,  board name
         private Dictionary<string, HashSet<Board>> members;
