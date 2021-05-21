@@ -16,11 +16,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public const string ColumnOrdinalColumName = "columnOrdinal";
 
         private string _boardname;
-        public string Boardname { get => _boardname; set { _boardname = value; _controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _columnOrdinal, ColumnOrdinalColumName, BoardNameColumnName, value); } }
+        public string Boardname { get => _boardname; set { if (_controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _columnOrdinal, ColumnOrdinalColumName, BoardNameColumnName, value)) { _boardname = value; } } }
 
 
         private string _creator;
-        public string Creator { get => _creator; set { _creator = value; _controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _columnOrdinal, ColumnOrdinalColumName, CreatorColumnName, value); } }
+        public string Creator { get => _creator; set { if (_controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _columnOrdinal, ColumnOrdinalColumName, CreatorColumnName, value)) {_creator = value; } } }
 
         private int _columnOrdinal;
         public int ColumnOrdinal { get => _columnOrdinal; }

@@ -1,8 +1,10 @@
 ﻿using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,6 +12,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     public class UserDALController : DALController
     {
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+
         private const string UsersTableName = "Users";
 
         public UserDALController() : base(UsersTableName)
@@ -52,7 +57,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 catch (Exception e)
                 {
                     //log error
-                    Console.WriteLine(e.Message);
+                    log.Error(e.Message);
+                    throw;
                 }
                 finally
                 {
@@ -94,7 +100,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 catch (Exception e)
                 {
                     //log error
-                    Console.WriteLine(e.Message);
+                    log.Error(e.Message);
+                    throw;
                 }
                 finally
                 {

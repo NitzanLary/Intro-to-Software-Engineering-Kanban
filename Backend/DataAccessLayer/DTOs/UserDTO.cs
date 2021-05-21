@@ -14,10 +14,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
 
         private string _email;
-        public string Email { get => _email; set { _controller.Update(_email, EmailColumnName, EmailColumnName, value); _email = value; } }
+        public string Email { get => _email; set { if (_controller.Update(_email, EmailColumnName, EmailColumnName, value)) { _email = value; } } }
 
         private string _password;
-        public string Password { get => _password; set { _controller.Update(_email, EmailColumnName, PasswordColumnName, value); _password = value; } }
+        public string Password { get => _password; set { if (_controller.Update(_email, EmailColumnName, PasswordColumnName, value)) { _password = value; } } }
 
 
         public UserDTO(string email, string password) : base(new UserDALController())

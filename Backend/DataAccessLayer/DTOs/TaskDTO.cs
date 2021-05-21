@@ -20,38 +20,38 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public const string AssigneeColumnName = "assignee";
 
         private string _boardname;
-        public string Boardname { get => _boardname; set { _boardname = value; _controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, BoardNameColumnName, value); } }
+        public string Boardname { get => _boardname; set { if (_controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, BoardNameColumnName, value)) { _boardname = value; } } }
 
 
         private string _creator;
-        public string Creator { get => _creator; set { _creator = value; _controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, CreatorColumnName, value); } }
+        public string Creator { get => _creator; set { if (_controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, CreatorColumnName, value)) { _creator = value; } } }
 
 
         private int _columnOrdinal;
-        public int ColumnOrdinal { get => _columnOrdinal; set { _columnOrdinal = value; _controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, ColumnOrdinalColumnName, value); } }
+        public int ColumnOrdinal { get => _columnOrdinal; set { if (_controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, ColumnOrdinalColumnName, value)) { _columnOrdinal = value; } } }
 
 
         private int _taskID;
-        public int TaskID { get => _taskID; set { _taskID = value; _controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, IdColumnName, value); } }
+        public int TaskID { get => _taskID; set { if (_controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, IdColumnName, value)) { _taskID = value; } } }
 
 
         private string _title;
-        public string Title { get => _title; set { _controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, TitleColumnName, value); _title = value; } }
+        public string Title { get => _title; set { if (_controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, TitleColumnName, value)) { _title = value; } } }
 
 
         private string _description;
-        public string Description { get => _description; set { _controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, DescriptionColumnName, value); _description = value; } }
+        public string Description { get => _description; set { if (_controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, DescriptionColumnName, value)) { _description = value; } } }
 
 
         private string _assignee;
-        public string Assignee { get => _assignee; set { _assignee = value; _controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, AssigneeColumnName, value); } }
+        public string Assignee { get => _assignee; set { if (_controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, AssigneeColumnName, value)) { _assignee = value; } } }
 
         private string _dueTime;
-        public string DueTime { get => _dueTime; set { _dueTime = value; _controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, _dueTime, value); } }
+        public string DueTime { get => _dueTime; set { if (_controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, _dueTime, value)) { _dueTime = value; } } }
 
 
         private string _creationTime;
-        public string CreationTime { get => _creationTime; set { _creationTime = value; _controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, _creationTime, value); } }
+        public string CreationTime { get => _creationTime; set { if (_controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, _creationTime, value)) { _creationTime = value; } } }
 
 
 

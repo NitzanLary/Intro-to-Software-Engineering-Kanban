@@ -1,9 +1,11 @@
 ﻿using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,6 +13,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 {
     public abstract class DALController
     {
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         protected readonly string _connectionString;
         private readonly string _tableName;
         public DALController(string tableName)
@@ -38,6 +42,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                         results.Add(ConvertReaderToObject(dataReader));
 
                     }
+                }
+                catch(Exception e)
+                {
+                    log.Error(e.Message);
+                    throw;
+                    
                 }
                 finally
                 {
@@ -85,7 +95,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    log.Error(e.Message);
+                    throw;
                 }
                 finally
                 {
@@ -121,7 +132,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    log.Error(e.Message);
+                    throw;
                 }
                 finally
                 {
@@ -157,7 +169,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    log.Error(e.Message);
+                    throw;
                 }
                 finally
                 {
@@ -187,7 +200,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    log.Error(e.Message);
+                    throw;
                 }
                 finally
                 {
@@ -218,6 +232,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     connection.Open();
                     res = command.ExecuteNonQuery();
                 }
+                catch(Exception e)
+                {
+                    log.Error(e.Message);
+                    throw;
+                }
                 finally
                 {
                     command.Dispose();
@@ -232,36 +251,3 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 }
 
 
-//    private SQLiteConnection GetConnection()
-//        {
-//            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "database.db"));
-
-//            string connectionString = $"Data Source={path}; Version=3";
-//            return new SQLiteConnection(connectionString);
-
-//        }
-
-//        const string messageTableNAme = "tablename";
-//        const string IDColumnName = "ID";
-//        - using
-//        - SQLiteCommand command = new SQLiteCommand(null, connection);
-//        int res = -1;
-//        try{
-//            command.CommandText = $"INSERT INTO {tablename} ({IDColumn},...)"+
-//            $"VALUES (@idVal,...);"
-//            SQLiteParameter idParam = new SQLiteParameter(@"idVal", 1);
-
-//            SQLiteCommand.Paramenter.Add(idParam);
-//            command.Prepare();
-
-//            connection.Open();
-//            res = SQLiteCommand.ExcecuteNonQuery(); (ששאילתת כתיבה)
-//            }
-//    catch (Exception e){
-//        log error
-//    }finally
-//{
-//    command.Dispose()
-//    connecton.Close();
-//}
-//}

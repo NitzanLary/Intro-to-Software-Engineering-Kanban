@@ -14,11 +14,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 
 
         private string _boardname;
-        public string Boardname { get => _boardname; set { _controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, BoardNameColumnName, value ); _boardname = value; } }
+        public string Boardname { get => _boardname; set { if (_controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, BoardNameColumnName, value)) { _boardname = value; } } }
 
 
         private string _creator;
-        public string Creator { get => _creator; set { _controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, CreatorColumnName, value); _creator = value; } }
+        public string Creator { get => _creator; set { if (_controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, CreatorColumnName, value)) { _creator = value; } } }
 
 
 
