@@ -1,4 +1,5 @@
 ﻿using IntroSE.Kanban.Backend.ServiceLayer;
+using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             private set => name = Name;
         }
 
+        private string creator;
+        public string Creator
+        {
+            get => creator;
+            private set => creator = value;
+        }
+
 
         private readonly List<Column> columns; // backlogs , inProgress, done (generic updatable)
         public List<Column> Columns
@@ -26,21 +34,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             get => columns;
         }
 
-        public Board(string name)
+        public Board(string name, String creator)
         {
             Name = name;
+            Creator = creator;
             columns = new List<Column>(3);
             for (int i = 0; i < 3; i++)
                 columns[i] = new Column();
-            //this.name = name;
-            //this.MaxBacklogs = -1;
-            //this.MaxInProgress = -1;
-            //this.MaxDone = -1;
-            //this.columns = new List<Dictionary<int,Task>>();
-            //for (int i=0; i<3; i++)
-            //{
-            //    this.columns.Add(new Dictionary<int, Task>());
-            //}
+        }
+
+        public Board(BoardDTO boardDTO)
+        {
+            Name = boardDTO.Boardname;
+            Creator = boardDTO.Creator;
+            columns = boardDTO.Columns.Select((col) => new Column(col)).ToList();
         }
 
         // pre condition: columnOrdinal < DONE_COLUMN

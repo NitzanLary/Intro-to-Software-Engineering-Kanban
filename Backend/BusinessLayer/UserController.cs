@@ -8,6 +8,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer
 {
@@ -23,6 +24,26 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             pc = new PasswordController();
             users = new Dictionary<string, User>();
+        }
+
+        public Response<List<User>> LoadDate()
+        {
+            List<User> curr_users = new List<User>();
+            try
+            {
+                List<UserDTO> userDTOs = new UserDALController().SelectAllUsers();
+                foreach(UserDTO dto in userDTOs)
+                {
+                    User user = new(dto);
+                    users.Add(dto.Email, user);
+                    curr_users.Add(user);
+                }
+            }
+            catch(Exception e)
+            {
+                return Response<List<User>>.FromError(e.Message);
+            }
+            return Response<List<User>>.FromValue(curr_users);
         }
 
         /// <summary>        
