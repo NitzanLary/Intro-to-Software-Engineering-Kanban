@@ -29,7 +29,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         ///         You should call this function when the program starts. </summary>
         public Response LoadData()
         {
-            throw new NotImplementedException();
+            Response<List<BusinessLayer.User>> r = userController.LoadDate();
+            WriteToLog(r, "");
+            r.Value.ForEach(user => boardController.addNewUserToMembers(user.Email));
+            Response r2 = boardController.LoadData();
+            WriteToLog(r2, "Loaded data successfully");
+            return r2;
         }
 
         ///<summary>Removes all persistent data.</summary>

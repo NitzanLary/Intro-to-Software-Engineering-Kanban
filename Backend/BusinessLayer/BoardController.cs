@@ -6,6 +6,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.DataAccessLayer;
+using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer
 {
@@ -26,6 +28,37 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             boards = new Dictionary<string, Dictionary<string, Board>>();
             members = new Dictionary<string, HashSet<Board>>();
         }
+
+        internal Response LoadData()
+        {
+            Initialize();
+            try
+            {
+                List<BoardDTO> dtos = new BoardDALController().SelectAllBoards();
+                foreach(BoardDTO boardDTO in dtos)
+                {
+                    Board board = new Board(boardDTO);
+                    boardDTO.BoardMembers.ForEach((user) => members[user].Add(board));
+                    if (!boards.ContainsKey(boardDTO.Creator))
+                        boards.Add(boardDTO.Creator, new Dictionary<string, Board>());
+                    boards[boardDTO.Creator].Add(board.Name, board);
+                }
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
+            return new Response();
+        }
+
+        private void Initialize()
+        {
+            if (boards == null)
+                boards = new Dictionary<string, Dictionary<string, Board>>();
+            if (members == null)
+                members = new Dictionary<string, HashSet<Board>>();
+        }
+
 
         /// <summary>        
         /// Checks args validities.
@@ -84,7 +117,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             members.Add(userEmail, new HashSet<Board>());
         }
-
 
         /// <summary>
         /// Limit the number of tasks in a specific column
@@ -346,7 +378,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return new Response("null value given");
             if (boards[email].ContainsKey(name))
                 return new Response($"user {email} already has board named {name}");
-            Board board = new Board(name);
+            Board board = new Board(name, email);
             boards[email].Add(name, board);
             members[email].Add(board);
             return new Response();

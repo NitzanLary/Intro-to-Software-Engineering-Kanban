@@ -23,7 +23,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
 
 
-        public List<UserDTO> SelectAllForums()
+        public List<UserDTO> SelectAllUsers()
         {
             List<UserDTO> result = Select().Cast<UserDTO>().ToList();
 

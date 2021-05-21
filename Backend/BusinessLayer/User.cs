@@ -1,4 +1,5 @@
-﻿using IntroSE.Kanban.Backend.ServiceLayer;
+﻿using IntroSE.Kanban.Backend.DataAccessLayer;
+using IntroSE.Kanban.Backend.ServiceLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             this.email = email;
             this.password = password;
+        }
+
+        public User(UserDTO userDTO)
+        {
+            email = userDTO.Email;
+            password = new Password(userDTO.Password);
         }
 
         /// <summary>        

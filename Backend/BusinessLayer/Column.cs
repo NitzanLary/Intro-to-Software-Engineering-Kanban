@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer
 {
@@ -33,6 +34,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             tasks = new Dictionary<int, Task>();
             MaxTasks = -1;
+        }
+
+        public Column(ColumnDTO columnDTO)
+        {
+            MaxTasks = columnDTO.MaxTasksNumber;
+            tasks = new Dictionary<int, Task>();
+            foreach (TaskDTO taskDTO in columnDTO.Tasks)
+                tasks.Add(taskDTO.TaskID, new Task(taskDTO));
+            
         }
 
         public Task AddTask(DateTime dueDate, string title, string description, string assignee)
