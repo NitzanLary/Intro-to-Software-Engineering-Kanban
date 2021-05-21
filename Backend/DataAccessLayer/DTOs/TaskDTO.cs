@@ -69,5 +69,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             _creationTime = creationTime;
             
         }
+
+        public bool Insert()
+        {
+            return _controller.Insert(this);
+        }
+
     }
 }

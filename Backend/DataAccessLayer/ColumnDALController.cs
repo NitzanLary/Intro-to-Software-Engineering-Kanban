@@ -35,8 +35,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return result;
         }
 
-        public bool InsertNewColumn(ColumnDTO column)
+        public override bool Insert(DTO DTOobj)
         {
+            ColumnDTO column = (ColumnDTO)DTOobj;
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 int res = -1;

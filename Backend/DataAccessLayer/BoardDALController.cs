@@ -37,9 +37,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
 
 
-        public bool InsertNewBoard(BoardDTO board)
+        public override bool Insert(DTO DTOobj)
         {
-
+            BoardDTO board = (BoardDTO)DTOobj;
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 Console.WriteLine(_connectionString);

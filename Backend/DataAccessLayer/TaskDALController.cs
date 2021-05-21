@@ -28,9 +28,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
 
 
-        public bool InsertNewTask(TaskDTO task)
+        public override bool Insert(DTO DTOobj)
         {
-
+            TaskDTO task = (TaskDTO)DTOobj;
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 int res = -1;

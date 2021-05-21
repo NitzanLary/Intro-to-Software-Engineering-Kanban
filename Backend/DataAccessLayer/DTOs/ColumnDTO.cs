@@ -49,5 +49,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             _tasks = tasks;
 
         }
+
+        public bool Insert()
+        {
+            return _controller.Insert(this);
+        }
+
     }
 }

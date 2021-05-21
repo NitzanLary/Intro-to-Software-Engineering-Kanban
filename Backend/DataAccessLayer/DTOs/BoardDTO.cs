@@ -44,5 +44,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
             throw new NotImplementedException();
         }
 
+        public bool Insert()
+        {
+            return _controller.Insert(this);
+        }
+
     }
 }

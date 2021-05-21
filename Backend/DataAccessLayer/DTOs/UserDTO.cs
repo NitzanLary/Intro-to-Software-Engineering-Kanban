@@ -25,5 +25,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             _email = email;
             _password = password;
         }
+
+        public bool Insert()
+        {
+            return _controller.Insert(this);
+        }
+
     }
 }

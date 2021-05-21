@@ -67,5 +67,42 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             return new UserDTO(reader.GetString(0), reader.GetString(1));
         }
+
+        public override bool Insert(DTO DTOobj)
+        {
+            UserDTO user = (UserDTO)DTOobj;
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                Console.WriteLine(_connectionString);
+                int res = -1;
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                try
+                {
+                    connection.Open();
+                    command.CommandText = $"INSERT INTO {UsersTableName} ({UserDTO.EmailColumnName} ,{UserDTO.PasswordColumnName}) " +
+                        $"VALUES (@emailVal,@passwordVal);";
+
+                    SQLiteParameter creatorParam = new SQLiteParameter(@"emailVal", user.Email);
+                    SQLiteParameter boardnameParam = new SQLiteParameter(@"passwordVal", user.Password);
+
+                    command.Parameters.Add(creatorParam);
+                    command.Parameters.Add(boardnameParam);
+                    command.Prepare();
+
+                    res = command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    //log error
+                    Console.WriteLine(e.Message);
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+                return res > 0;
+            }
+        }
     }
 }
