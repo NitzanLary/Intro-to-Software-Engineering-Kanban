@@ -104,6 +104,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return users[email].logout();
         }
 
+        /// <summary>        
+        /// check if users contains the given email. 
+        /// </summary>
+        /// <param name="email">The email of the user to cehck if contains</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         internal Response containsEmail(string email)
         {
             if (email == null)
@@ -117,6 +122,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return new Response();
         }
 
+        /// <summary>        
+        /// Returns user according to the given email. 
+        /// </summary>
+        /// <param name="email">The email of the user</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response<User> getUserByEmail(string email)
         {
             if (email == null)
@@ -130,6 +140,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return Response<User>.FromValue(users[email]);
         }
 
+        /// <summary>        
+        /// check if the email is logged in. 
+        /// </summary>
+        /// <param name="email">The email of the user</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response<bool> isLoggedIn(string email)
         {
             if (email == null)

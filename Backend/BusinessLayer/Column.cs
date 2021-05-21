@@ -9,7 +9,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
     class Column
     {
         private Dictionary<int, Task> tasks;
-        public List<Task> Tasks
+        public IList<Task> Tasks
         {
             get => tasks.Values.ToList();
         }
@@ -35,42 +35,54 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             MaxTasks = -1;
         }
 
-        public Task addTask(DateTime dueDate, string title, string description, string assignee)
+        public Task AddTask(DateTime dueDate, string title, string description, string assignee)
+        {
+            Task task = new Task(dueDate, title, description, assignee);
+            return AddTask(task);
+        }
+
+        internal Task AddTask(Task task)
         {
             if (tasks.Count >= MaxTasks)
                 throw new ArgumentException($"Max number of tasks allowed in this coloumn is {MaxTasks}");
-            Task task = new Task(dueDate, title, description, assignee);
             tasks.Add(task.ID, task);
             return task;
         }
 
-        public void updateTaskDueDate(int taskId, DateTime date)
+        public void UpdateTaskDueDate(int taskId, DateTime date)
         {
-            update<DateTime>(taskId, (task) => task.DueDate = date);
+            Update<DateTime>(taskId, (task) => task.DueDate = date);
         }
 
-        public void updateTaskTitle(int taskId, String title)
+        public void UpdateTaskTitle(int taskId, String title)
         {
-            update<string>(taskId, (task) => task.Title = title);
+            Update<string>(taskId, (task) => task.Title = title);
         }
 
-        public void updateTaskDescription(int taskId, String desc)
+        public void UpdateTaskDescription(int taskId, String desc)
         {
-            update<string>(taskId, (task) => task.Description = desc);
+            Update<string>(taskId, (task) => task.Description = desc);
         }
 
         public Task GetTask(int taskId)
         {
-            return update<Task>(taskId, (task) => task);
+            return Update<Task>(taskId, (task) => task);
         }
 
         // A generic funtion to update a task's property
-        public T update<T>(int taskId, Func<Task,T> updateFunc)
+        public T Update<T>(int taskId, Func<Task,T> updateFunc)
         {
             Task task;
             if (!tasks.TryGetValue(taskId, out task))
                 throw new ArgumentException($"Task ID: {taskId} not found");
             return updateFunc(task);
+        }
+
+        public void RemoveTask(Task task)
+        {
+            if (!tasks.ContainsKey(task.ID))
+                throw new ArgumentException($"Task ID: {task.ID} not found");
+            tasks.Remove(task.ID);
         }
 
     }
