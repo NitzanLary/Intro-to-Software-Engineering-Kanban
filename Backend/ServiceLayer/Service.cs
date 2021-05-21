@@ -1,11 +1,11 @@
-﻿//using System.Collections.Generic;
-//using System;
-//using System.Linq;
-//using IntroSE.Kanban.Backend.BusinessLayer;
-//using log4net;
-//using System.Reflection;
-//using log4net.Config;
-//using System.IO;
+﻿using System.Collections.Generic;
+using System;
+using System.Linq;
+using IntroSE.Kanban.Backend.BusinessLayer;
+using log4net;
+using System.Reflection;
+using log4net.Config;
+using System.IO;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
@@ -81,29 +81,29 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return r;
         }
 
-//        /// <summary>        
-//        /// Checks if a user is logged in
-//        /// </summary>
-//        /// <param name="email">The email of the user</param>
-//        /// <returns>A response object. The response should contain a error message in case of an error</returns>
-//        private Response IsLoggedIn(string email)
-//        {
-//            Response<bool> r = userController.isLoggedIn(email);
-//            if (r.ErrorOccured)
-//            {
-//                log.Debug(r.ErrorMessage);
-//                return r;
-//            }
-                
-//            if (!r.Value)
-//            {
-//                string msg = $"User {email} is not logged in";
-//                log.Debug(msg);
-//                return new Response(msg);
-//            }
-                
-//            return new Response();
-//        }
+        //        /// <summary>        
+        //        /// Checks if a user is logged in
+        //        /// </summary>
+        //        /// <param name="email">The email of the user</param>
+        //        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        private Response IsLoggedIn(string email)
+        {
+            Response<bool> r = userController.isLoggedIn(email);
+            if (r.ErrorOccured)
+            {
+                log.Debug(r.ErrorMessage);
+                return r;
+            }
+
+            if (!r.Value)
+            {
+                string msg = $"User {email} is not logged in";
+                log.Debug(msg);
+                return new Response(msg);
+            }
+
+            return new Response();
+        }
 
         /// <summary>
         /// Limit the number of tasks in a specific column
@@ -336,21 +336,21 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return ConvertBusinessToServiceTasksCollection(returned.Value);
         }
 
-//        /// <summary>
-//        /// Converts a collection of BusinessLayer Tasks into collection of ServiceLayer Tasks
-//        /// </summary>
-//        /// <param name="lst">IList of BL Tasks</param>
-//        /// <returns>A response object with a value set to the list of SL tasks</returns>
-//        private Response<IList<Task>> ConvertBusinessToServiceTasksCollection(IList<BusinessLayer.Task> lst)
-//        {
-//            IList<Task> ret = new List<Task>();
-//            foreach(BusinessLayer.Task t in lst)
-//            {
-//                Task toAdd = new Task(t.ID, t.CreationTime, t.Title, t.Description, t.DueDate, t.Assignee);
-//                ret.Add(toAdd);
-//            }
-//            return Response<IList<Task>>.FromValue(ret);
-//        }
+        //        /// <summary>
+        //        /// Converts a collection of BusinessLayer Tasks into collection of ServiceLayer Tasks
+        //        /// </summary>
+        //        /// <param name="lst">IList of BL Tasks</param>
+        //        /// <returns>A response object with a value set to the list of SL tasks</returns>
+        private Response<IList<Task>> ConvertBusinessToServiceTasksCollection(IList<BusinessLayer.Task> lst)
+        {
+            IList<Task> ret = new List<Task>();
+            foreach (BusinessLayer.Task t in lst)
+            {
+                Task toAdd = new Task(t.ID, t.CreationTime, t.Title, t.Description, t.DueDate, t.Assignee);
+                ret.Add(toAdd);
+            }
+            return Response<IList<Task>>.FromValue(ret);
+        }
 
         private void WriteToLog(Response r, string msg)
         {
@@ -422,5 +422,5 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return r2;
         }
 
-//    }
-//}
+    }
+}
