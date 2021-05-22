@@ -472,7 +472,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response JoinBoard(string userEmail, string creatorEmail, string boardName)
         {
-            Response r = CheckArgs(userEmail, creatorEmail, boardName);
+            Response r = isCreator(creatorEmail, boardName);
             if (r.ErrorOccured)
                 return r;
 

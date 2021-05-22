@@ -248,12 +248,15 @@ namespace Test
             //Console.WriteLine(bb.Boardname);
 
 
-
             //s.DeleteData();
             //Register();
             Login();
             //AddBoard();
-            LimitColumn();
+            JoinBoard();
+            //LimitColumn();
+            //GetColumnLimit();
+            //GetColumnName();
+            //AddTask();
 
         }
 
@@ -286,6 +289,11 @@ namespace Test
             Print(s.AddBoard(nitzanMail, nitzanBoard)); // error
         }
 
+        static void JoinBoard()
+        {
+            Print(s.JoinBoard(rafaMail, nitzanMail, nitzanBoard));
+        }
+
         static void LimitColumn()
         {
             Print(s.LimitColumn(nitzanMail, nitzanMail, nitzanBoard, 0, 10));
@@ -293,8 +301,26 @@ namespace Test
 
         static void GetColumnLimit()
         {
-            Print(s.GetColumnLimit(nitzanMail, nitzanMail, nitzanBoard, 0));
+            Response<int> r = s.GetColumnLimit(nitzanMail, nitzanMail, nitzanBoard, 0);
+            Print(r);
+            Console.WriteLine(r.Value);
         }
+
+        static void GetColumnName()
+        {
+            Response<string> r = s.GetColumnName(nitzanMail, nitzanMail, nitzanBoard, 0);
+            Print(r);
+            Console.WriteLine(r.Value);
+        }
+
+        static void AddTask()
+        {
+            Print(s.AddTask(nitzanMail, nitzanMail, nitzanBoard, "nitzans task", "desc", DateTime.Today.AddDays(1)));
+            Print(s.AddTask(nitzanMail, nitzanMail, nitzanBoard, "nitzans task2", "desc", DateTime.Today.AddDays(1)));
+            Print(s.AddTask(rafaMail, rafaMail, rafaBoard, "rafa task", "desc", DateTime.Today.AddDays(1)));
+        }
+
+
 
         static void Task(Service s)
         {
