@@ -191,6 +191,7 @@ namespace Test
             ColumnDALController cdc = new();
             TaskDALController tdc = new();
             UserDTO u1 = new UserDTO("yanay", "123");
+            UserDTO u2 = new UserDTO("nitzan", "123");
             TaskDTO t1 = new TaskDTO("bb", "yanay", 0, 1, "t1", "desc1", "asaf", "12-2-2030", "12-2-2022");
             ColumnDTO c0 = new ColumnDTO("yanay", "bb", 0, 10,  new List<TaskDTO>() { t1 });
             ColumnDTO c1 = new ColumnDTO("yanay", "bb", 1, 10, new List<TaskDTO>());
@@ -205,17 +206,18 @@ namespace Test
             //cdc.InsertNewColumn(c2);
             //tdc.InsertNewTask(t1);
 
-            //u1.Insert();
-            //bb.Insert();
-            //c0.Insert();
-            //c1.Insert();
-            //c2.Insert();
-            //t1.Insert();
+            u1.Insert();
+            bb.Insert();
+            c0.Insert();
+            c1.Insert();
+            c2.Insert();
+            t1.Insert();
+            bdc.InsertNewBoardMember(bb, u2.Email);
 
             //u1.Delete();
             Console.WriteLine("starting deletes");
-            udc.DeleteAllData();
-            bdc.DeleteAllData();
+            //udc.DeleteAllData();
+            //bdc.DeleteAllData();
             //Console.WriteLine(bb.Delete());
             //c0.Delete();
             //c1.Delete();

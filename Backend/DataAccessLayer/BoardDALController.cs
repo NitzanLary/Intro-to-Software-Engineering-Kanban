@@ -90,7 +90,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 {
                     connection.Open();
                     command.CommandText = $"INSERT INTO {BoardMembersTableName} ({MemberColumnName}, {BoardDTO.BoardNameColumnName} ,{BoardDTO.CreatorColumnName}) " +
-                        $"VALUES (@creatorVal,@boardnameVal,@boardMemberVal);";
+                        $"VALUES (@boardMemberVal,@boardnameVal,@creatorVal);";
 
                     SQLiteParameter creatorParam = new SQLiteParameter(@"creatorVal", board.Creator);
                     SQLiteParameter boardnameParam = new SQLiteParameter(@"boardnameVal", board.Boardname);
