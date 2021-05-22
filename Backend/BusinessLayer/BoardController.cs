@@ -34,13 +34,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             try
             {
                 List<BoardDTO> dtos = new BoardDALController().SelectAllBoards();
-                foreach(BoardDTO boardDTO in dtos)
+                foreach (BoardDTO boardDTO in dtos)
                 {
                     Board board = new Board(boardDTO);
                     boardDTO.BoardMembers.ForEach((user) => members[user].Add(board));
                     if (!boards.ContainsKey(boardDTO.Creator))
                         boards.Add(boardDTO.Creator, new Dictionary<string, Board>());
-                    Console.WriteLine("---------------IN BOARD CONTROLLER -------------");
+                    //Console.WriteLine("---------------IN BOARD CONTROLLER -------------");
                     boards[boardDTO.Creator].Add(board.Name, board);
                 }
             }
@@ -48,6 +48,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             {
                 return new Response(e.Message);
             }
+            //Console.WriteLine(boards.Count);
             return new Response();
         }
 

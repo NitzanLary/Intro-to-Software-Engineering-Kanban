@@ -187,17 +187,17 @@ namespace Test
 
 
             //////   starting dal test!    /////
-            UserDALController udc = new();
-            BoardDALController bdc = new();
-            ColumnDALController cdc = new();
-            TaskDALController tdc = new();
-            UserDTO u1 = new UserDTO("yanay", "123");
-            UserDTO u2 = new UserDTO("nitzan", "123");
-            TaskDTO t1 = new TaskDTO("bb", "yanay", 0, 1, "t1", "desc1", "asaf", "12-2-2030", "12-2-2022");
-            ColumnDTO c0 = new ColumnDTO("yanay", "bb", 0, 10,  new List<TaskDTO>() { t1 });
-            ColumnDTO c1 = new ColumnDTO("yanay", "bb", 1, 10, new List<TaskDTO>());
-            ColumnDTO c2 = new ColumnDTO("yanay", "bb", 2, 10, new List<TaskDTO>());
-            BoardDTO bb = new BoardDTO("yanay", "bb", new List<string>(), new List<ColumnDTO>() { c0, c1, c2 });
+            //UserDALController udc = new();
+            //BoardDALController bdc = new();
+            //ColumnDALController cdc = new();
+            //TaskDALController tdc = new();
+            //UserDTO u1 = new UserDTO("yanay", "123");
+            //UserDTO u2 = new UserDTO("nitzan", "123");
+            //TaskDTO t1 = new TaskDTO("bb", "yanay", 0, 1, "t1", "desc1", "asaf", "12-2-2030", "12-2-2022");
+            //ColumnDTO c0 = new ColumnDTO("yanay", "bb", 0, 10,  new List<TaskDTO>() { t1 });
+            //ColumnDTO c1 = new ColumnDTO("yanay", "bb", 1, 10, new List<TaskDTO>());
+            //ColumnDTO c2 = new ColumnDTO("yanay", "bb", 2, 10, new List<TaskDTO>());
+            //BoardDTO bb = new BoardDTO("yanay", "bb", new List<string>(), new List<ColumnDTO>() { c0, c1, c2 });
 
             //Console.WriteLine(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "geyanay.db")));
             //udc.InsertNewUser(u1);
@@ -244,6 +244,7 @@ namespace Test
             //Console.WriteLine(bb.Boardname);
 
 
+            s.DeleteData();
 
 
 
@@ -253,11 +254,10 @@ namespace Test
 
 
 
-
-            s.LoadData();
-            //Register();
-            Login();
-            AddBoard();
+            //s.LoadData();
+            ////Register();
+            //Login();
+            //AddBoard();
 
         }
 
