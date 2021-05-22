@@ -32,7 +32,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             {
                 if (persisted)
                     dto.MaxTasksNumber = value;
-                if (value < MaxTasks)
+                if (value != -1 && value < Tasks.Count)
                     throw new ArgumentException("There are already more tasks in this column from the limit you put");
 
                 maxTasks = value;
@@ -48,8 +48,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Column(ColumnDTO columnDTO)
         {
-            MaxTasks = columnDTO.MaxTasksNumber;
             tasks = new Dictionary<int, Task>();
+            MaxTasks = columnDTO.MaxTasksNumber;
             foreach (TaskDTO taskDTO in columnDTO.Tasks)
                 tasks.Add(taskDTO.TaskID, new Task(taskDTO));
             persisted = true;
@@ -71,7 +71,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         internal Task AddTask(Task task)
         {
-            if (tasks.Count >= MaxTasks)
+            if (MaxTasks != -1 && tasks.Count >= MaxTasks)
                 throw new ArgumentException($"Max number of tasks allowed in this coloumn is {MaxTasks}");
             tasks.Add(task.ID, task);
             return task;

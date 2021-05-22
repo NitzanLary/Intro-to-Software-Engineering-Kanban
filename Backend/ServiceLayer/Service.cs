@@ -33,7 +33,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             try
             {
                 Response<List<BusinessLayer.User>> r = Response<List<BusinessLayer.User>>.FromBLResponse(userController.LoadDate());
-                WriteToLog(r, "");
+                WriteToLog(r, "Usres Loaded");
                 if (r.ErrorOccured)
                     return r;
                 r.Value.ForEach(user => boardController.addNewUserToMembers(user.Email));
