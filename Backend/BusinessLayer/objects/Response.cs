@@ -1,4 +1,4 @@
-﻿namespace IntroSE.Kanban.Backend.ServiceLayer
+﻿namespace IntroSE.Kanban.Backend.BusinessLayer
 {
     ///<summary>Class <c>Response</c> represents the result of a call to a void function. 
     ///If an exception was thrown, <c>ErrorOccured = true</c> and <c>ErrorMessage != null</c>. 
@@ -11,11 +11,6 @@
         internal Response(string msg)
         {
             this.ErrorMessage = msg;
-        }
-
-        internal Response(BusinessLayer.Response response)
-        {
-            this.ErrorMessage = response.ErrorMessage;
         }
     }
 }

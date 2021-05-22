@@ -1,5 +1,4 @@
-﻿using IntroSE.Kanban.Backend.ServiceLayer;
-using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
+﻿using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
 using log4net;
 using System;
 using System.Collections.Generic;
