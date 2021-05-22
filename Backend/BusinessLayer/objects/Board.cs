@@ -50,7 +50,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             columns = new List<Column>(3);
             for (int i = 0; i < 3; i++)
             {
-                columns[i] = new Column();
+                columns.Add(new Column());
                 columns[i].AttachDto(creator, name, i);
             }
             dto = new BoardDTO(creator, name, new List<string>(), columns.Select(col => col.DTO).ToList());

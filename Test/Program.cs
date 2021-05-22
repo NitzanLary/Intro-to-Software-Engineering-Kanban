@@ -10,7 +10,8 @@ namespace Test
     class Program
     {
         /*ervice service = new Service();*/
-        private static int testCount = 0; 
+        private static int testCount = 0;
+        private static Service s = new Service();
         static void Main(string[] args)
         {
             //Service s = new Service();
@@ -215,9 +216,9 @@ namespace Test
             //bdc.InsertNewBoardMember(bb, u2.Email);
 
             //u1.Delete();
-            Console.WriteLine("starting deletes");
-            Service s = new Service();
-            s.DeleteData();
+            //Console.WriteLine("starting deletes");
+            //Service s = new Service();
+            //s.DeleteData();
 
             //udc.DeleteAllData();
             //bdc.DeleteAllData();
@@ -226,7 +227,7 @@ namespace Test
             //c1.Delete();
             //c2.Delete();
             //t1.Delete();
-            Console.WriteLine("deletes completed");
+            //Console.WriteLine("deletes completed");
 
 
             //List<BoardDTO> lb = bdc.SelectAllBoards();
@@ -241,6 +242,23 @@ namespace Test
             //Console.WriteLine(u1.Password);
             //bb.Boardname = "YanaySunny";
             //Console.WriteLine(bb.Boardname);
+
+
+
+
+
+
+
+
+
+
+
+
+            s.LoadData();
+            //Register();
+            Login();
+            AddBoard();
+
         }
 
         static void Print(Response res)
@@ -253,49 +271,58 @@ namespace Test
             Console.WriteLine($"\n    -  ----------   {input}   ----------   -\n");
         }
 
-        //static void init(Service s)
-        //{
-        //    s.Register("Rafa@gmail.com", "Rf12345678");
-        //    s.Login("Rafa@gmail.com", "Rf12345678");
-        //}
+        static void Register()
+        {
+            Print(s.Register("Rafa@gmail.com", "Rf12345678"));
+            Print(s.Register("Nitzan@gmail.com", "Rf12345678"));
+        }
 
-        //static void Register(Service s)
-        //{
+        static void Login()
+        {
+            Print(s.Login("Rafa@gmail.com", "Rf12345678"));
+            Print(s.Login("Nitzan@gmail.com", "Rf12345678"));
+        }
 
-        //}
-
-        //static void Task(Service s)
-        //{
-        //    //DateTime date = new DateTime(2021, 5, 16, 0, 0, 0);
-        //    //string mail = "Rafa@gmail.com";
-        //    //validation(s.AddBoard("Rafa@gmail.com", null), true);
-        //    //validation(s.AddBoard("Rafa@gmail.com", "myBoard"), false);
-        //    //validation(s.AddBoard("Rafa@gmail.com", "myBoard"), true);
-        //    //validation(s.AddBoard("Rafa@gmail.com", "myBoard2"), false);
-        //    //validation(s.AddTask(mail, null, "myTitle", "myDesc", date), true);
-        //    //validation(s.AddTask(mail, "myBoard", null, "myDesc", date), true);
-        //    //Response<Task> rB1T1 = s.AddTask(mail, "myBoard", "myTitle1", "myDesc1", date);
-        //    //Response<Task> rB1T2 = s.AddTask(mail, "myBoard", "myTitle2", "myDesc2", date);
-        //    //Response<Task> rB1T3 = s.AddTask(mail, "myBoard", "myTitle3", "myDesc3", date);
-        //    //Response<Task> rB2T1 = s.AddTask(mail, "myBoard2", "myTitle1", "myDesc1", date);
-        //    //validation(rB1T1, false); validation(rB1T2, false); validation(rB1T3, false); validation(rB2T1, false);
-        //    //validation(s.LimitColumn(mail, "myBoard", 0, 1), true);
-        //    //validation(s.LimitColumn(mail, "myBoard", 0, 3), false);
-        //    //validation(s.AddTask(mail, "myBoard", "myTitle4", "myDesc4", date), true);
+        static void AddBoard()
+        {
+            Print(s.AddBoard("Nitzan@gmail.com", "Nitzan's Board"));
+            Print(s.AddBoard("Rafa@gmail.com", "Rafa's Board"));
+            Print(s.AddBoard("Nitzan@gmail.com", "Nitzan's Board"));
+        }
 
 
 
-        //}
 
-        //static void Column(Service s)
-        //{
+        static void Task(Service s)
+        {
+            //DateTime date = new DateTime(2021, 5, 16, 0, 0, 0);
+            //string mail = "Rafa@gmail.com";
+            //validation(s.AddBoard("Rafa@gmail.com", null), true);
+            //validation(s.AddBoard("Rafa@gmail.com", "myBoard"), false);
+            //validation(s.AddBoard("Rafa@gmail.com", "myBoard"), true);
+            //validation(s.AddBoard("Rafa@gmail.com", "myBoard2"), false);
+            //validation(s.AddTask(mail, null, "myTitle", "myDesc", date), true);
+            //validation(s.AddTask(mail, "myBoard", null, "myDesc", date), true);
+            //Response<Task> rB1T1 = s.AddTask(mail, "myBoard", "myTitle1", "myDesc1", date);
+            //Response<Task> rB1T2 = s.AddTask(mail, "myBoard", "myTitle2", "myDesc2", date);
+            //Response<Task> rB1T3 = s.AddTask(mail, "myBoard", "myTitle3", "myDesc3", date);
+            //Response<Task> rB2T1 = s.AddTask(mail, "myBoard2", "myTitle1", "myDesc1", date);
+            //validation(rB1T1, false); validation(rB1T2, false); validation(rB1T3, false); validation(rB2T1, false);
+            //validation(s.LimitColumn(mail, "myBoard", 0, 1), true);
+            //validation(s.LimitColumn(mail, "myBoard", 0, 3), false);
+            //validation(s.AddTask(mail, "myBoard", "myTitle4", "myDesc4", date), true);
 
-        //}
+        }
 
-        //static void validation(Response r, bool expected)
-        //{
-        //    if (r.ErrorOccured != expected)
-        //        throw new Exception();
-        //}
+            //static void Column(Service s)
+            //{
+
+            //}
+
+            //static void validation(Response r, bool expected)
+            //{
+            //    if (r.ErrorOccured != expected)
+            //        throw new Exception();
+            //}
+        }
     }
-}

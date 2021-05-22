@@ -18,7 +18,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         //             email members,  board name
         private Dictionary<string, HashSet<Board>> members;
 
-        private readonly int DONE_COLUMN;
+        private readonly int DONE_COLUMN = 2;
 
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -375,6 +375,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             if (name == null || email == null || name.Length == 0 || email.Length == 0)
                 return new Response("null value given");
+            if (!boards.ContainsKey(email))
+                boards.Add(email, new Dictionary<string, Board>());
             if (boards[email].ContainsKey(name))
                 return new Response($"user {email} already has board named {name}");
             try

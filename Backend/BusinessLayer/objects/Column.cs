@@ -43,7 +43,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             persisted = false;
             tasks = new Dictionary<int, Task>();
-            MaxTasks = -1;
+            maxTasks = -1;
         }
 
         public Column(ColumnDTO columnDTO)
