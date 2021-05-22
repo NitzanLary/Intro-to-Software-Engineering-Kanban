@@ -244,21 +244,13 @@ namespace Test
             //Console.WriteLine(bb.Boardname);
 
 
-
-
-
-
-
-
-
-
-
-
-            s.LoadData();
+            //s.LoadData();
             //Register();
-            Login();
-            AddBoard();
-
+            //Login();
+            //AddBoard();
+            //s.DeleteData();
+            Console.WriteLine(udc.DeleteAllData());
+            Console.WriteLine(bdc.DeleteAllData());
         }
 
         static void Print(Response res)
@@ -285,9 +277,9 @@ namespace Test
 
         static void AddBoard()
         {
-            Print(s.AddBoard("Nitzan@gmail.com", "Nitzan's Board"));
-            Print(s.AddBoard("Rafa@gmail.com", "Rafa's Board"));
-            Print(s.AddBoard("Nitzan@gmail.com", "Nitzan's Board"));
+            Print(s.AddBoard("Nitzan@gmail.com", "Nitzans Board"));
+            Print(s.AddBoard("Rafa@gmail.com", "Rafas Board"));
+            Print(s.AddBoard("Nitzan@gmail.com", "Nitzans Board"));
         }
 
 
