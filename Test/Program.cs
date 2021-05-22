@@ -247,8 +247,9 @@ namespace Test
 
             //s.DeleteData();
             //Register();
-            //Login();
+            Login();
             //AddBoard();
+            LimitColumn();
 
         }
 
@@ -283,7 +284,7 @@ namespace Test
 
         static void LimitColumn()
         {
-
+            Print(s.LimitColumn("Nitzan@gmail.com", "Nitzan@gmail.com", "Nitzans Board", 0, 10));
         }
 
 
