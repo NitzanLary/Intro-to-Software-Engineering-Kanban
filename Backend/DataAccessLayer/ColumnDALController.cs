@@ -134,7 +134,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public bool DeleteAllData()
         {
-            return _taskDALController.DeleteAllData() && DeleteAllData(ColumnsTableName);
+            bool tasksDeleted = _taskDALController.DeleteAllData();
+            bool columnDeleted = DeleteAllData(ColumnsTableName);
+            return columnDeleted && tasksDeleted;
         }
 
     }
