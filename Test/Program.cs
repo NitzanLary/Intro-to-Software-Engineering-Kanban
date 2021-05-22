@@ -9,11 +9,15 @@ namespace Test
 {
     class Program
     {
-        /*ervice service = new Service();*/
         private static int testCount = 0;
         private static Service s = new Service();
+        private static string nitzanMail = "Nitzan@gmail.com";
+        private static string nitzanBoard = "Nitzans Board";
+        private static string rafaMail = "Rafa@gmail.com";
+        private static string rafaBoard = "Rafas Board";
         static void Main(string[] args)
         {
+
             //Service s = new Service();
             //Print(s.AddBoard("Rafa@gmail.com", "semster B"));
             //Print(s.Register("Rafa@gmail.com", "12345678"));
@@ -277,16 +281,20 @@ namespace Test
 
         static void AddBoard()
         {
-            Print(s.AddBoard("Nitzan@gmail.com", "Nitzans Board"));
-            Print(s.AddBoard("Rafa@gmail.com", "Rafas Board"));
-            Print(s.AddBoard("Nitzan@gmail.com", "Nitzans Board")); // error
+            Print(s.AddBoard(nitzanMail, nitzanBoard));
+            Print(s.AddBoard(rafaMail, rafaBoard));
+            Print(s.AddBoard(nitzanMail, nitzanBoard)); // error
         }
 
         static void LimitColumn()
         {
-            Print(s.LimitColumn("Nitzan@gmail.com", "Nitzan@gmail.com", "Nitzans Board", 0, 10));
+            Print(s.LimitColumn(nitzanMail, nitzanMail, nitzanBoard, 0, 10));
         }
 
+        static void GetColumnLimit()
+        {
+            Print(s.GetColumnLimit(nitzanMail, nitzanMail, nitzanBoard, 0));
+        }
 
         static void Task(Service s)
         {
