@@ -19,7 +19,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         private readonly string _tableName;
         public DALController(string tableName)
         {
-            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "database.db"));
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "kanban.db"));
             this._connectionString = $"Data Source={path}; Version=3;";
             this._tableName = tableName;
         }

@@ -16,7 +16,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public string Name
         {
             get => name;
-            private set => name = Name;
+            private set => name = value;
         }
 
         private string creator;
@@ -64,6 +64,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Name = boardDTO.Boardname;
             Creator = boardDTO.Creator;
             columns = boardDTO.Columns.Select((col) => new Column(col)).ToList();
+            dto = boardDTO;
         }
 
         // pre condition: columnOrdinal < DONE_COLUMN

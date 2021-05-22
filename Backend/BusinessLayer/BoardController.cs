@@ -40,6 +40,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                     boardDTO.BoardMembers.ForEach((user) => members[user].Add(board));
                     if (!boards.ContainsKey(boardDTO.Creator))
                         boards.Add(boardDTO.Creator, new Dictionary<string, Board>());
+                    Console.WriteLine("---------------IN BOARD CONTROLLER -------------");
                     boards[boardDTO.Creator].Add(board.Name, board);
                 }
             }

@@ -205,17 +205,20 @@ namespace Test
             //cdc.InsertNewColumn(c1);
             //cdc.InsertNewColumn(c2);
             //tdc.InsertNewTask(t1);
-
-            u1.Insert();
-            bb.Insert();
-            c0.Insert();
-            c1.Insert();
-            c2.Insert();
-            t1.Insert();
-            bdc.InsertNewBoardMember(bb, u2.Email);
+            //u2.Insert();
+            //u1.Insert();
+            //bb.Insert();
+            //c0.Insert();
+            //c1.Insert();
+            //c2.Insert();
+            //t1.Insert();
+            //bdc.InsertNewBoardMember(bb, u2.Email);
 
             //u1.Delete();
             Console.WriteLine("starting deletes");
+            Service s = new Service();
+            s.DeleteData();
+
             //udc.DeleteAllData();
             //bdc.DeleteAllData();
             //Console.WriteLine(bb.Delete());
