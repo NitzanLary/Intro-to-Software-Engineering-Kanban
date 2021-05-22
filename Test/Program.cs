@@ -244,13 +244,12 @@ namespace Test
             //Console.WriteLine(bb.Boardname);
 
 
-            //s.LoadData();
+
+            //s.DeleteData();
             //Register();
             //Login();
             //AddBoard();
-            //s.DeleteData();
-            Console.WriteLine(udc.DeleteAllData());
-            Console.WriteLine(bdc.DeleteAllData());
+
         }
 
         static void Print(Response res)
@@ -279,10 +278,13 @@ namespace Test
         {
             Print(s.AddBoard("Nitzan@gmail.com", "Nitzans Board"));
             Print(s.AddBoard("Rafa@gmail.com", "Rafas Board"));
-            Print(s.AddBoard("Nitzan@gmail.com", "Nitzans Board"));
+            Print(s.AddBoard("Nitzan@gmail.com", "Nitzans Board")); // error
         }
 
+        static void LimitColumn()
+        {
 
+        }
 
 
         static void Task(Service s)
