@@ -40,7 +40,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                     boardDTO.BoardMembers.ForEach((user) => members[user].Add(board));
                     if (!boards.ContainsKey(boardDTO.Creator))
                         boards.Add(boardDTO.Creator, new Dictionary<string, Board>());
-                    Console.WriteLine("---------------IN BOARD CONTROLLER -------------");
                     boards[boardDTO.Creator].Add(board.Name, board);
                 }
             }
@@ -162,7 +161,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             if (columnOrdinal > DONE_COLUMN)
                 return Response<int>.FromError("column ordinal dose not exist. max " + DONE_COLUMN);
 
-            return boards[userEmail][boardName].GetColumnLimit(columnOrdinal);
+            return boards[creatorEmail][boardName].GetColumnLimit(columnOrdinal);
         }
 
         /// <summary>
