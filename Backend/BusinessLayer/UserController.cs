@@ -45,6 +45,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return Response<List<User>>.FromValue(curr_users);
         }
 
+        public Response DeleteData()
+        {
+            try
+            {
+                new UserDALController().DeleteAllData();
+            }
+            catch(Exception e)
+            {
+                return new Response(e.Message);
+            }
+            return new Response();
+        }
+
         /// <summary>        
         /// checks if the given email address is valid
         /// </summary>

@@ -50,6 +50,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return new Response();
         }
 
+        public Response DeleteData()
+        {
+            try
+            {
+                new BoardDALController().DeleteAllData();
+            }
+            catch(Exception e)
+            {
+                return new Response(e.Message);
+            }
+            return new Response();
+        }
+
         /// <summary>        
         /// Checks args validities.
         /// </summary>
@@ -407,15 +420,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         private Response RemoveBoardHelper(string creatorEmail, string boardName)
         {
-            // TODO: remove all columns and tasks related to this board from the data base (on delete cascade)
             Board board = boards[creatorEmail][boardName];
+            try
+            {
+                board.DTO.Delete();
+            }
+            catch(Exception e)
+            {
+                return new Response(e.Message);
+            }
+
             boards[creatorEmail].Remove(boardName);
             foreach(KeyValuePair<string, HashSet<Board>> entry in members)
             {
                 if (entry.Value.Contains(board))
                     members[entry.Key].Remove(board);
             }
-            // delete from data base
             return new Response();
         }
 

@@ -29,12 +29,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         ///         You should call this function when the program starts. </summary>
         public Response LoadData()
         {
-            Response<List<BusinessLayer.User>> r = userController.LoadDate();
+            Response<List<BusinessLayer.User>> r = Response <List<BusinessLayer.User>>.FromBLResponse(userController.LoadDate());
             WriteToLog(r, "");
             if (r.ErrorOccured)
                 return r;
             r.Value.ForEach(user => boardController.addNewUserToMembers(user.Email));
-            Response r2 = boardController.LoadData();
+            Response r2 = new Response(boardController.LoadData());
             WriteToLog(r2, "Loaded data successfully");
             return r2;
         }
@@ -42,7 +42,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         ///<summary>Removes all persistent data.</summary>
         public Response DeleteData()
         {
-            throw new NotImplementedException();
+            Response r = new Response(userController.DeleteData());
+            WriteToLog(r, "");
+            if (r.ErrorOccured)
+                return r;
+            Response r2 = new(boardController.DeleteData());
+
         }
 
         /// <summary>
