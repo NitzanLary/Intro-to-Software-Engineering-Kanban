@@ -26,7 +26,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public int ColumnOrdinal { get => _columnOrdinal; }
 
         private int _maxTasksNumber;
-        public int MaxTasksNumber { get => _maxTasksNumber; set { _maxTasksNumber = value; _controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _columnOrdinal, ColumnOrdinalColumName, MaxTasksNumberColumnName, value); } }
+        public int MaxTasksNumber { get => _maxTasksNumber; set { if (_controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _columnOrdinal, ColumnOrdinalColumName, MaxTasksNumberColumnName, value)) _maxTasksNumber = value; } }
 
         
 

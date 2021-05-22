@@ -9,11 +9,15 @@ namespace Test
 {
     class Program
     {
-        /*ervice service = new Service();*/
         private static int testCount = 0;
         private static Service s = new Service();
+        private static string nitzanMail = "Nitzan@gmail.com";
+        private static string nitzanBoard = "Nitzans Board";
+        private static string rafaMail = "Rafa@gmail.com";
+        private static string rafaBoard = "Rafas Board";
         static void Main(string[] args)
         {
+
             //Service s = new Service();
             //Print(s.AddBoard("Rafa@gmail.com", "semster B"));
             //Print(s.Register("Rafa@gmail.com", "12345678"));
@@ -243,12 +247,15 @@ namespace Test
             //bb.Boardname = "YanaySunny";
             //Console.WriteLine(bb.Boardname);
 
-
-
-            //s.DeleteData();
-            //Register();
-            //Login();
-            //AddBoard();
+            s.DeleteData();
+            Register();
+            Login();
+            AddBoard();
+            JoinBoard();
+            LimitColumn();
+            GetColumnLimit();
+            GetColumnName();
+            AddTask();
 
         }
 
@@ -276,15 +283,50 @@ namespace Test
 
         static void AddBoard()
         {
-            Print(s.AddBoard("Nitzan@gmail.com", "Nitzans Board"));
-            Print(s.AddBoard("Rafa@gmail.com", "Rafas Board"));
-            Print(s.AddBoard("Nitzan@gmail.com", "Nitzans Board")); // error
+            Print(s.AddBoard(nitzanMail, nitzanBoard));
+            Print(s.AddBoard(rafaMail, rafaBoard));
+            Print(s.AddBoard(nitzanMail, nitzanBoard)); // error
+        }
+
+        static void JoinBoard()
+        {
+            Print(s.JoinBoard(rafaMail, nitzanMail, nitzanBoard));
         }
 
         static void LimitColumn()
         {
-
+            Print(s.LimitColumn(nitzanMail, nitzanMail, nitzanBoard, 0, 10));
+            Print(s.LimitColumn(rafaMail, nitzanMail, nitzanBoard, 1, 20)); // error
         }
+
+        static void GetColumnLimit()
+        {
+            Response<int> r = s.GetColumnLimit(nitzanMail, nitzanMail, nitzanBoard, 0);
+            Print(r);
+            Console.WriteLine(r.Value);
+            r = s.GetColumnLimit(rafaMail, nitzanMail, nitzanBoard, 0);
+            Print(r);
+            Console.WriteLine(r.Value);
+        }
+
+        static void GetColumnName()
+        {
+            Response<string> r = s.GetColumnName(nitzanMail, nitzanMail, nitzanBoard, 0);
+            Print(r);
+            Console.WriteLine(r.Value);
+            r = s.GetColumnName(rafaMail, nitzanMail, nitzanBoard, 0);
+            Print(r);
+            Console.WriteLine(r.Value);
+        }
+
+        static void AddTask()
+        {
+            Print(s.AddTask(nitzanMail, nitzanMail, nitzanBoard, "nitzans task", "desc", DateTime.Today.AddDays(1)));
+            Print(s.AddTask(nitzanMail, nitzanMail, nitzanBoard, "nitzans task2", "desc", DateTime.Today.AddDays(1)));
+            Print(s.AddTask(rafaMail, rafaMail, rafaBoard, "rafa task", "desc", DateTime.Today.AddDays(1)));
+            Print(s.AddTask(rafaMail, nitzanMail, nitzanBoard, "rafa task in nitzans board", "desc", DateTime.Today.AddDays(1)));
+        }
+
 
 
         static void Task(Service s)

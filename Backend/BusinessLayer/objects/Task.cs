@@ -21,11 +21,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             get => id;
         }
 
-        private readonly DateTime creationTime;
+        private DateTime creationTime;
         public DateTime CreationTime
         {
             get => creationTime;
+            private set => creationTime = value;
         }
+        
         private DateTime dueDate;
         public DateTime DueDate
         {
@@ -91,6 +93,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Task(DateTime dueDate, string title, string description, string assignee)
         {
+            CreationTime = DateTime.Now;
             persisted = false;
             id = indexer++;
             DueDate = dueDate;
@@ -101,6 +104,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Task(TaskDTO taskDTO)
         {
+            CreationTime = DateTime.Parse(taskDTO.CreationTime);
             id = taskDTO.TaskID;
             DueDate = DateTime.Parse(taskDTO.DueTime); // TODO: check if this OK?
             Title = taskDTO.Title;
