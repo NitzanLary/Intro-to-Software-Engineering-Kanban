@@ -140,6 +140,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetString(3), reader.GetString(2));
         }
 
+        public bool DeleteAllData()
+        {
+            return DeleteAllData(TasksTableName);
+        }
 
     }
 }
