@@ -214,7 +214,9 @@ namespace Test
 
             //u1.Delete();
             Console.WriteLine("starting deletes");
-            Console.WriteLine(bb.Delete());
+            udc.DeleteAllData();
+            bdc.DeleteAllData();
+            //Console.WriteLine(bb.Delete());
             //c0.Delete();
             //c1.Delete();
             //c2.Delete();

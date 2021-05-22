@@ -151,5 +151,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         }
 
+        public bool DeleteAllData()
+        {
+            return DeleteAllData(UsersTableName);
+        }
+
     }
 }
