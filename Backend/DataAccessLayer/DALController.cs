@@ -81,15 +81,15 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {_tableName} set [{attributeName}]='@{attributeValue}' " +
-                    $"where {firstKeyColumnName} = '@{firstKey}' and {secondKeyColumnName} = '@{secondKey}'"
+                    CommandText = $"update {_tableName} set [{attributeName}]= @attributVal " +
+                    $"where {firstKeyColumnName} = '@firstKey' and {secondKeyColumnName} = '@secondKey'"
                 };
                 try
                 {
 
-                    command.Parameters.Add(new SQLiteParameter(attributeValue, attributeValue));
-                    command.Parameters.Add(new SQLiteParameter(firstKey, firstKey));
-                    command.Parameters.Add(new SQLiteParameter(secondKey, secondKey));
+                    command.Parameters.Add(new SQLiteParameter("@attributVal", attributeValue));
+                    command.Parameters.Add(new SQLiteParameter("@firstKey", firstKey));
+                    command.Parameters.Add(new SQLiteParameter("@secondKey", secondKey));
                     connection.Open();
                     res = command.ExecuteNonQuery();
                 }
@@ -116,17 +116,17 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {_tableName} set [{attributeName}]='{attributeValue}' " +
-                    $"where [{firstKeyColumnName}] = '@{firstKey}' and [{secondKeyColumnName}] = '@{secondKey}'" +
-                    $" and [{thirdKeyColumnName}] = @{thirdKey}"
+                    CommandText = $"update {_tableName} set [{attributeName}]='@attributeVal' " +
+                    $"where [{firstKeyColumnName}] = '@firstKey' and [{secondKeyColumnName}] = '@secondKey'" +
+                    $" and [{thirdKeyColumnName}] = @thirdKey"
                 };
                 try
                 {
 
-                    command.Parameters.Add(new SQLiteParameter(attributeValue, attributeValue));
-                    command.Parameters.Add(new SQLiteParameter($"@{firstKey}", firstKey));
-                    command.Parameters.Add(new SQLiteParameter($"@{secondKey}", secondKey));
-                    command.Parameters.Add(new SQLiteParameter($"@{thirdKey}", thirdKey));
+                    command.Parameters.Add(new SQLiteParameter("@attributeVal", attributeValue));
+                    command.Parameters.Add(new SQLiteParameter("@firstKey", firstKey));
+                    command.Parameters.Add(new SQLiteParameter("@secondKey", secondKey));
+                    command.Parameters.Add(new SQLiteParameter("@thirdKey", thirdKey));
                     connection.Open();
                     res = command.ExecuteNonQuery();
                 }
@@ -154,16 +154,16 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeValue} " +
-                    $"where [{firstKeyColumnName}] = '@{firstKey}' and [{secondKeyColumnName}] = '@{secondKey}'" +
-                    $" and [{thirdKeyColumnName}] = @{thirdKey}"
+                    CommandText = $"update {_tableName} set [{attributeName}]=@attributeVal " +
+                    $"where [{firstKeyColumnName}] = '@firstKey' and [{secondKeyColumnName}] = '@secondKey'" +
+                    $" and [{thirdKeyColumnName}] = @thirdKey"
                 };
                 try
                 {
-                    command.Parameters.Add(new SQLiteParameter($"@{attributeValue}", attributeValue));
-                    command.Parameters.Add(new SQLiteParameter($"@{firstKey}", firstKey));
-                    command.Parameters.Add(new SQLiteParameter($"@{secondKey}", secondKey));
-                    command.Parameters.Add(new SQLiteParameter($"@{thirdKey}", thirdKey));
+                    command.Parameters.Add(new SQLiteParameter("@attributeVal", attributeValue));
+                    command.Parameters.Add(new SQLiteParameter("@firstKey", firstKey));
+                    command.Parameters.Add(new SQLiteParameter("@secondKey", secondKey));
+                    command.Parameters.Add(new SQLiteParameter("@thirdKey", thirdKey));
                     connection.Open();
                     res = command.ExecuteNonQuery();
                 }
@@ -189,12 +189,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {_tableName} set [{attributeName}]='@{attributeValue}' where [{firstKeyColumnName}]='@{firstKey}'"
+                    CommandText = $"update {_tableName} set [{attributeName}]='@attributeVal' where [{firstKeyColumnName}]='@{firstKey}'"
                 };
                 try
                 {
-                    command.Parameters.Add(new SQLiteParameter($"@{attributeValue}", attributeValue));
-                    command.Parameters.Add(new SQLiteParameter($"@{firstKey}", firstKey));
+                    command.Parameters.Add(new SQLiteParameter("@attributeVal", attributeValue));
+                    command.Parameters.Add(new SQLiteParameter("@firstKey", firstKey));
                     connection.Open();
                     command.ExecuteNonQuery();
                 }
