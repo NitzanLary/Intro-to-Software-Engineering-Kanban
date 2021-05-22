@@ -56,7 +56,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             }
             dto = new BoardDTO(creator, name, new List<string>(), columns.Select(col => col.DTO).ToList());
             dto.Insert();
-            dto.AddBoardMemeber(creator);
+            dto.InsertNewBoardMember(creator);
             persisted = true;
         }
 

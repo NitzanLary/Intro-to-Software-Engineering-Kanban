@@ -169,7 +169,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             BoardDTO board = (BoardDTO)DTOobj;
             using (var connection = new SQLiteConnection(_connectionString))
             {
-                Console.WriteLine(_connectionString);
                 int res = -1;
                 SQLiteCommand command = new SQLiteCommand(null, connection);
                 try

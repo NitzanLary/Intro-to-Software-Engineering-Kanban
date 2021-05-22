@@ -223,37 +223,6 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public abstract bool Delete(DTO DTOobj);
 
-        public bool Delete(string query)
-        {
-            int res = -1;
-
-            using (var connection = new SQLiteConnection(_connectionString))
-            {
-                var command = new SQLiteCommand
-                {
-                    Connection = connection,
-                    CommandText = query
-                };
-                try
-                {
-                    connection.Open();
-                    res = command.ExecuteNonQuery();
-                }
-                catch(Exception e)
-                {
-                    log.Error(e.Message);
-                    throw;
-                }
-                finally
-                {
-                    command.Dispose();
-                    connection.Close();
-                }
-
-            }
-            return res > 0;
-        }
-
     }
 }
 

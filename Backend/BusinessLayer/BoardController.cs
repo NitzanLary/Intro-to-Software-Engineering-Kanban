@@ -461,7 +461,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Board b = boards[creatorEmail][boardName];
             try
             {
-                b.DTO.AddBoardMemeber(userEmail);
+                b.DTO.InsertNewBoardMember(userEmail);
             }
             catch(Exception e)
             {
