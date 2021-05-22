@@ -244,18 +244,9 @@ namespace Test
             //Console.WriteLine(bb.Boardname);
 
 
-            s.DeleteData();
 
-
-
-
-
-
-
-
-
-            //s.LoadData();
-            ////Register();
+            //s.DeleteData();
+            //Register();
             //Login();
             //AddBoard();
 
@@ -285,12 +276,15 @@ namespace Test
 
         static void AddBoard()
         {
-            Print(s.AddBoard("Nitzan@gmail.com", "Nitzan's Board"));
-            Print(s.AddBoard("Rafa@gmail.com", "Rafa's Board"));
-            Print(s.AddBoard("Nitzan@gmail.com", "Nitzan's Board"));
+            Print(s.AddBoard("Nitzan@gmail.com", "Nitzans Board"));
+            Print(s.AddBoard("Rafa@gmail.com", "Rafas Board"));
+            Print(s.AddBoard("Nitzan@gmail.com", "Nitzans Board")); // error
         }
 
+        static void LimitColumn()
+        {
 
+        }
 
 
         static void Task(Service s)

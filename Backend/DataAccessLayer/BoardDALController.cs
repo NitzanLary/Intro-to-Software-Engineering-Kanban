@@ -206,8 +206,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public bool DeleteAllData()
         {
-            return _columnDALController.DeleteAllData() && 
-                DeleteAllData(BoardsTableName) && DeleteAllData(BoardMembersTableName);
+            bool restDeleted = _columnDALController.DeleteAllData();
+            bool boardMemDeleted = DeleteAllData(BoardMembersTableName);
+            bool boardsDeleted = DeleteAllData(BoardsTableName);
+            return boardsDeleted || boardMemDeleted || restDeleted;
         }
     }
 }
