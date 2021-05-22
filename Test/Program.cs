@@ -232,17 +232,16 @@ namespace Test
 
             //List<BoardDTO> lb = bdc.SelectAllBoards();
             //Console.WriteLine(lb[0].Boardname == bb.Boardname && lb[0].Creator == bb.Creator && lb[0].Columns[0].Tasks[0].TaskID == t1.TaskID);
-            //t1.ColumnOrdinal = 1;
-            //Console.WriteLine(t1.ColumnOrdinal);
-            //c0.MaxTasksNumber = 20;
-            //Console.WriteLine(c0.MaxTasksNumber);
-            //t1.Description = "okokok put guitars";
-            //Console.WriteLine(t1.Description);
-            //u1.Password = "sunny";
-            //Console.WriteLine(u1.Password);
-            //bb.Boardname = "YanaySunny";
-            //Console.WriteLine(bb.Boardname);
-
+            t1.ColumnOrdinal = 1;
+            Console.WriteLine(t1.ColumnOrdinal);
+            c0.MaxTasksNumber = 20;
+            Console.WriteLine(c0.MaxTasksNumber);
+            t1.Description = "okokok put guitars";
+            Console.WriteLine(t1.Description);
+            u1.Password = "sunny";
+            Console.WriteLine(u1.Password);
+            bb.Boardname = "YanaySunny";
+            Console.WriteLine(bb.Boardname);
 
 
             //s.DeleteData();
