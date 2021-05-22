@@ -81,8 +81,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeValue} " +
-                    $"where {firstKeyColumnName} = @{firstKey} and {secondKeyColumnName} = @{secondKey}"
+                    CommandText = $"update {_tableName} set [{attributeName}]='@{attributeValue}' " +
+                    $"where {firstKeyColumnName} = '@{firstKey}' and {secondKeyColumnName} = '@{secondKey}'"
                 };
                 try
                 {
@@ -117,7 +117,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 {
                     Connection = connection,
                     CommandText = $"update {_tableName} set [{attributeName}]='{attributeValue}' " +
-                    $"where [{firstKeyColumnName}] = @{firstKey} and [{secondKeyColumnName}] = @{secondKey}" +
+                    $"where [{firstKeyColumnName}] = '@{firstKey}' and [{secondKeyColumnName}] = '@{secondKey}'" +
                     $" and [{thirdKeyColumnName}] = @{thirdKey}"
                 };
                 try
@@ -155,7 +155,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 {
                     Connection = connection,
                     CommandText = $"update {_tableName} set [{attributeName}]=@{attributeValue} " +
-                    $"where [{firstKeyColumnName}] = @{firstKey} and [{secondKeyColumnName}] = @{secondKey}" +
+                    $"where [{firstKeyColumnName}] = '@{firstKey}' and [{secondKeyColumnName}] = '@{secondKey}'" +
                     $" and [{thirdKeyColumnName}] = @{thirdKey}"
                 };
                 try
@@ -189,7 +189,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 SQLiteCommand command = new SQLiteCommand
                 {
                     Connection = connection,
-                    CommandText = $"update {_tableName} set [{attributeName}]=@{attributeValue} where [{firstKeyColumnName}]=@{firstKey}"
+                    CommandText = $"update {_tableName} set [{attributeName}]='@{attributeValue}' where [{firstKeyColumnName}]='@{firstKey}'"
                 };
                 try
                 {
