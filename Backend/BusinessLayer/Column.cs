@@ -14,15 +14,24 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             get => tasks.Values.ToList();
         }
-        //private ColumnDTO dto;
+
+        private ColumnDTO dto;
+        public ColumnDTO DTO
+        {
+            get => dto;
+            private set => dto = value;
+        }
+
+        private bool persisted;
+        
         private int maxTasks;
         public int MaxTasks
         {
             get => maxTasks;
             set
             {
-                //if (persisted)
-                //    dto.MaxTasks = value;
+                if (persisted)
+                    dto.MaxTasksNumber = value;
                 if (value < MaxTasks)
                     throw new ArgumentException("There are already more tasks in this column from the limit you put");
 
@@ -32,6 +41,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Column()
         {
+            persisted = false;
             tasks = new Dictionary<int, Task>();
             MaxTasks = -1;
         }
@@ -42,7 +52,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             tasks = new Dictionary<int, Task>();
             foreach (TaskDTO taskDTO in columnDTO.Tasks)
                 tasks.Add(taskDTO.TaskID, new Task(taskDTO));
-            
+            persisted = true;
+            dto = columnDTO;
+        }
+
+        public void AttachDto(string creator, string boardName, int columnOrdinal)
+        {
+            dto = new ColumnDTO(creator, boardName, columnOrdinal, MaxTasks, new List<TaskDTO>());
+            dto.Insert();
+            persisted = true;
         }
 
         public Task AddTask(DateTime dueDate, string title, string description, string assignee)

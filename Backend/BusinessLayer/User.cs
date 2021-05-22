@@ -23,18 +23,26 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             set => isLoggedIn = value;
         }
         private Password password;
-
+        private UserDTO dto;
+        public UserDTO DTO
+        {
+            get => dto;
+            private set => dto = value;
+        }
 
         public User(string email, Password password)
         {
             this.email = email;
             this.password = password;
+            dto = new UserDTO(email, password.Password_);
+            dto.Insert();
         }
 
         public User(UserDTO userDTO)
         {
             email = userDTO.Email;
             password = new Password(userDTO.Password);
+            dto = userDTO;
         }
 
         /// <summary>        

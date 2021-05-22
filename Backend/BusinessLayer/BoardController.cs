@@ -29,9 +29,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             members = new Dictionary<string, HashSet<Board>>();
         }
 
+        // pre condition: members were intiialized
         internal Response LoadData()
         {
-            Initialize();
             try
             {
                 List<BoardDTO> dtos = new BoardDALController().SelectAllBoards();
@@ -50,15 +50,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             }
             return new Response();
         }
-
-        private void Initialize()
-        {
-            if (boards == null)
-                boards = new Dictionary<string, Dictionary<string, Board>>();
-            if (members == null)
-                members = new Dictionary<string, HashSet<Board>>();
-        }
-
 
         /// <summary>        
         /// Checks args validities.
@@ -133,11 +124,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             if (r.ErrorOccured)
                 return r;
             if (userEmail != creatorEmail)
-                return Response<Object>.FromError("Only creator can limit columns");
+                return new Response("Only creator can limit columns");
             if (columnOrdinal > DONE_COLUMN)
-                return Response<Object>.FromError("column ordinal dose not exist. max 2");
+                return new Response("column ordinal dose not exist. max 2");
             log.Debug($"limit column successfully to {limit}");
-            return Response<Object>.FromValue(boards[userEmail][boardName].LimitColumn(columnOrdinal, limit));
+            return boards[userEmail][boardName].LimitColumn(columnOrdinal, limit);
         }
 
         /// <summary>
@@ -202,22 +193,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Board b = boards[creatorEmail][boardName];
             Response<Task> task = b.AddTask(dueDate, title, description, userEmail);
             if (!task.ErrorOccured)
-                storeTask(userEmail, creatorEmail, boardName, task.Value);
+            {
+                try
+                {
+                    task.Value.AttachDto(creatorEmail, boardName);
+                }
+                catch(Exception e)
+                {
+                    return Response<Task>.FromError(e.Message);
+                }
+            }
             return task;
-        }
-
-        /// <summary>
-        /// Store a new task in the DB.
-        /// </summary>
-        /// <param name="userEmail">Email of the user thet apply the function.</param>
-        /// <param name="creatorEmail">Email of the board creator</param>
-        /// <param name="boardName">The name of the board</param>
-        /// <param name="creatorEmail">Email of the user thet create the board that containing the task</param>
-        /// <param name="value">The task that need to be stored</param>
-        /// <returns>A response object, with an error message in case of an error</returns>
-        private Response storeTask(string userEmail, string creatorEmail, string boardName, Task value)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -241,9 +227,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 Task t = boards[creatorEmail][boardName].Columns[columnOrdinal].GetTask(taskId);
                 return Response<Task>.FromValue(t);
             }
-            catch(ArgumentException e)
+            catch(Exception e)
             {
-                return Response<Task>.FromError($"coldn't find task id {taskId} in email {userEmail} | board {boardName} | column {columnOrdinal}");
+                return Response<Task>.FromError($"coldn't find task id {taskId} in email {userEmail} | board {boardName} | column {columnOrdinal}\n{e.Message}");
             }
             
         }
@@ -277,7 +263,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             {
                 updateFunc(res.Value);
             }
-            catch(ArgumentException e)
+            catch(Exception e)
             {
                 return new Response(e.Message);
             }
@@ -378,9 +364,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return new Response("null value given");
             if (boards[email].ContainsKey(name))
                 return new Response($"user {email} already has board named {name}");
-            Board board = new Board(name, email);
-            boards[email].Add(name, board);
-            members[email].Add(board);
+            try
+            {
+                Board board = new Board(name, email);
+                boards[email].Add(name, board);
+                members[email].Add(board);
+            }
+            catch(Exception e)
+            {
+                return new Response(e.Message);
+            }
+            
             return new Response();
         }
 
@@ -464,7 +458,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             {
                 return new Response("The user is already joined to this board");
             }
-            members[userEmail].Add(boards[creatorEmail][boardName]);
+            Board b = boards[creatorEmail][boardName];
+            try
+            {
+                b.DTO.AddBoardMemeber(userEmail);
+            }
+            catch(Exception e)
+            {
+                return new Response(e.Message);
+            }
+            members[userEmail].Add(b);
             return new Response();
         }
 

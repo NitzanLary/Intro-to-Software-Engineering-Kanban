@@ -19,7 +19,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
 
-//            log.Info("Starting up!");
+            log.Info("Starting up!");
 
             userController = new UserController();
             boardController = new BoardController();
@@ -31,6 +31,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         {
             Response<List<BusinessLayer.User>> r = userController.LoadDate();
             WriteToLog(r, "");
+            if (r.ErrorOccured)
+                return r;
             r.Value.ForEach(user => boardController.addNewUserToMembers(user.Email));
             Response r2 = boardController.LoadData();
             WriteToLog(r2, "Loaded data successfully");
@@ -86,11 +88,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return r;
         }
 
-        //        /// <summary>        
-        //        /// Checks if a user is logged in
-        //        /// </summary>
-        //        /// <param name="email">The email of the user</param>
-        //        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        /// <summary>        
+        /// Checks if a user is logged in
+        /// </summary>
+        /// <param name="email">The email of the user</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         private Response IsLoggedIn(string email)
         {
             Response<bool> r = userController.isLoggedIn(email);

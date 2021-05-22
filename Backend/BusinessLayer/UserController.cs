@@ -80,8 +80,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Response<Password> rPass = pc.createPassword(password);
             if (rPass.ErrorOccured)
                 return rPass;
-            User user = new User(email, rPass.Value);
-            users.Add(email, user);
+            try
+            {
+                User user = new User(email, rPass.Value);
+                users.Add(email, user);
+            }
+            catch(Exception e)
+            {
+                return new Response(e.Message);
+            }
+            
             log.Info($"{email} successfully Registered!");
             return new Response();
         }

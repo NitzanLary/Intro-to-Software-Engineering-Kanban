@@ -80,9 +80,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         }
 
         private TaskDTO dto;
-        private TaskDTO DTO
+        public TaskDTO DTO
         {
-            set
+            get => dto;
+            private set
             {
                 dto = value;
             }
@@ -90,13 +91,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Task(DateTime dueDate, string title, string description, string assignee)
         {
+            persisted = false;
             id = indexer++;
             DueDate = dueDate;
             Title = title;
             Description = description;
             Assignee = assignee;
-            persisted = false;
-            // TODO: creating DTO object?
         }
 
         public Task(TaskDTO taskDTO)
@@ -108,6 +108,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Assignee = taskDTO.Assignee;
             persisted = true;
             dto = taskDTO;
+        }
+
+        public void AttachDto(string creator, string boardName)
+        {
+            dto = new TaskDTO(boardName, creator, 0, ID, Title, Description, Assignee, DueDate.ToString(), CreationTime.ToString());
+            dto.Insert();
+            persisted = true;
         }
 
     }

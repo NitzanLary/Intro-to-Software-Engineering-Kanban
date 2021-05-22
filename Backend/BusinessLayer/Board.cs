@@ -34,13 +34,30 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             get => columns;
         }
 
+        private BoardDTO dto;
+        public BoardDTO DTO
+        {
+            get => dto;
+            private set => dto = value;
+        }
+
+        private bool persisted;
+
         public Board(string name, String creator)
         {
+            persisted = false;
             Name = name;
             Creator = creator;
             columns = new List<Column>(3);
             for (int i = 0; i < 3; i++)
+            {
                 columns[i] = new Column();
+                columns[i].AttachDto(creator, name, i);
+            }
+            dto = new BoardDTO(creator, name, new List<string>(), columns.Select(col => col.DTO).ToList());
+            dto.Insert();
+            dto.AddBoardMemeber(creator);
+            persisted = true;
         }
 
         public Board(BoardDTO boardDTO)
@@ -58,8 +75,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             {
                 Columns[columnOrdinal + 1].AddTask(task);
                 Columns[columnOrdinal].RemoveTask(task);
+                task.DTO.ColumnOrdinal++;
             }
-            catch(ArgumentException e)
+            catch(Exception e)
             {
                 return new Response(e.Message);
             }
@@ -74,19 +92,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             {
                 Columns[columnOrdinal].MaxTasks = limit;
             }
-            catch (ArgumentException e)
+            catch (Exception e)
             {
                 return new Response(e.Message);
             }
-        
-            
-//                    //return new Response();
-//            //if (columnOrdinal == 0)
-//            //    MaxBacklogs = limit;
-//            //if (columnOrdinal == 1)
-//            //    MaxInProgress = limit;
-//            //if (columnOrdinal == 2)
-//            //    MaxDone = limit;
+
             return new Response();
     }
 
@@ -116,7 +126,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             {
                 task = Columns[0].AddTask(dueDate, title, description, userEmail);
             }
-            catch(ArgumentException a)
+            catch(Exception a)
             {
                 return Response<Task>.FromError(a.Message);
             }

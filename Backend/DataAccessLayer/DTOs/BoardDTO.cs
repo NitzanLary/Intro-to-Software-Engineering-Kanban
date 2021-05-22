@@ -39,6 +39,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
             _columns = columns;
         }
 
+        // Add member to the '_boardMembers' + add to the right table at the DB.
+        // Untill 22/05/2021 23:59
         public int AddBoardMemeber(string newMemeber)
         {
             throw new NotImplementedException();
