@@ -111,5 +111,45 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 return res > 0;
             }
         }
+
+        public override bool Delete(DTO DTOobj)
+        {
+
+            UserDTO user = (UserDTO)DTOobj;
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                Console.WriteLine(_connectionString);
+                int res = -1;
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                try
+                {
+                    connection.Open();
+                    command.CommandText = $"DELETE FROM {UsersTableName} WHERE [{UserDTO.EmailColumnName}] = @emailVal " ;
+
+                    SQLiteParameter emailParam = new SQLiteParameter("@emailVal", user.Email);
+
+
+
+                    command.Parameters.Add(emailParam);
+                    command.Prepare();
+
+                    res = command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    //log error
+                    log.Error(e.Message);
+                    throw;
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+                return res > 0;
+            }
+
+        }
+
     }
 }

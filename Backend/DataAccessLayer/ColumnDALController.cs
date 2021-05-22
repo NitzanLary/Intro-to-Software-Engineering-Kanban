@@ -87,6 +87,51 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return new ColumnDTO(reader.GetString(0), reader.GetString(1), reader.GetInt32(2), reader.GetInt32(3), null);
         }
 
+        public override bool Delete(DTO DTOobj)
+        {
+
+            ColumnDTO column = (ColumnDTO)DTOobj;
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                Console.WriteLine(_connectionString);
+                int res = -1;
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                try
+                {
+                    connection.Open();
+                    command.CommandText = $"DELETE FROM {ColumnsTableName} WHERE [{ColumnDTO.BoardNameColumnName}] = @boardNameVal " +
+                $"and [{ColumnDTO.CreatorColumnName}] = @boardCreatorVal and [{ColumnDTO.ColumnOrdinalColumName}] = @columnOrdinalVal" ;
+
+                    SQLiteParameter creatorParam = new SQLiteParameter("@boardCreatorVal", column.Creator);
+                    SQLiteParameter boardnameParam = new SQLiteParameter($"@boardNameVal", column.Boardname);
+                    SQLiteParameter columnordinalParam = new SQLiteParameter($"@columnOrdinalVal", column.ColumnOrdinal);
+
+
+
+
+                    command.Parameters.Add(creatorParam);
+                    command.Parameters.Add(boardnameParam);
+                    command.Parameters.Add(columnordinalParam);
+                    command.Prepare();
+
+                    res = command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    //log error
+                    log.Error(e.Message);
+                    throw;
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+                return res > 0;
+            }
+
+        }
+
 
     }
 }

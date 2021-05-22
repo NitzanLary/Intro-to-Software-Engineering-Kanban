@@ -215,6 +215,13 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         public abstract bool Insert(DTO DTOobj); 
 
+        public virtual bool InsertNewBoardMember(DTO DTOobj, string newMember)
+        {
+            return false;
+        }
+
+
+        public abstract bool Delete(DTO DTOobj);
 
         public bool Delete(string query)
         {

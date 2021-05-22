@@ -14,5 +14,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
             _controller = controller;
         }
 
+        public abstract bool Insert();
+
+        public abstract bool Delete();
+
     }
 }

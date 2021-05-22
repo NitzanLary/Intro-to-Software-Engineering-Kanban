@@ -89,14 +89,51 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
-        public bool Delete(TaskDTO task)
+        public override bool Delete(DTO DTOobj)
         {
-            string query = $"DELETE FROM {TasksTableName} WHERE {TaskDTO.BoardNameColumnName} = '{task.Boardname}' " +
-                $"and {TaskDTO.CreatorColumnName} = '{task.Creator}' and {TaskDTO.IdColumnName} = '{task.TaskID}'";
-            return Delete(query);
+
+            TaskDTO task = (TaskDTO)DTOobj;
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                Console.WriteLine(_connectionString);
+                int res = -1;
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                try
+                {
+                    connection.Open();
+                    command.CommandText = $"DELETE FROM {TasksTableName} WHERE [{TaskDTO.BoardNameColumnName}] = @boardNameVal " +
+                $"and [{TaskDTO.CreatorColumnName}] = @boardCreatorVal and [{TaskDTO.IdColumnName}] = @idVal" ;
+
+                    SQLiteParameter creatorParam = new SQLiteParameter("@boardCreatorVal", task.Creator);
+                    SQLiteParameter boardnameParam = new SQLiteParameter($"@boardNameVal", task.Boardname);
+                    SQLiteParameter columnordinalParam = new SQLiteParameter($"@idVal", task.TaskID);
+
+
+
+
+                    command.Parameters.Add(creatorParam);
+                    command.Parameters.Add(boardnameParam);
+                    command.Parameters.Add(columnordinalParam);
+                    command.Prepare();
+
+                    res = command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    //log error
+                    log.Error(e.Message);
+                    throw;
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+                return res > 0;
+            }
+
         }
-
-
+        
         protected override DTO ConvertReaderToObject(SQLiteDataReader reader)
         {
             return new TaskDTO(reader.GetString(7), reader.GetString(8), reader.GetInt32(1), reader.GetInt32(0),

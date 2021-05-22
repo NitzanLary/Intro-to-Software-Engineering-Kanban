@@ -41,15 +41,36 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 
         // Add member to the '_boardMembers' + add to the right table at the DB.
         // Untill 22/05/2021 23:59
-        public int AddBoardMemeber(string newMemeber)
+        public bool InsertNewBoardMember(string newMemeber)
         {
-            throw new NotImplementedException();
+            
+            bool res = _controller.InsertNewBoardMember(this, newMemeber);
+            if(res)
+                _boardMembers.Add(newMemeber);
+            return res;
+
         }
 
-        public bool Insert()
+        public override bool Insert()
         {
             return _controller.Insert(this);
         }
+
+        public override bool Delete()
+        {
+            bool res = _controller.Delete(this);
+            if (res)
+            {
+                foreach (ColumnDTO column in _columns)
+                {
+                    res = res && column.Delete();
+                }
+            }
+            return res;
+
+        }
+
+
 
     }
 }

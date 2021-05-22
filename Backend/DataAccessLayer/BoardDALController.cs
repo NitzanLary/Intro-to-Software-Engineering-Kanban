@@ -79,8 +79,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
         }
 
-        public bool InsertNewBoardMember(BoardDTO board, string newMemeber)
+        public override bool InsertNewBoardMember(DTO DTOobj, string newMemeber)
         {
+            BoardDTO board = (BoardDTO)DTOobj;
             using (var connection = new SQLiteConnection(_connectionString))
             {
                 int res = -1;
@@ -162,11 +163,46 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
 
 
-        public bool Delete(BoardDTO board)
+        public override bool Delete(DTO DTOobj)
         {
-            string query = $"DELETE FROM {BoardsTableName} WHERE {BoardDTO.BoardNameColumnName} = '{board.Boardname}' " +
-                $"and {BoardDTO.CreatorColumnName} = '{board.Creator}'";
-            return Delete(query);
+
+            BoardDTO board = (BoardDTO)DTOobj;
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                Console.WriteLine(_connectionString);
+                int res = -1;
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                try
+                {
+                    connection.Open();
+                    command.CommandText = $"DELETE FROM {BoardsTableName} WHERE [{BoardDTO.BoardNameColumnName}] = @boardNameVal " +
+                $"and [{BoardDTO.CreatorColumnName}] = @boardCreatorVal";
+
+                    SQLiteParameter creatorParam = new SQLiteParameter("@boardCreatorVal", board.Creator);
+                    SQLiteParameter boardnameParam = new SQLiteParameter($"@boardNameVal", board.Boardname);
+
+
+
+                    command.Parameters.Add(creatorParam);
+                    command.Parameters.Add(boardnameParam);
+                    command.Prepare();
+
+                    res = command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    //log error
+                    log.Error(e.Message);
+                    throw;
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+                return res > 0;
+            }
+
         }
     }
 }

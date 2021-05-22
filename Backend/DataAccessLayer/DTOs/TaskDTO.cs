@@ -70,9 +70,14 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             
         }
 
-        public bool Insert()
+        public override bool Insert()
         {
             return _controller.Insert(this);
+        }
+
+        public override bool Delete()
+        {
+            return _controller.Delete(this);
         }
 
     }

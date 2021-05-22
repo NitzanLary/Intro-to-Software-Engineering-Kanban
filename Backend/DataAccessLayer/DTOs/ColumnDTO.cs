@@ -50,9 +50,23 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         }
 
-        public bool Insert()
+        public override bool Insert()
         {
             return _controller.Insert(this);
+        }
+
+        public override bool Delete()
+        {
+            bool res = _controller.Delete(this);
+            if (res)
+            {
+                foreach (TaskDTO task in _tasks)
+                {
+                    res = res && task.Delete();
+                }
+            }
+            return res;
+
         }
 
     }
