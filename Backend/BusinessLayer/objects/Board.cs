@@ -68,7 +68,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         }
 
         // pre condition: columnOrdinal < DONE_COLUMN
-        public Response AdvanceTask(Task task, int columnOrdinal)
+        public MFResponse AdvanceTask(Task task, int columnOrdinal)
         {
             int taskId = task.ID;
             try
@@ -79,47 +79,47 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             }
             catch(Exception e)
             {
-                return new Response(e.Message);
+                return new MFResponse(e.Message);
             }
-            return new Response();
+            return new MFResponse();
         }
 
-        public Response LimitColumn(int columnOrdinal, int limit)
+        public MFResponse LimitColumn(int columnOrdinal, int limit)
         {
             if (columnOrdinal > 2 || columnOrdinal < 0)
-                return new Response("there is no such column number");
+                return new MFResponse("there is no such column number");
             try
             {
                 Columns[columnOrdinal].MaxTasks = limit;
             }
             catch (Exception e)
             {
-                return new Response(e.Message);
+                return new MFResponse(e.Message);
             }
 
-            return new Response();
+            return new MFResponse();
     }
 
-    public Response<int> GetColumnLimit(int columnOrdinal)
+    public MFResponse<int> GetColumnLimit(int columnOrdinal)
         {
             if (columnOrdinal > 2 || columnOrdinal < 0)
-                return Response<int>.FromError("there is no such column number");
-            return Response<int>.FromValue(Columns[columnOrdinal].MaxTasks);
+                return MFResponse<int>.FromError("there is no such column number");
+            return MFResponse<int>.FromValue(Columns[columnOrdinal].MaxTasks);
         }
 
-        public Response<string> GetColumnName(int columnOrdinal)
+        public MFResponse<string> GetColumnName(int columnOrdinal)
         {
             if (columnOrdinal == 0)
-                return Response<string>.FromValue("backlog");
+                return MFResponse<string>.FromValue("backlog");
             if (columnOrdinal == 1)
-                return Response<string>.FromValue("in progress");
+                return MFResponse<string>.FromValue("in progress");
             if (columnOrdinal == 2)
-                return Response<string>.FromValue("done");
-            return Response<string>.FromError("there is no such column number");
+                return MFResponse<string>.FromValue("done");
+            return MFResponse<string>.FromError("there is no such column number");
 
         }
 
-        internal Response<Task> AddTask(DateTime dueDate, string title, string description, string userEmail)
+        internal MFResponse<Task> AddTask(DateTime dueDate, string title, string description, string userEmail)
         {
             Task task;
             try
@@ -128,15 +128,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             }
             catch(Exception a)
             {
-                return Response<Task>.FromError(a.Message);
+                return MFResponse<Task>.FromError(a.Message);
             }
-            return Response<Task>.FromValue(task);
+            return MFResponse<Task>.FromValue(task);
         }
 
         // pre condition: valid columnOrdinal
-        internal Response<IList<Task>> GetColumn(int columnOrdinal)
+        internal MFResponse<IList<Task>> GetColumn(int columnOrdinal)
         {
-            return Response<IList<Task>>.FromValue(Columns[columnOrdinal].Tasks);
+            return MFResponse<IList<Task>>.FromValue(Columns[columnOrdinal].Tasks);
         }
 
         //public Response advanceTask(int taskId, int columnOrd)

@@ -248,14 +248,14 @@ namespace Test
             //Console.WriteLine(bb.Boardname);
 
             s.DeleteData();
-            Register();
-            Login();
-            AddBoard();
-            JoinBoard();
-            LimitColumn();
-            GetColumnLimit();
-            GetColumnName();
-            AddTask();
+            //Register();
+            //Login();
+            //AddBoard();
+            //JoinBoard();
+            //LimitColumn();
+            //GetColumnLimit();
+            //GetColumnName();
+            //AddTask();
 
         }
 

@@ -13,7 +13,7 @@
             this.ErrorMessage = msg;
         }
 
-        internal Response(BusinessLayer.Response response)
+        internal Response(BusinessLayer.MFResponse response)
         {
             this.ErrorMessage = response.ErrorMessage;
         }

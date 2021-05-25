@@ -22,19 +22,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// </summary>
         /// <param name="password">The password we want to check if is valid</param>
         ///  <returns>A response<bool> object. The response should contain an error message in case of missing board for user or invalid argments</returns>
-        public Response<bool> isValid(string password)
+        public MFResponse<bool> isValid(string password)
         {
             bool flag1 = false;
             bool flag2 = false;
             bool flag3 = false;
             if (password.Length < MIN_LEN)
             {
-                return Response<bool>.FromError("The password is too short, you need at least " + MIN_LEN + " charcters");
+                return MFResponse<bool>.FromError("The password is too short, you need at least " + MIN_LEN + " charcters");
             }
             
             if (password.Length > MAX_LEN)
             {
-                return Response<bool>.FromError("The password is too long, you need at most " + MAX_LEN + " charcters");
+                return MFResponse<bool>.FromError("The password is too long, you need at most " + MAX_LEN + " charcters");
             }
             foreach (char c in password){
                 if ("ABCDEFGHIJKLMNOPQRSTUVWXYZ".Contains(c))
@@ -45,8 +45,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                     flag3 = true;
             }
             if (flag1 && flag3 && flag2)
-                return Response<bool>.FromValue(true);
-            return Response<bool>.FromError("Password must include atleast one uppercase letter, one small character and a number.");
+                return MFResponse<bool>.FromValue(true);
+            return MFResponse<bool>.FromError("Password must include atleast one uppercase letter, one small character and a number.");
             
         }
 
@@ -55,15 +55,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// </summary>
         /// <param name="password">The password we want to create the object from</param>
         /// <returns>A Response<Password> object</returns>
-        public Response<Password> createPassword(string password)
+        public MFResponse<Password> createPassword(string password)
         {
-            Response<bool> r = isValid(password);
+            MFResponse<bool> r = isValid(password);
             if (r.ErrorOccured)
-                return Response<Password>.FromError(r.ErrorMessage);
+                return MFResponse<Password>.FromError(r.ErrorMessage);
             if (password == null)
-                return Response<Password>.FromError("password can not be null");
+                return MFResponse<Password>.FromError("password can not be null");
             Password pass = new Password(password);
-            return Response<Password>.FromValue(pass);
+            return MFResponse<Password>.FromValue(pass);
         } 
     }
 }
