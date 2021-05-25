@@ -34,7 +34,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             try
             {
                 List<BoardDTO> dtos = new BoardDALController().SelectAllBoards();
-                foreach(BoardDTO boardDTO in dtos)
+                foreach (BoardDTO boardDTO in dtos)
                 {
                     Board board = new Board(boardDTO);
                     boardDTO.BoardMembers.ForEach((user) => members[user].Add(board));
