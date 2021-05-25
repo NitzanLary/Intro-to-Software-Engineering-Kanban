@@ -32,7 +32,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
 
 
-
+        /// <summary>
+        /// Insert new task into the dataBase
+        /// </summary>
+        /// <param name="DTOobj"></param>
+        /// <returns> return true if any record affected </returns>
         public override bool Insert(DTO DTOobj)
         {
             TaskDTO task = (TaskDTO)DTOobj;
@@ -143,7 +147,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return new TaskDTO(reader.GetString(7), reader.GetString(8), reader.GetInt32(1), reader.GetInt32(0),
                     reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetString(3), reader.GetString(2));
         }
-
+        /// <summary>
+        /// Delete all the tasks from the dataBase
+        /// </summary>
+        /// <returns> return true if any record affected </returns>
         public bool DeleteAllData()
         {
             return DeleteAllData(TasksTableName);
