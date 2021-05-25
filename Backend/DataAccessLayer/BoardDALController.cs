@@ -27,10 +27,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             _columnDALController = new ColumnDALController();
         }
 
-        /// <summary>
-        /// This function extract all the boards from the dataBase
-        /// </summary>
-        /// <returns> This fuction returns all the boards that in the dataBase within a list of type BoardDTO </returns>
+
         public List<BoardDTO> SelectAllBoards()
         {
             List<BoardDTO> result = Select().Cast<BoardDTO>().ToList();
@@ -43,11 +40,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         }
 
 
-        /// <summary>
-        /// Insert new board to the dataBase, used by BoardDTO
-        /// </summary>
-        /// <param name="DTOobj"></param>
-        /// <returns> This function return True if there are any records effected in the dataBase </returns>
+
         public override bool Insert(DTO DTOobj)
         {
             BoardDTO board = (BoardDTO)DTOobj;
@@ -85,12 +78,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 return res > 0;
             }
         }
-        /// <summary>
-        /// This function insert new boardMember into board dataBase used by boardDTO
-        /// </summary>
-        /// <param name="DTOobj"></param>
-        /// <param name="newMemeber"></param>
-        /// <returns> This function return True if there are any records effected in the dataBase </returns>
+
         public override bool InsertNewBoardMember(DTO DTOobj, string newMemeber)
         {
             BoardDTO board = (BoardDTO)DTOobj;
@@ -128,11 +116,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 return res > 0;
             }
         }
-        /// <summary>
-        /// This function converd dataBase reader object(what return's from the dataBase) into boardDTO DTO.
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
+
         protected override DTO ConvertReaderToObject(SQLiteDataReader reader)
         {
             return new BoardDTO(reader.GetString(0), reader.GetString(1), null, null);
@@ -219,10 +203,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
 
         }
-        /// <summary>
-        /// This function delete all board and its related records from the dataBase.
-        /// </summary>
-        /// <returns> This function return True if there are any records effected in the dataBase </returns>
+
         public bool DeleteAllData()
         {
             bool restDeleted = _columnDALController.DeleteAllData();

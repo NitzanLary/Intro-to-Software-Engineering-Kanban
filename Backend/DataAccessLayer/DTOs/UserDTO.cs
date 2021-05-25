@@ -26,18 +26,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             _password = password;
         }
 
-        /// <summary>
-        /// This function insert new User into the dataBase
-        /// </summary>
-        /// <returns> This function return True if there are any records effected in the dataBase </returns>
         public override bool Insert()
         {
             return _controller.Insert(this);
         }
-        /// <summary>
-        /// This function delete user from the dataBase
-        /// </summary>
-        /// <returns> This function return True if there are any records effected in the dataBase </returns>
+
         public override bool Delete()
         {
             return _controller.Delete(this);

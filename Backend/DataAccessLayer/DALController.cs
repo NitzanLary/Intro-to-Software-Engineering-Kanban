@@ -23,11 +23,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             this._connectionString = $"Data Source={path}; Version=3;";
             this._tableName = tableName;
         }
-        /// <summary>
-        /// /This function implmented in each controller and extract all the dto's of the specific controller from the dataBase
-        /// </summary>
-        /// <param name="query"></param>
-        /// <returns> return list of DTO (implmented in the controllers) </returns>
+
         protected List<DTO> Select(string query)
         {
             List<DTO> results = new List<DTO>();
@@ -208,14 +204,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return res > 0;
         }
 
-        public abstract bool Insert(DTO DTOobj);
-        /// <summary>
-        /// this function is virtual for virtual inheritance via run time.
-        /// this functionn implemented in BoardDALController.
-        /// </summary>
-        /// <param name="DTOobj"></param>
-        /// <param name="newMember"></param>
-        /// <returns></returns>
+        public abstract bool Insert(DTO DTOobj); 
+
         public virtual bool InsertNewBoardMember(DTO DTOobj, string newMember)
         {
             return false;
@@ -223,11 +213,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
 
         public abstract bool Delete(DTO DTOobj);
-        /// <summary>
-        /// This function delete all recoreds from parm table's name
-        /// </summary>
-        /// <param name="tableName"></param>
-        /// <returns> returns true if any recored effected </returns>
+
         public bool DeleteAllData(string tableName)
         {
             using (var connection = new SQLiteConnection(_connectionString))
