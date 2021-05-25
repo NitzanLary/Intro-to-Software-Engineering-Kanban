@@ -38,9 +38,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
             _boardMembers = boardMembers;
             _columns = columns;
         }
-
-        // Add member to the '_boardMembers' + add to the right table at the DB.
-        // Untill 22/05/2021 23:59
+        /// <summary>
+        /// This function insert new boardMember into board dataBase
+        /// </summary>
+        /// <param name="newMemeber"> The member who should be inserted into the board </param>
+        /// <returns> This function return True if there are any records effected in the dataBase </returns>
         public bool InsertNewBoardMember(string newMemeber)
         {
             
@@ -51,11 +53,19 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer.DTOs
 
         }
 
+        /// <summary>
+        /// Insert new board to the dataBase
+        /// </summary>
+        /// <returns> This function return True if there are any records effected in the dataBase </returns>
         public override bool Insert()
         {
             return _controller.Insert(this);
         }
 
+        /// <summary>
+        /// Delete board and all it's columns and tasks from the dataBase
+        /// </summary>
+        /// <returns> This function return True if there are any records effected in the dataBase </returns>
         public override bool Delete()
         {
             bool res = _controller.Delete(this);

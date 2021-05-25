@@ -88,7 +88,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 return res > 0;
             }
         }
-
+        /// <summary>
+        /// delete task from the dataBase
+        /// </summary>
+        /// <param name="DTOobj"></param>
+        /// <returns> retrun true if any recored affected </returns>
         public override bool Delete(DTO DTOobj)
         {
 
