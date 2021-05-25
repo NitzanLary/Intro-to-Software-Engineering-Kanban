@@ -1,4 +1,4 @@
-﻿using IntroSE.Kanban.Backend.ServiceLayer;
+﻿using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public string Name
         {
             get => name;
-            private set => name = Name;
+            private set => name = value;
+        }
+
+        private string creator;
+        public string Creator
+        {
+            get => creator;
+            private set => creator = value;
         }
 
 
@@ -26,99 +33,110 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             get => columns;
         }
 
-        public Board(string name)
+        private BoardDTO dto;
+        public BoardDTO DTO
         {
+            get => dto;
+            private set => dto = value;
+        }
+
+        private bool persisted;
+
+        public Board(string name, String creator)
+        {
+            persisted = false;
             Name = name;
+            Creator = creator;
             columns = new List<Column>(3);
             for (int i = 0; i < 3; i++)
-                columns[i] = new Column();
-            //this.name = name;
-            //this.MaxBacklogs = -1;
-            //this.MaxInProgress = -1;
-            //this.MaxDone = -1;
-            //this.columns = new List<Dictionary<int,Task>>();
-            //for (int i=0; i<3; i++)
-            //{
-            //    this.columns.Add(new Dictionary<int, Task>());
-            //}
+            {
+                columns.Add(new Column());
+                columns[i].AttachDto(creator, name, i);
+            }
+            dto = new BoardDTO(creator, name, new List<string>(), columns.Select(col => col.DTO).ToList());
+            dto.Insert();
+            dto.InsertNewBoardMember(creator);
+            persisted = true;
+        }
+
+        public Board(BoardDTO boardDTO)
+        {
+            Name = boardDTO.Boardname;
+            Creator = boardDTO.Creator;
+            columns = boardDTO.Columns.Select((col) => new Column(col)).ToList();
+            dto = boardDTO;
         }
 
         // pre condition: columnOrdinal < DONE_COLUMN
-        public Response AdvanceTask(Task task, int columnOrdinal)
+        public MFResponse AdvanceTask(Task task, int columnOrdinal)
         {
             int taskId = task.ID;
             try
             {
                 Columns[columnOrdinal + 1].AddTask(task);
                 Columns[columnOrdinal].RemoveTask(task);
+                task.DTO.ColumnOrdinal++;
             }
-            catch(ArgumentException e)
+            catch(Exception e)
             {
-                return new Response(e.Message);
+                return new MFResponse(e.Message);
             }
-            return new Response();
+            return new MFResponse();
         }
 
-        public Response LimitColumn(int columnOrdinal, int limit)
+        public MFResponse LimitColumn(int columnOrdinal, int limit)
         {
             if (columnOrdinal > 2 || columnOrdinal < 0)
-                return new Response("there is no such column number");
+                return new MFResponse("there is no such column number");
             try
             {
                 Columns[columnOrdinal].MaxTasks = limit;
             }
-            catch(ArgumentException e)
+            catch (Exception e)
             {
-                return new Response(e.Message);
+                return new MFResponse(e.Message);
             }
-            
-                    //return new Response();
-            //if (columnOrdinal == 0)
-            //    MaxBacklogs = limit;
-            //if (columnOrdinal == 1)
-            //    MaxInProgress = limit;
-            //if (columnOrdinal == 2)
-            //    MaxDone = limit;
-            return new Response();
-        }
 
-        public Response<int> GetColumnLimit(int columnOrdinal)
+            return new MFResponse();
+    }
+
+    public MFResponse<int> GetColumnLimit(int columnOrdinal)
         {
             if (columnOrdinal > 2 || columnOrdinal < 0)
-                return Response<int>.FromError("there is no such column number");
-            return Response<int>.FromValue(Columns[columnOrdinal].MaxTasks);
+                return MFResponse<int>.FromError("there is no such column number");
+            return MFResponse<int>.FromValue(Columns[columnOrdinal].MaxTasks);
         }
 
-        public Response<string> GetColumnName(int columnOrdinal)
+        public MFResponse<string> GetColumnName(int columnOrdinal)
         {
             if (columnOrdinal == 0)
-                return Response<string>.FromValue("backlog");
+                return MFResponse<string>.FromValue("backlog");
             if (columnOrdinal == 1)
-                return Response<string>.FromValue("in progress");
+                return MFResponse<string>.FromValue("in progress");
             if (columnOrdinal == 2)
-                return Response<string>.FromValue("done");
-            return Response<string>.FromError("there is no such column number");
+                return MFResponse<string>.FromValue("done");
+            return MFResponse<string>.FromError("there is no such column number");
 
         }
 
-        internal Response<Task> AddTask(DateTime dueDate, string title, string description, string userEmail)
+        internal MFResponse<Task> AddTask(DateTime dueDate, string title, string description, string userEmail)
         {
             Task task;
             try
             {
                 task = Columns[0].AddTask(dueDate, title, description, userEmail);
             }
-            catch(ArgumentException a)
+            catch(Exception a)
             {
-                return Response<Task>.FromError(a.Message);
+                return MFResponse<Task>.FromError(a.Message);
             }
-            return Response<Task>.FromValue(task);
+            return MFResponse<Task>.FromValue(task);
         }
 
         // pre condition: valid columnOrdinal
-        internal Response<IList<Task>> GetColumn(int columnOrdinal)
+        internal MFResponse<IList<Task>> GetColumn(int columnOrdinal)
         {
-            return Response<IList<Task>>.FromValue(Columns[columnOrdinal].Tasks);
+            return MFResponse<IList<Task>>.FromValue(Columns[columnOrdinal].Tasks);
         }
 
         //public Response advanceTask(int taskId, int columnOrd)

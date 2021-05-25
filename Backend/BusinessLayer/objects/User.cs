@@ -1,4 +1,4 @@
-﻿using IntroSE.Kanban.Backend.ServiceLayer;
+﻿using IntroSE.Kanban.Backend.DataAccessLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +22,26 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             set => isLoggedIn = value;
         }
         private Password password;
-
+        private UserDTO dto;
+        public UserDTO DTO
+        {
+            get => dto;
+            private set => dto = value;
+        }
 
         public User(string email, Password password)
         {
             this.email = email;
             this.password = password;
+            dto = new UserDTO(email, password.Password_);
+            dto.Insert();
+        }
+
+        public User(UserDTO userDTO)
+        {
+            email = userDTO.Email;
+            password = new Password(userDTO.Password);
+            dto = userDTO;
         }
 
         /// <summary>        
@@ -35,22 +49,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// </summary>
         /// <param name="password">The password of the user to log in</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-        public Response<User> Login(string password)
+        public MFResponse<User> Login(string password)
         {
             if (!IsPasswordCorrect(password))
-                return Response<User>.FromError("Incorrect Password");
+                return MFResponse<User>.FromError("Incorrect Password");
             if (isLoggedIn)
-                return Response<User>.FromError("User is already loogged in");
+                return MFResponse<User>.FromError("User is already loogged in");
             IsLoggedIn = true;
-            return Response<User>.FromValue(this);
+            return MFResponse<User>.FromValue(this);
         }
         
-        public Response addBoard(string boardName)
+        public MFResponse addBoard(string boardName)
         {
             throw new NotImplementedException();
         }
 
-        public Response removeBoard(string boardName)
+        public MFResponse removeBoard(string boardName)
         {
             throw new NotImplementedException();
         }
@@ -59,12 +73,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// Log out an logged in user. 
         /// </summary>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-        public Response logout()
+        public MFResponse logout()
         {
             if (!isLoggedIn)
-                return Response<User>.FromError("User is not loogged in");
+                return MFResponse<User>.FromError("User is not loogged in");
             IsLoggedIn = false;
-            return new Response();
+            return new MFResponse();
         }
 
         /// <summary>        

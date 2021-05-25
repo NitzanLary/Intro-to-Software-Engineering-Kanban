@@ -20,6 +20,13 @@
         {
             return new Response<T>(default(T), msg);
         }
+
+        internal static Response<T> FromBLResponse(BusinessLayer.MFResponse<T> r)
+        {
+            if (r.ErrorOccured)
+                return Response<T>.FromError(r.ErrorMessage);
+            return Response<T>.FromValue(r.Value);
+        }
     }
 }
 

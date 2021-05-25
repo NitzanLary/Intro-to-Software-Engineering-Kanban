@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer
 {
@@ -13,16 +14,25 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             get => tasks.Values.ToList();
         }
-        //private ColumnDTO dto;
+
+        private ColumnDTO dto;
+        public ColumnDTO DTO
+        {
+            get => dto;
+            private set => dto = value;
+        }
+
+        private bool persisted;
+        
         private int maxTasks;
         public int MaxTasks
         {
             get => maxTasks;
             set
             {
-                //if (persisted)
-                //    dto.MaxTasks = value;
-                if (value < MaxTasks)
+                if (persisted)
+                    dto.MaxTasksNumber = value;
+                if (value != -1 && value < Tasks.Count)
                     throw new ArgumentException("There are already more tasks in this column from the limit you put");
 
                 maxTasks = value;
@@ -31,8 +41,26 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Column()
         {
+            persisted = false;
             tasks = new Dictionary<int, Task>();
-            MaxTasks = -1;
+            maxTasks = -1;
+        }
+
+        public Column(ColumnDTO columnDTO)
+        {
+            tasks = new Dictionary<int, Task>();
+            MaxTasks = columnDTO.MaxTasksNumber;
+            foreach (TaskDTO taskDTO in columnDTO.Tasks)
+                tasks.Add(taskDTO.TaskID, new Task(taskDTO));
+            persisted = true;
+            dto = columnDTO;
+        }
+
+        public void AttachDto(string creator, string boardName, int columnOrdinal)
+        {
+            dto = new ColumnDTO(creator, boardName, columnOrdinal, MaxTasks, new List<TaskDTO>());
+            dto.Insert();
+            persisted = true;
         }
 
         public Task AddTask(DateTime dueDate, string title, string description, string assignee)
@@ -43,7 +71,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         internal Task AddTask(Task task)
         {
-            if (tasks.Count >= MaxTasks)
+            if (MaxTasks != -1 && tasks.Count >= MaxTasks)
                 throw new ArgumentException($"Max number of tasks allowed in this coloumn is {MaxTasks}");
             tasks.Add(task.ID, task);
             return task;

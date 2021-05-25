@@ -9,6 +9,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
     class Password
     {
         private string password;
+        public string Password_
+        {
+            get => password;
+            private set => password = value;
+        }
 
         public Password(string pass)
         {

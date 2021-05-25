@@ -1,21 +1,16 @@
-﻿namespace IntroSE.Kanban.Backend.ServiceLayer
+﻿namespace IntroSE.Kanban.Backend.BusinessLayer
 {
     ///<summary>Class <c>Response</c> represents the result of a call to a void function. 
     ///If an exception was thrown, <c>ErrorOccured = true</c> and <c>ErrorMessage != null</c>. 
     ///Otherwise, <c>ErrorOccured = false</c> and <c>ErrorMessage = null</c>.</summary>
-    public class Response
+    public class MFResponse
     {
         public readonly string ErrorMessage;
         public bool ErrorOccured { get => ErrorMessage != null; }
-        internal Response() { }
-        internal Response(string msg)
+        internal MFResponse() { }
+        internal MFResponse(string msg)
         {
             this.ErrorMessage = msg;
-        }
-
-        internal Response(BusinessLayer.MFResponse response)
-        {
-            this.ErrorMessage = response.ErrorMessage;
         }
     }
 }
