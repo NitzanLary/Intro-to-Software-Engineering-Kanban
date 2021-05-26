@@ -22,7 +22,12 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         {
             _taskDALController = new TaskDALController();
         }
-
+        /// <summary>
+        /// this function extract all columns for board "boardName" from the dataBase
+        /// </summary>
+        /// <param name="boardname"></param>
+        /// <param name="creator"></param>
+        /// <returns> This functions return list of clumonsDTO </returns>
         internal List<ColumnDTO> SelectAllColumnsForBoard(string boardname, string creator)
         {
             string query = $"SELECT * FROM {ColumnsTableName} " +
@@ -131,7 +136,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             }
 
         }
-
+        /// <summary>
+        /// this function delete all the columns from the dataBase
+        /// </summary>
+        /// <returns> return true if any records affected </returns>
         public bool DeleteAllData()
         {
             bool tasksDeleted = _taskDALController.DeleteAllData();

@@ -50,11 +50,19 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         }
 
+        /// <summary>
+        /// Insert new column to the DataBase
+        /// </summary>
+        /// <returns> This function return True if there are any records effected in the dataBase </returns>
         public override bool Insert()
         {
             return _controller.Insert(this);
         }
 
+        /// <summary>
+        /// Delete column and all it's tasks from the DataBase
+        /// </summary>
+        /// <returns>  This function return True if there are any records effected in the dataBase </returns>
         public override bool Delete()
         {
             bool res = _controller.Delete(this);

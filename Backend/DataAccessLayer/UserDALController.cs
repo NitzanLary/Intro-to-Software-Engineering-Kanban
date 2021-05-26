@@ -22,7 +22,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         }
 
-
+        /// <summary>
+        /// extract all users from dataBase
+        /// </summary>
+        /// <returns> return a list of UserDTO which extracted from the dataBase </returns>
         public List<UserDTO> SelectAllUsers()
         {
             List<UserDTO> result = Select().Cast<UserDTO>().ToList();
@@ -30,11 +33,20 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
             return result;
         }
 
+        /// <summary>
+        /// convert the reader(sql return type) into the correct DTO via the dto's constructor
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
         protected override DTO ConvertReaderToObject(SQLiteDataReader reader)
         {
             return new UserDTO(reader.GetString(0), reader.GetString(1));
         }
-
+        /// <summary>
+        /// Insert new User into the dataBase
+        /// </summary>
+        /// <param name="DTOobj"></param>
+        /// <returns> return true if any recored affected </returns>
         public override bool Insert(DTO DTOobj)
         {
             UserDTO user = (UserDTO)DTOobj;
@@ -72,7 +84,11 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 return res > 0;
             }
         }
-
+        /// <summary>
+        /// delete user from the dataBase
+        /// </summary>
+        /// <param name="DTOobj"></param>
+        /// <returns> return true if any recored affected </returns>
         public override bool Delete(DTO DTOobj)
         {
 
@@ -112,6 +128,10 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         }
 
+        /// <summary>
+        /// Delete all recoreds from table Users
+        /// </summary>
+        /// <returns> return true if any recored affected </returns>
         public bool DeleteAllData()
         {
             return DeleteAllData(UsersTableName);
