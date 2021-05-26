@@ -29,7 +29,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         ///         You should call this function when the program starts. </summary>
         public Response LoadData()
         {
-            try
+            return TryAndApply(() =>
             {
                 Response<List<BusinessLayer.User>> r = Response<List<BusinessLayer.User>>.FromBLResponse(userController.LoadDate());
                 WriteToLog(r, "Usres Loaded");
@@ -39,17 +39,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Response r2 = new Response(boardController.LoadData());
                 WriteToLog(r2, "Loaded data successfully");
                 return r2;
-            }
-            catch (Exception e)
-            {
-                return new Response(e.Message);
-            }
+            });
         }
 
         ///<summary>Removes all persistent data.</summary>
         public Response DeleteData()
         {
-            try
+            return TryAndApply(() =>
             {
                 Response r = new Response(userController.DeleteData());
                 if (r.ErrorOccured)
@@ -57,11 +53,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Response r2 = new(boardController.DeleteData());
                 WriteToLog(r2, "Data deleted successfully");
                 return r2;
-            }
-            catch (Exception e)
-            {
-                return new Response(e.Message);
-            }
+            });
         }
 
         /// <summary>
@@ -72,18 +64,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error<returns>
         public Response Register(string userEmail, string password)
         {
-            try
+            return TryAndApply(() =>
             {
                 log.Info($"User {userEmail} is trying to Register");
                 Response r = new(userController.Register(userEmail, password));
                 WriteToLog(r, $"{userEmail} succesfully registered");
                 boardController.addNewUserToMembers(userEmail);
                 return r;
-            }
-            catch (Exception e)
-            {
-                return new Response(e.Message);
-            }
+            });
         }
 
         /// <summary>
@@ -94,7 +82,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the user, instead the response should contain a error message in case of an error</returns>
         public Response<User> Login(string userEmail, string password)
         {
-            try
+            return TryAndApplyT<User>(() =>
             {
                 log.Info($"User {userEmail} is trying to Login");
                 Response r = new(userController.Login(userEmail, password));
@@ -102,11 +90,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     return Response<User>.FromError(r.ErrorMessage);
                 WriteToLog(r, $"{userEmail} login successfully");
                 return Response<User>.FromValue(new User(userEmail));
-            }
-            catch (Exception e)
-            {
-                return Response<User>.FromError(e.Message);
-            }
+            });
         }
         /// <summary>        
         /// Log out an logged-in user. 
@@ -115,17 +99,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response Logout(string userEmail)
         {
-            try
+            return TryAndApply(() =>
             {
                 log.Info($"User {userEmail} is trying to Logout");
                 Response r = new(userController.Logout(userEmail));
                 WriteToLog(r, $"{userEmail} logged out successfully");
                 return r;
-            }
-            catch (Exception e)
-            {
-                return Response<User>.FromError(e.Message);
-            }
+            });
 
         }
 
@@ -410,6 +390,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the list of SL tasks</returns>
         private Response<IList<Task>> ConvertBusinessToServiceTasksCollection(IList<BusinessLayer.Task> lst)
         {
+            return TryAndApplyT<IList<Task>>(() =>
+        {
             IList<Task> ret = new List<Task>();
             foreach (BusinessLayer.Task t in lst)
             {
@@ -417,6 +399,82 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 ret.Add(toAdd);
             }
             return Response<IList<Task>>.FromValue(ret);
+        });
+            
+        }
+
+        private Response IsLoggedIn(string email)
+        {
+            try
+            {
+                Response<bool> r = Response<bool>.FromBLResponse(userController.isLoggedIn(email));
+                if (r.ErrorOccured)
+                {
+                    log.Debug(r.ErrorMessage);
+                    return r;
+                }
+
+                if (!r.Value)
+                {
+                    string msg = $"User {email} is not logged in";
+                    log.Debug(msg);
+                    return new Response(msg);
+                }
+
+                return new Response();
+            }
+            catch (Exception e)
+            {
+                return Response<User>.FromError(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Wrraping a given lambda with try catch and applying the function.
+        /// </summary>
+        /// <typeparam name="T"> The type of the Response to return </typeparam>
+        /// <param name="func"> The function to apply which accepts no argiments and return Response<T>. </param>
+        /// <returns> A response of type T </returns>
+        private Response<T> TryAndApplyT<T>(Func<Response<T>> func)
+        {
+            try
+            {
+                return func();
+            }
+            catch(Exception e)
+            {
+                return Response<T>.FromError(e.Message);
+            }
+        }
+
+        /// <summary> Same as TryAndApplyT method, but gets no generic type T in the Response. </summary>
+        private Response TryAndApply(Func<Response> func)
+        {
+            return TryAndApplyT<Object>(() =>
+            {
+                Response r = func();
+                if (r.ErrorOccured)
+                    return Response<Object>.FromError(r.ErrorMessage);
+                return Response<Object>.FromValue(null);
+            });
+        }
+
+        /// <summary>
+        /// Confirms that <c>userEmail</c> is logged in first, then apply the function wrraped with try - catch.
+        /// </summary>
+        /// /// <typeparam name="T"> The type of the Response to return </typeparam>
+        /// <param name="func"> The function to apply which accepts no argiments and return Response<T>. </param>
+        /// <param name="userEmail"> The user to confirm whether logged in or not </param>
+        /// <returns> A response of type T</returns>
+        private Response<T> ConfirmAndApply<T>(string userEmail, Func<Response<T>> func)
+        {
+            return TryAndApplyT<T>(() =>
+            {
+                Response r = IsLoggedIn(userEmail);
+                if (r.ErrorOccured)
+                    return Response<T>.FromError(r.ErrorMessage);
+                return func();
+            });
         }
 
     }
