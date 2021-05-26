@@ -15,6 +15,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             get => tasks.Values.ToList();
         }
 
+        private string name;
+        public string Name
+        {
+            get => name;
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("Column name can not be null");
+                if (persisted)
+                    //dto.Name = value;
+                name = value;
+            }
+        }
+
         private ColumnDTO dto;
         public ColumnDTO DTO
         {
@@ -30,24 +44,25 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             get => maxTasks;
             set
             {
-                if (persisted)
-                    dto.MaxTasksNumber = value;
                 if (value != -1 && value < Tasks.Count)
                     throw new ArgumentException("There are already more tasks in this column from the limit you put");
-
+                if (persisted)
+                    dto.MaxTasksNumber = value;
                 maxTasks = value;
             }
         }
 
-        public Column()
+        public Column(string name)
         {
             persisted = false;
+            Name = name;
             tasks = new Dictionary<int, Task>();
             maxTasks = -1;
         }
 
         public Column(ColumnDTO columnDTO)
         {
+            //Name = columnDTO.Name;
             tasks = new Dictionary<int, Task>();
             MaxTasks = columnDTO.MaxTasksNumber;
             foreach (TaskDTO taskDTO in columnDTO.Tasks)
@@ -58,7 +73,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public void AttachDto(string creator, string boardName, int columnOrdinal)
         {
-            dto = new ColumnDTO(creator, boardName, columnOrdinal, MaxTasks, new List<TaskDTO>());
+            dto = new ColumnDTO(creator, boardName, columnOrdinal, MaxTasks, new List<TaskDTO>()); // TODO add name
             dto.Insert();
             persisted = true;
         }
