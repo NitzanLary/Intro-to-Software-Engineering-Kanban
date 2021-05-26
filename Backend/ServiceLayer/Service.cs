@@ -1,26 +1,89 @@
 ﻿using System.Collections.Generic;
 using System;
 using System.Linq;
+using IntroSE.Kanban.Backend.BusinessLayer;
+using log4net;
+using System.Reflection;
+using log4net.Config;
+using System.IO;
 
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     public class Service
     {
-       
+        private UserController userController;
+        private BoardController boardController;
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         public Service()
         {
-            throw new NotImplementedException();
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+
+            log.Info("Starting up!");
+
+            userController = new UserController();
+            boardController = new BoardController();
         }
+
         ///<summary>This method loads the data from the persistance.
         ///         You should call this function when the program starts. </summary>
         public Response LoadData()
         {
-            throw new NotImplementedException();
+            try
+            {
+                Response<List<BusinessLayer.User>> r = Response<List<BusinessLayer.User>>.FromBLResponse(userController.LoadDate());
+                WriteToLog(r, "Usres Loaded");
+                if (r.ErrorOccured)
+                    return r;
+                r.Value.ForEach(user => boardController.addNewUserToMembers(user.Email));
+                Response r2 = new Response(boardController.LoadData());
+                WriteToLog(r2, "Loaded data successfully");
+                return r2;
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
         }
+
         ///<summary>Removes all persistent data.</summary>
         public Response DeleteData()
         {
-            throw new NotImplementedException();
+            try
+            {
+                Response r = new Response(userController.DeleteData());
+                if (r.ErrorOccured)
+                    return r;
+                Response r2 = new(boardController.DeleteData());
+                WriteToLog(r2, "Data deleted successfully");
+                return r2;
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Registers a new user.
+        /// </summary>
+        /// <param name="userEmail">The email address of the user to register</param>
+        /// <param name="password">The password of the user to register</param>
+        /// <returns>A response object. The response should contain a error message in case of an error<returns>
+        public Response Register(string userEmail, string password)
+        {
+            try
+            {
+                log.Info($"User {userEmail} is trying to Register");
+                Response r = new(userController.Register(userEmail, password));
+                WriteToLog(r, $"{userEmail} succesfully registered");
+                boardController.addNewUserToMembers(userEmail);
+                return r;
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
         }
 
         /// <summary>
@@ -31,7 +94,19 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the user, instead the response should contain a error message in case of an error</returns>
         public Response<User> Login(string userEmail, string password)
         {
-            throw new NotImplementedException();
+            try
+            {
+                log.Info($"User {userEmail} is trying to Login");
+                Response r = new(userController.Login(userEmail, password));
+                if (r.ErrorOccured)
+                    return Response<User>.FromError(r.ErrorMessage);
+                WriteToLog(r, $"{userEmail} login successfully");
+                return Response<User>.FromValue(new User(userEmail));
+            }
+            catch (Exception e)
+            {
+                return Response<User>.FromError(e.Message);
+            }
         }
         /// <summary>        
         /// Log out an logged-in user. 
@@ -40,8 +115,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response Logout(string userEmail)
         {
-            throw new NotImplementedException();
+            try
+            {
+                log.Info($"User {userEmail} is trying to Logout");
+                Response r = new(userController.Logout(userEmail));
+                WriteToLog(r, $"{userEmail} logged out successfully");
+                return r;
+            }
+            catch (Exception e)
+            {
+                return Response<User>.FromError(e.Message);
+            }
+
         }
+
         /// <summary>
         /// Limit the number of tasks in a specific column
         /// </summary>
@@ -211,19 +298,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             throw new NotImplementedException();
         }
 
-
-        /// <summary>
-        /// Registers a new user.
-        /// </summary>
-        /// <param name="userEmail">The email address of the user to register</param>
-        /// <param name="password">The password of the user to register</param>
-        /// <returns>A response object. The response should contain a error message in case of an error<returns>
-        public Response Register(string userEmail, string password)
-        {
-            throw new NotImplementedException();
-        }
-
-
         /// <summary>
         /// Assigns a task to a user
         /// </summary>
@@ -315,6 +389,34 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public Response MoveColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int shiftSize)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Write to the log the message from a given response
+        /// </summary>
+        /// <param name="r"> The given response </param>
+        /// <param name="msg"> The message to write if there was no error in the response </param>
+        private void WriteToLog(Response r, string msg)
+        {
+            if (r.ErrorOccured)
+                log.Error(r.ErrorMessage);
+            else log.Info(msg);
+        }
+
+        /// <summary>
+        /// Converts a collection of BusinessLayer Tasks into collection of ServiceLayer Tasks
+        /// </summary>
+        /// <param name="lst">IList of BL Tasks</param>
+        /// <returns>A response object with a value set to the list of SL tasks</returns>
+        private Response<IList<Task>> ConvertBusinessToServiceTasksCollection(IList<BusinessLayer.Task> lst)
+        {
+            IList<Task> ret = new List<Task>();
+            foreach (BusinessLayer.Task t in lst)
+            {
+                Task toAdd = new Task(t.ID, t.CreationTime, t.Title, t.Description, t.DueDate, t.Assignee);
+                ret.Add(toAdd);
+            }
+            return Response<IList<Task>>.FromValue(ret);
         }
 
     }
