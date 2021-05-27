@@ -13,7 +13,7 @@
         Background="Transparent"
         WindowStartupLocation="CenterScreen">
 
-    
+
 
     <Border Background="DodgerBlue">
         <Grid>
@@ -25,13 +25,15 @@
 
             <StackPanel Orientation="Vertical" Margin="0,150,0,0"  HorizontalAlignment="Center" TextBlock.TextAlignment="Center">
                 <Border Background="White" CornerRadius="10" Padding="15 50 15 15" Width="219" Height="223">
-                    <Grid>
-                        <TextBox HorizontalAlignment="Center"  BorderBrush="Transparent" Margin="0,10,0,0" Text="Email" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" Height="30"/>
-                        <TextBox HorizontalAlignment="Center" BorderBrush="Transparent" Margin="0,40,0,0" Text="Password" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" Height="30"/>
-                        <Border Background="Orange" CornerRadius="10" VerticalAlignment="Top" Height="33" Margin="40,115,41,0"/>
+                    <Grid Margin="-5,0,-15,0">
+                        <TextBox HorizontalAlignment="Center"  BorderBrush="Gray" Margin="40,10,0,0" Text="{Binding Path=Username, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="145" Height="30" TextAlignment="Left" />
+                        <TextBox HorizontalAlignment="Center" BorderBrush="Gray" Margin="40,42,0,0" Text="{Binding Path=Password, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="145" Height="30" TextAlignment="Left"/>
+                        <Border Background="Orange" CornerRadius="10" VerticalAlignment="Top" Height="33" Margin="46,115,35,0"/>
 
-                        <Button Content="Next" FontSize="19" FontWeight="DemiBold"  HorizontalAlignment="Center" Margin="0,117,0,0" VerticalAlignment="Top" Background="Transparent" Foreground="WhiteSmoke" BorderBrush="Transparent" />
-                            
+                        <Button Content="Next" FontSize="19" FontWeight="DemiBold"  HorizontalAlignment="Left" Margin="86,115,0,0" VerticalAlignment="Top" Background="Transparent" Foreground="WhiteSmoke" BorderBrush="Transparent" />
+                        <Label Content="Username" HorizontalAlignment="Left" Margin="-9,10,0,0" VerticalAlignment="Top" FontSize="11" />
+                        <Label Content="Password" FontSize="11" HorizontalAlignment="Left" Margin="-9,42,0,0" VerticalAlignment="Top"/>
+
 
                     </Grid>
                 </Border>
@@ -40,7 +42,8 @@
 
             </StackPanel>
             <Label Content="Login" FontSize="25" Foreground="DodgerBlue" FontWeight="SemiBold"  HorizontalAlignment="Center" Margin="0,150,0,0" VerticalAlignment="Top"/>
-            <Button Content="Create new account" Background="Transparent" Foreground="WhiteSmoke" FontSize="13" BorderBrush="Transparent" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,381,0,0" VerticalAlignment="Top" Width="142"/>
+            <Button Content="Create new account" Name ="Register" Click="Register_Click"  Background="Transparent" Foreground="WhiteSmoke" FontSize="13" BorderBrush="Transparent" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,381,0,0" VerticalAlignment="Top" Width="142"/>
+            <Label Content="{Binding Path=Message, Mode=OneWay}" Foreground="Red" HorizontalAlignment="Center" Margin="0,402,0,0" VerticalAlignment="Top"/>
 
         </Grid>
     </Border>

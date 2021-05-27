@@ -7,14 +7,38 @@ using System.Threading.Tasks;
 
 namespace Presentation.Model
 {
-    class BackendController
+    public class BackendController
     {
         private Service Service { get; set; }
+
+        public BackendController()
+        {
+            this.Service = new Service();
+            Service.LoadData();
+        }
 
         public BackendController(Service service)
         {
             this.Service = service;
-            Service.LoadData();
+        }
+
+        public UserModel Login(string username, string password)
+        {
+            Response<User> user = Service.Login(username, password);
+            if (user.ErrorOccured)
+            {
+                throw new Exception(user.ErrorMessage);
+            }
+            return new UserModel(this, username);
+        }
+
+        internal void Register(string username, string password)
+        {
+            Response res = Service.Register(username, password);
+            if (res.ErrorOccured)
+            {
+                throw new Exception(res.ErrorMessage);
+            }
         }
 
 

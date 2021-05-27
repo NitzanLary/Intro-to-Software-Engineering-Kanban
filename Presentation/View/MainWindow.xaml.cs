@@ -28,5 +28,17 @@ namespace Presentation
             this.DataContext = new MainViewModel();
             this.viewModel = (MainViewModel)DataContext;
         }
+
+        //private void Next_Click(object sender, RoutedEventArgs e)
+        //{
+
+        //}
+
+        private void Register_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.Register();
+        }
+
+
     }
 }
