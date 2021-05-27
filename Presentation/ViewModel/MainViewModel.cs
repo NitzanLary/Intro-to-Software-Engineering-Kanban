@@ -42,6 +42,20 @@ namespace Presentation.ViewModel
             }
         }
 
+        public UserModel Login()
+        {
+            Message = "";
+            try
+            {
+                return Controller.Login(Username, Password);
+            }
+            catch (Exception e)
+            {
+                Message = e.Message;
+                return null;
+            }
+        }
+
 
     }
 }

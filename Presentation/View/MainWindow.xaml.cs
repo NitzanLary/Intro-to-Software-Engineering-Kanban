@@ -1,4 +1,5 @@
-﻿using Presentation.ViewModel;
+﻿using Presentation.Model;
+using Presentation.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,17 @@ namespace Presentation
         {
             viewModel.Register();
         }
+
+        //private void Next_Click(object sender, RoutedEventArgs e)
+        //{
+        //    UserModel u = viewModel.Login();
+        //    if (u != null)
+        //    {
+        //        BoardView boardView = new BoardView(u);
+        //        boardView.Show();
+        //        this.Close();
+        //    }
+        //}
 
 
     }

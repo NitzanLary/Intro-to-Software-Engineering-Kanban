@@ -28,9 +28,9 @@
                     <Grid Margin="-5,0,-15,0">
                         <TextBox HorizontalAlignment="Center"  BorderBrush="Gray" Margin="40,10,0,0" Text="{Binding Path=Username, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="145" Height="30" TextAlignment="Left" />
                         <TextBox HorizontalAlignment="Center" BorderBrush="Gray" Margin="40,42,0,0" Text="{Binding Path=Password, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="145" Height="30" TextAlignment="Left"/>
-                        <Border Background="Orange" CornerRadius="10" VerticalAlignment="Top" Height="33" Margin="46,115,35,0"/>
+                        <Border Background="Orange" CornerRadius="10" VerticalAlignment="Top" Height="33" Margin="40,113,41,0"/>
 
-                        <Button Content="Next" FontSize="19" FontWeight="DemiBold"  HorizontalAlignment="Left" Margin="86,115,0,0" VerticalAlignment="Top" Background="Transparent" Foreground="WhiteSmoke" BorderBrush="Transparent" />
+                        <Button Content="Next" FontSize="19" FontWeight="DemiBold"  HorizontalAlignment="Left" Margin="79,115,0,0" VerticalAlignment="Top" Background="Transparent" Foreground="WhiteSmoke" BorderBrush="Transparent" />
                         <Label Content="Username" HorizontalAlignment="Left" Margin="-9,10,0,0" VerticalAlignment="Top" FontSize="11" />
                         <Label Content="Password" FontSize="11" HorizontalAlignment="Left" Margin="-9,42,0,0" VerticalAlignment="Top"/>
 
