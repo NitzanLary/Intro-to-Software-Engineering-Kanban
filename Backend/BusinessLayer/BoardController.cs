@@ -18,8 +18,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         //             email members,  board name
         private Dictionary<string, HashSet<Board>> members;
 
-        private readonly int DONE_COLUMN = 2;
-
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public BoardController()
@@ -137,9 +135,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return r;
             if (userEmail != creatorEmail)
                 return new MFResponse("Only creator can limit columns");
-            if (columnOrdinal > DONE_COLUMN)
-                return new MFResponse("column ordinal dose not exist. max 2");
-            log.Debug($"limit column successfully to {limit}");
             return boards[userEmail][boardName].LimitColumn(columnOrdinal, limit);
         }
 
@@ -158,10 +153,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return MFResponse<int>.FromError(r.ErrorMessage);
             if (!members[userEmail].Contains(boards[creatorEmail][boardName]))
                 return MFResponse<int>.FromError("The user is not a board member");
-            if (columnOrdinal > DONE_COLUMN)
-                return MFResponse<int>.FromError("column ordinal dose not exist. max " + DONE_COLUMN);
+            Board b = boards[creatorEmail][boardName];
+            if (columnOrdinal > b.Columns.Count)
+                return MFResponse<int>.FromError("column ordinal dose not exist. max " + b.Columns.Count);
 
-            return boards[creatorEmail][boardName].GetColumnLimit(columnOrdinal);
+            return b.GetColumnLimit(columnOrdinal);
         }
 
         /// <summary>
@@ -182,9 +178,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 log.Debug("The user is not a board member");
                 return MFResponse<string>.FromError("The user is not a board member");
             }
-            if (columnOrdinal > DONE_COLUMN)
-                return MFResponse<string>.FromError("column ordinal dose not exist. max " + DONE_COLUMN);
-            return boards[userEmail][boardName].GetColumnName(columnOrdinal);
+            Board b = boards[userEmail][boardName];
+            if (columnOrdinal >= b.Columns.Count)
+                return MFResponse<string>.FromError("column ordinal dose not exist. max " + b.Columns.Count);
+            return b.GetColumnName(columnOrdinal);
         }
 
         /// <summary>
@@ -232,11 +229,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
             if (r.ErrorOccured)
                 return MFResponse<Task>.FromError(r.ErrorMessage);
-            if (columnOrdinal > DONE_COLUMN || columnOrdinal < 0)
+            Board b = boards[creatorEmail][boardName];
+            if (columnOrdinal >= b.Columns.Count || columnOrdinal < 0)
                 return MFResponse<Task>.FromError("there is no such column number");
             try
             {
-                Task t = boards[creatorEmail][boardName].Columns[columnOrdinal].GetTask(taskId);
+                Task t = b.Columns[columnOrdinal].GetTask(taskId);
                 return MFResponse<Task>.FromValue(t);
             }
             catch(Exception e)
@@ -269,7 +267,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             }
             if (userEmail != res.Value.Assignee)
                 return new MFResponse("only the assignee of the task can update");
-            if (columnOrdinal == DONE_COLUMN)
+            Board b = boards[creatorEmail][boardName];
+            if (columnOrdinal == b.Columns.Count - 1)
                 return new MFResponse("task that is done, cannot be change");
             try
             {
@@ -337,8 +336,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public MFResponse AdvanceTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId) 
         {
-            if (columnOrdinal == DONE_COLUMN) // Nitzan: added this condition because 'Board' doesnt have DONE_COLUMN as a magic number.
-                return new MFResponse("Cannot advance a task from 'Done' columne");
             MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
             if (r.ErrorOccured)
                 return r;
@@ -359,8 +356,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
             if (r.ErrorOccured)
                 return MFResponse<IList<Task>>.FromError(r.ErrorMessage);
-            if (columnOrdinal > DONE_COLUMN)
-                return MFResponse<IList<Task>>.FromError("column ordinal dose not exist. max 2");
+            Board b = boards[creatorEmail][boardName];
+            if (columnOrdinal >= b.Columns.Count)
+                return MFResponse<IList<Task>>.FromError("column ordinal dose not exist.");
             return boards[userEmail][boardName].GetColumn(columnOrdinal);
         }
 
