@@ -69,7 +69,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 log.Info($"User {userEmail} is trying to Register");
                 Response r = new(userController.Register(userEmail, password));
                 WriteToLog(r, $"{userEmail} succesfully registered");
-                boardController.addNewUserToMembers(userEmail);
+                if (!r.ErrorOccured)
+                    boardController.addNewUserToMembers(userEmail);
                 return r;
             });
         }
