@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend", "Backend\Backend.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{4DF737D3-FF91-492A-96BB-A5393E202224}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frontend", "Frontend\Frontend.csproj", "{15A26310-EF3F-4DB1-98BF-9142A6CD617C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frontend", "Frontend\Frontend.csproj", "{15A26310-EF3F-4DB1-98BF-9142A6CD617C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{96D57CAB-CC80-4D5F-BEC0-30D46E7F870F}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Chrome downloads\bg.png = ..\..\Chrome downloads\bg.png
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

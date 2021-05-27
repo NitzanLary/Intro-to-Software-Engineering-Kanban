@@ -5,8 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Frontend"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" 
+        Height="650" 
+        Width="350"
+        WindowStyle="SingleBorderWindow" 
+        AllowsTransparency="False"
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen">
 
-    </Grid>
+
+    <Border Background="DodgerBlue">
+        <Grid>
+            <Grid.Background>
+                <ImageBrush TileMode="Tile" ViewportUnits="Absolute" Viewport="0 0 500 500"  ImageSource="/Frontend;component/Images/bg.png" />
+            </Grid.Background>
+            <Label Content="TaskU" HorizontalAlignment="Center" Margin="0,13,0,0" VerticalAlignment="Top" FontSize="40" FontWeight="Bold" Foreground="White"   />
+            <Label Content="Kanban System" HorizontalAlignment="Center" Margin="0,62,0,0" VerticalAlignment="Top" Foreground="White"/>
+
+            <StackPanel Orientation="Vertical" Margin="0,150,0,0"  HorizontalAlignment="Center" TextBlock.TextAlignment="Center">
+                <Border Background="White" CornerRadius="10" Padding="15 50 15 15" Width="219" Height="223">
+                    <Grid>
+                        <TextBox HorizontalAlignment="Center"  BorderBrush="Transparent" Margin="0,10,0,0" Text="Email" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" Height="30"/>
+                        <TextBox HorizontalAlignment="Center" BorderBrush="Transparent" Margin="0,40,0,0" Text="Password" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" Height="30"/>
+                        <Border Background="Orange" CornerRadius="10" VerticalAlignment="Top" Height="33" Margin="40,115,41,0"/>
+
+                        <Button Content="Next" FontSize="19" FontWeight="DemiBold"  HorizontalAlignment="Center" Margin="0,117,0,0" VerticalAlignment="Top" Background="Transparent" Foreground="WhiteSmoke" BorderBrush="Transparent" />
+                            
+
+                    </Grid>
+                </Border>
+
+
+
+            </StackPanel>
+            <Label Content="Login" FontSize="25" Foreground="DodgerBlue" FontWeight="SemiBold"  HorizontalAlignment="Center" Margin="0,150,0,0" VerticalAlignment="Top"/>
+            <Button Content="Create new account" Background="Transparent" Foreground="WhiteSmoke" FontSize="13" BorderBrush="Transparent" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,381,0,0" VerticalAlignment="Top" Width="142"/>
+
+        </Grid>
+    </Border>
+
+
+
 </Window>

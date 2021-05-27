@@ -7,12 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\bg.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Backend\Backend.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Model\" />
-    <Folder Include="ViewModel\" />
+    <Resource Include="Images\bg.png" />
   </ItemGroup>
 
 </Project>
