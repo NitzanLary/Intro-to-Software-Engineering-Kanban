@@ -1,4 +1,5 @@
 ﻿using Presentation.Model;
+using Presentation.View;
 using Presentation.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,19 @@ namespace Presentation
         private void Register_Click(object sender, RoutedEventArgs e)
         {
             viewModel.Register();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            {
+                UserModel user = viewModel.Login();
+                if (user != null)
+                {
+                    UserView userView = new UserView();
+                    userView.Show();
+                    this.Close();
+                }
+            }
         }
 
         //private void Next_Click(object sender, RoutedEventArgs e)
