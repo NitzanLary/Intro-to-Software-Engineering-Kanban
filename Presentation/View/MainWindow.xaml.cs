@@ -41,13 +41,14 @@ namespace Presentation
             viewModel.Register();
         }
 
+        //change name and dependencies to Login_Click
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             {
                 UserModel user = viewModel.Login();
                 if (user != null)
                 {
-                    UserView userView = new UserView();
+                    UserView userView = new UserView(user);
                     userView.Show();
                     this.Close();
                 }

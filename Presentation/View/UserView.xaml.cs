@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Presentation.Model;
+using Presentation.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,22 @@ namespace Presentation.View
     /// </summary>
     public partial class UserView : Window
     {
-        public UserView()
+        private UserViewModel viewModel;
+        public UserView(UserModel user)
         {
             InitializeComponent();
+            this.DataContext = new UserViewModel(user);
+            this.viewModel = (UserViewModel)DataContext;
+        }
+
+        //Change function name and dependencies to Logout_Click
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.Logout();
+            this.Hide();
+            MainWindow mainView = new MainWindow();
+            mainView.Show();
+            this.Close();
         }
     }
 }

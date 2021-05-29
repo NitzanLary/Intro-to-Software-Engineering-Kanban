@@ -41,6 +41,15 @@ namespace Presentation.Model
             }
         }
 
+        internal void Logout(string username)
+        {
+            Response res = Service.Logout(username);
+            if (res.ErrorOccured)
+            {
+                throw new Exception(res.ErrorMessage);
+            }
+        }
+
 
     }
 }
