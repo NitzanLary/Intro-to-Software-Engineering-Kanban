@@ -26,8 +26,8 @@
             <StackPanel Orientation="Vertical" Margin="0,150,0,0"  HorizontalAlignment="Center" TextBlock.TextAlignment="Center">
                 <Border Background="White" CornerRadius="10" Padding="15 50 15 15" Width="219" Height="223">
                     <Grid Margin="-5,0,-15,0">
-                        <TextBox HorizontalAlignment="Center"  BorderBrush="Gray" Margin="40,10,0,0" Text="{Binding Path=Username, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="145" Height="30" TextAlignment="Left" />
-                        <TextBox HorizontalAlignment="Center" BorderBrush="Gray" Margin="40,42,0,0" Text="{Binding Path=Password, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="145" Height="30" TextAlignment="Left"/>
+                        <TextBox HorizontalAlignment="Center"  BorderBrush="Gray" Margin="40,10,0,0" Text="{Binding Path=Username, Mode=OneWayToSource}" TextWrapping="Wrap" VerticalAlignment="Top" Width="145" Height="30" TextAlignment="Left" />
+                        <TextBox HorizontalAlignment="Center" BorderBrush="Gray" Margin="40,42,0,0" Text="{Binding Path=Password, Mode=OneWayToSource}" TextWrapping="Wrap" VerticalAlignment="Top" Width="145" Height="30" TextAlignment="Left"/>
                         <Border Background="Orange" CornerRadius="10" VerticalAlignment="Top" Height="33" Margin="40,113,41,0"/>
 
                         <Button Content="Next" FontSize="19" FontWeight="DemiBold"  HorizontalAlignment="Center" Margin="0,115,0,0" VerticalAlignment="Top" Background="Transparent" Foreground="WhiteSmoke" BorderBrush="Transparent" Width="128" Click="Button_Click_1" Cursor="Hand" />

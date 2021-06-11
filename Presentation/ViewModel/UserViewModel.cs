@@ -12,7 +12,11 @@ namespace Presentation.ViewModel
         private BackendController _controller;
         private UserModel _user;
         private string _message;
-        public string Message { get => _message; set { this._message = value;  } }
+        public string Message { get => _message; set { this._message = value;  } } //maybe no needed
+
+        public List<BoardModel> MyBoards { get; private set; }
+
+
 
 
         public UserViewModel(UserModel user)
@@ -34,6 +38,8 @@ namespace Presentation.ViewModel
                 return;
             }
         }
+
+
 
 
 
