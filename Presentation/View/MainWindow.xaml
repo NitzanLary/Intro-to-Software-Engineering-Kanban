@@ -30,7 +30,7 @@
                         <TextBox HorizontalAlignment="Center" BorderBrush="Gray" Margin="40,42,0,0" Text="{Binding Path=Password, Mode=TwoWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="145" Height="30" TextAlignment="Left"/>
                         <Border Background="Orange" CornerRadius="10" VerticalAlignment="Top" Height="33" Margin="40,113,41,0"/>
 
-                        <Button Content="Next" FontSize="19" FontWeight="DemiBold"  HorizontalAlignment="Center" Margin="0,115,0,0" VerticalAlignment="Top" Background="Transparent" Foreground="WhiteSmoke" BorderBrush="Transparent" Width="128" Click="Button_Click_1" />
+                        <Button Content="Next" FontSize="19" FontWeight="DemiBold"  HorizontalAlignment="Center" Margin="0,115,0,0" VerticalAlignment="Top" Background="Transparent" Foreground="WhiteSmoke" BorderBrush="Transparent" Width="128" Click="Button_Click_1" Cursor="Hand" />
                         <Label Content="Username" HorizontalAlignment="Left" Margin="-9,10,0,0" VerticalAlignment="Top" FontSize="11" />
                         <Label Content="Password" FontSize="11" HorizontalAlignment="Left" Margin="-9,42,0,0" VerticalAlignment="Top"/>
 
@@ -42,8 +42,8 @@
 
             </StackPanel>
             <Label Content="Login" FontSize="25" Foreground="DodgerBlue" FontWeight="SemiBold"  HorizontalAlignment="Center" Margin="0,150,0,0" VerticalAlignment="Top"/>
-            <Button Content="Create new account" Name ="Register" Click="Register_Click"  Background="Transparent" Foreground="WhiteSmoke" FontSize="13" BorderBrush="Transparent" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,381,0,0" VerticalAlignment="Top" Width="142"/>
-            <Label Content="{Binding Path=Message, Mode=OneWay}" Foreground="Red" HorizontalAlignment="Center" Margin="0,402,0,0" VerticalAlignment="Top"/>
+            <Button Content="Create new account" Name ="Register" Click="Register_Click"  Background="Transparent" Foreground="WhiteSmoke" FontSize="13" BorderBrush="Transparent" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,381,0,0" VerticalAlignment="Top" Width="142" Cursor="Hand"/>
+            <Label Content="{Binding Path=Message, Mode=OneWay}" Foreground="Red" HorizontalAlignment="Center" Margin="0,402,0,0" VerticalAlignment="Top" />
 
         </Grid>
     </Border>
