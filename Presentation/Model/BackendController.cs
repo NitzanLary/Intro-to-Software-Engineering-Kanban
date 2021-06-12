@@ -246,6 +246,16 @@ namespace Presentation.Model
             }
         }
 
+        internal IList<ColumnModel> GetColumns(string userEmail, string creatorEmail, string boardName)
+        {
+            Response<IList<IntroSE.Kanban.Backend.BusinessLayer.Column>> res = Service.GetColumns(userEmail, creatorEmail, boardName);
+            if (res.ErrorOccured)
+            {
+                throw new Exception(res.ErrorMessage);
+            }
+            return res.Value;
+        }
+
     }
 }
 

@@ -516,6 +516,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return MFResponse<IList<String>>.FromValue(members[userEmail].Select((b) => b.Name).ToList());
         }
 
+        public MFResponse<IList<Column>> getColumns(string userEmail, string creatorEmail, string boardName)
+        {
+            MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return MFResponse<IList<Column>>.FromError(r.ErrorMessage);
+            Board b = boards[creatorEmail][boardName];
+            return b.getColumns();
+        }
+
 
         //private Response<Task> TaskGetter(string email, string creatorEmail, string boardName, int columnOrdinal, int taskId) // todo - update in the diagram
         //{
