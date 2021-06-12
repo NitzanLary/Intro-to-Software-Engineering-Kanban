@@ -95,7 +95,7 @@ namespace Presentation.Model
             {
                 throw new Exception(res.ErrorMessage);
             }
-            return new TaskModel(); // TODO: need to implement Taskmodel
+            return new TaskModel(this, title, description, dueDate); // TODO: need to implement Taskmodel
         }
 
         internal void UpdateTaskDueDate(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
@@ -144,7 +144,7 @@ namespace Presentation.Model
             IList<TaskModel> lst = new List<TaskModel>();
             foreach (IntroSE.Kanban.Backend.ServiceLayer.Task task in res.Value)
             {
-                lst.Add(new TaskModel()); // TODO: implement Task model
+                lst.Add(new TaskModel(this, task.Title, task.Description, task.DueDate)); // TODO: implement Task model
             }
             return lst;
         }
@@ -177,7 +177,7 @@ namespace Presentation.Model
             IList<TaskModel> lst = new List<TaskModel>();
             foreach (IntroSE.Kanban.Backend.ServiceLayer.Task task in res.Value)
             {
-                lst.Add(new TaskModel()); // TODO: implement Task model
+                lst.Add(new TaskModel(this, task.Title, task.Description, task.DueDate)); // TODO: implement Task model
             }
             return lst;
         }

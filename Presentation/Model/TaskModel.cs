@@ -6,8 +6,16 @@ using System.Threading.Tasks;
 
 namespace Presentation.Model
 {
-    class TaskModel
+    class TaskModel : NotifiableModelObject
     {
-        //public TaskModel()
+        string title;
+        string description;
+        DateTime dueDate;
+        public TaskModel(BackendController controller, string title, string description, DateTime dueDate) : base(controller)
+        {
+            this.title = title;
+            this.description = description;
+            this.dueDate = dueDate;
+        }
     }
 }
