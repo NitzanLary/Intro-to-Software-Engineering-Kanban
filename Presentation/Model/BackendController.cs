@@ -191,8 +191,22 @@ namespace Presentation.Model
             }
         }
 
+        internal IList<String> GetBoardsNames(string userEmail)
+        {
+            Response <IList<String>> BoardsNames = Service.GetBoardNames(userEmail);
+            if (BoardsNames.ErrorOccured)
+            {
+                throw new Exception(BoardsNames.ErrorMessage);
+            }
+            return BoardsNames.Value;
+        }
+
+    }
+
+        
+
 
 
 
     }
-}
+

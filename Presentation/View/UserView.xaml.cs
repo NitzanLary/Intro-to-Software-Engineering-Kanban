@@ -22,11 +22,13 @@ namespace Presentation.View
     public partial class UserView : Window
     {
         private UserViewModel viewModel;
+
+
         public UserView(UserModel user)
         {
             InitializeComponent();
-            this.DataContext = new UserViewModel(user);
-            this.viewModel = (UserViewModel)DataContext;
+            this.viewModel = new UserViewModel(user);
+            this.DataContext = viewModel;
         }
 
         //Change function name and dependencies to Logout_Click

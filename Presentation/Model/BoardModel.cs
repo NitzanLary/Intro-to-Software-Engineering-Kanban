@@ -10,7 +10,7 @@ namespace Presentation.Model
     public class BoardModel : NotifiableModelObject
     {
         private readonly UserModel user;
-        public ObservableCollection<ColumnModel> Columns { get; set; }
+        //public ObservableCollection<ColumnModel> Columns { get; set; }
         
         
         public BoardModel(BackendController controller, UserModel user) : base(controller)

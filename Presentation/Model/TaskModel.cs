@@ -8,6 +8,6 @@ namespace Presentation.Model
 {
     class TaskModel
     {
-        public TaskModel()
+        //public TaskModel()
     }
 }

@@ -19,7 +19,7 @@
                     <Grid>
 
                         <ListBox Background="WhiteSmoke"
-                            ItemsSource="{Binding}" 
+                            ItemsSource="{Binding Path=BoardsNames}" 
                             ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="408,37,44,81">
                         </ListBox>
                         <Label Content="My Boards" HorizontalAlignment="Left" Margin="508,11,0,0" VerticalAlignment="Top"/>

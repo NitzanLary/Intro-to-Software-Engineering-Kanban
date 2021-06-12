@@ -27,8 +27,8 @@ namespace Presentation
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new MainViewModel();
-            this.viewModel = (MainViewModel)DataContext;
+            this.viewModel = new MainViewModel();
+            this.DataContext = viewModel;
         }
 
         //private void Next_Click(object sender, RoutedEventArgs e)
