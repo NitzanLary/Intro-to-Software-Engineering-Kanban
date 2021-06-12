@@ -19,28 +19,32 @@ namespace Presentation.Model
         public UserModel(BackendController controller, string email) : base(controller)
         {
             this.Email = email;
-            foreach (String name in controller.GetBoardsNames(Email))
+            this.BoardsNames = new ObservableCollection<String>();
+            if (controller.GetBoardNames(Email) != null)
             {
-                BoardsNames.Add(name);
+                controller.GetBoardNames(Email).ToList().ForEach(BoardsNames.Add);
+
             }
-            //BoardsNames.CollectionChanged += HandleChange;
+            BoardsNames.CollectionChanged += HandleChange;
+
 
         }
 
-        public IList<String> GetBoardsNames()
+        public void AddBoard(String BoardName)
         {
-            return Controller.GetBoardsNames(this.Email);
+            BoardsNames.Add(BoardName);
+           
         }
+
+
 
         private void HandleChange(object sender, NotifyCollectionChangedEventArgs e)
         {
-            //read more here: https://stackoverflow.com/questions/4279185/what-is-the-use-of-observablecollection-in-net/4279274#4279274
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
-                foreach (String y in e.OldItems)
+                foreach (String s in e.NewItems)
                 {
-
-                    Controller.AddBoard(Email, y);
+                    Controller.AddBoard(Email, s);
                 }
 
             }

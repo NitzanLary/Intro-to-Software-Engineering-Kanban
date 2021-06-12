@@ -2,28 +2,63 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace Presentation.ViewModel
 {
-    class UserViewModel
+    class UserViewModel : NotifiableObject
     {
         private BackendController controller;
-        private UserModel user;
+        public UserModel User { get; private set; }
         private string _message;
+        //public ObservableCollection<String> BoardsNames { get; set; }
         public string Message { get => _message; set { this._message = value;  } } //maybe no needed
 
-        public ObservableCollection<String> BoardsNames { get; set; }
+        //should be string or BoardModel????
+        private String _selectedBoard;
+        public String SelectedBoard
+        {
+            get
+            {
+                return _selectedBoard;
+            }
+            set
+            {
+                _selectedBoard = value;
+                EnableForward = value != null;
+                RaisePropertyChanged("SelectedBoard");
+            }
+        }
+
+        private bool _enableForward = false;
+        public bool EnableForward
+        {
+            get => _enableForward;
+            private set
+            {
+                _enableForward = value;
+                RaisePropertyChanged("EnableForward");
+            }
+        }
+
+
 
 
 
         public UserViewModel(UserModel user)
         {
             this.controller = user.Controller;
-            this.user = user;
-            this.BoardsNames = user.BoardsNames;
+            this.User = user;
+            //this.BoardsNames = new ObservableCollection<String>();
+            //if (controller.GetBoardNames(user.Email) != null)
+            //{
+            //    controller.GetBoardNames(user.Email).ToList().ForEach(BoardsNames.Add);
+            //}
+            //BoardsNames.CollectionChanged += HandleChange;
         }
 
         internal void Logout()
@@ -31,7 +66,7 @@ namespace Presentation.ViewModel
             Message = "";
             try
             {
-                controller.Logout(user.Email);
+                controller.Logout(User.Email);
             }
             catch (Exception e)
             {
@@ -39,6 +74,23 @@ namespace Presentation.ViewModel
                 return;
             }
         }
+
+
+
+
+        //private void HandleChange(object sender, NotifyCollectionChangedEventArgs e)
+        //{
+        //    if (e.Action == NotifyCollectionChangedAction.Add)
+        //    {
+        //        RaisePropertyChanged("BoardsNames");
+        //        CollectionViewSource.GetDefaultView(BoardsNames).Refresh();
+
+
+
+        //    }
+        //}
+
+
 
 
 

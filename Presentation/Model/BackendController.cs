@@ -142,7 +142,7 @@ namespace Presentation.Model
                 throw new Exception(res.ErrorMessage);
             }
             IList<TaskModel> lst = new List<TaskModel>();
-            foreach(IntroSE.Kanban.Backend.ServiceLayer.Task task in res.Value)
+            foreach (IntroSE.Kanban.Backend.ServiceLayer.Task task in res.Value)
             {
                 lst.Add(new TaskModel()); // TODO: implement Task model
             }
@@ -209,7 +209,7 @@ namespace Presentation.Model
             }
             return res.Value;
         }
-        
+
         internal void AddColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, string columnName)
         {
             Response res = Service.AddColumn(userEmail, creatorEmail, boardName, columnOrdinal, columnName);
@@ -247,4 +247,5 @@ namespace Presentation.Model
         }
 
     }
+}
 

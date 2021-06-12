@@ -19,15 +19,15 @@
                     <Grid>
 
                         <ListBox Background="WhiteSmoke"
-                            ItemsSource="{Binding Path=BoardsNames}" 
+                            ItemsSource="{Binding Path=User.BoardsNames}" SelectedItem="{Binding Path=SelectedBoard, Mode=TwoWay}" 
                             ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="408,37,44,81">
                         </ListBox>
                         <Label Content="My Boards" HorizontalAlignment="Left" Margin="508,11,0,0" VerticalAlignment="Top"/>
-                        <Button Content="Add Board" HorizontalAlignment="Left" Margin="35,137,0,0" VerticalAlignment="Top" Width="133"/>
+                        <Button Content="Add Board" HorizontalAlignment="Left" Margin="35,137,0,0" VerticalAlignment="Top" Width="133" Click="Add_Board_Button_Click"/>
                         <Button Content="Delete Board" HorizontalAlignment="Left" Margin="35,211,0,0" VerticalAlignment="Top" Width="133"/>
                         <Button Content="All In-Progress Tasks" HorizontalAlignment="Left" Margin="35,100,0,0" VerticalAlignment="Top" Width="133"/>
                         <Button Content="Join Board" HorizontalAlignment="Left" Margin="35,174,0,0" VerticalAlignment="Top" Width="133"/>
-                        <Button Content="Select Board" HorizontalAlignment="Left" Margin="408,267,0,0" VerticalAlignment="Top" Width="249" />
+                        <Button Content="Select Board" HorizontalAlignment="Left" Margin="408,267,0,0" VerticalAlignment="Top" Width="249" IsEnabled="{Binding Path=EnableForward,Mode=OneWay}"></Button>
 
                     </Grid>
 

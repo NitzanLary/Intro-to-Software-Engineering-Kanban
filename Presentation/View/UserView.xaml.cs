@@ -22,13 +22,14 @@ namespace Presentation.View
     public partial class UserView : Window
     {
         private UserViewModel viewModel;
-
+        
 
         public UserView(UserModel user)
         {
             InitializeComponent();
             this.viewModel = new UserViewModel(user);
             this.DataContext = viewModel;
+            this.user = user;
         }
 
         //Change function name and dependencies to Logout_Click
@@ -39,6 +40,14 @@ namespace Presentation.View
             MainWindow mainView = new MainWindow();
             mainView.Show();
             this.Close();
+        }
+
+        UserModel user;
+        private void Add_Board_Button_Click(object sender, RoutedEventArgs e)
+        {
+            AddBoardWindow addBoardView = new AddBoardWindow(user);
+            addBoardView.Show();
+            //this.Close();
         }
     }
 }
