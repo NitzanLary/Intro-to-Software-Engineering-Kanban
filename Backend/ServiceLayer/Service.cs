@@ -117,7 +117,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response Logout(string userEmail)
         {
-            try
+            return TryAndApply(() =>
             {
                 log.Info($"User {userEmail} is trying to Logout");
                 Response r = new(userController.Logout(userEmail));
