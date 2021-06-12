@@ -12,8 +12,6 @@ namespace Presentation.ViewModel
     {
         private BackendController controller;
         private UserModel user;
-        private string _message;
-        public string Message { get => _message; set { this._message = value; RaisePropertyChanged("Message"); } }
         private string _boardName;
         public string BoardName { get => _boardName; set { this._boardName = value; RaisePropertyChanged("BoardName"); } }
 
@@ -26,12 +24,10 @@ namespace Presentation.ViewModel
 
         public void AddBoard()
         {
-            Message = "";
             try
             {
                 user.AddBoard(BoardName);
-                Message = "Board Added Successfully";
-                //RaisePropertyChanged("BoardsNames");
+                MessageBox.Show("Board Added Successfully!");
 
             }
             catch (Exception e)

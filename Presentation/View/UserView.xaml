@@ -24,10 +24,10 @@
                         </ListBox>
                         <Label Content="My Boards" HorizontalAlignment="Left" Margin="508,11,0,0" VerticalAlignment="Top"/>
                         <Button Content="Add Board" HorizontalAlignment="Left" Margin="35,137,0,0" VerticalAlignment="Top" Width="133" Click="Add_Board_Button_Click"/>
-                        <Button Content="Delete Board" HorizontalAlignment="Left" Margin="35,211,0,0" VerticalAlignment="Top" Width="133"/>
+                        <Button Content="Delete Board" HorizontalAlignment="Left" Margin="35,211,0,0" VerticalAlignment="Top" Width="133" Click="Remove_Board_Button_Click" IsEnabled="{Binding Path=EnableForward,Mode=OneWay}"></Button>
                         <Button Content="All In-Progress Tasks" HorizontalAlignment="Left" Margin="35,100,0,0" VerticalAlignment="Top" Width="133"/>
                         <Button Content="Join Board" HorizontalAlignment="Left" Margin="35,174,0,0" VerticalAlignment="Top" Width="133"/>
-                        <Button Content="Select Board" HorizontalAlignment="Left" Margin="408,267,0,0" VerticalAlignment="Top" Width="249" IsEnabled="{Binding Path=EnableForward,Mode=OneWay}"></Button>
+                        <Button Content="Select Board" HorizontalAlignment="Left" Margin="408,267,0,0" VerticalAlignment="Top" Width="252" IsEnabled="{Binding Path=EnableForward,Mode=OneWay}"></Button>
 
                     </Grid>
 
@@ -35,7 +35,7 @@
 
             </StackPanel>
             <Label Content="Welcome " HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontWeight="DemiBold" FontSize="30" Foreground="Orange" />
-            <Button Content="Logout" HorizontalAlignment="Left" Margin="731,6,0,0" VerticalAlignment="Top" Width="49" Click="Button_Click"/>
+            <Button Content="Logout" HorizontalAlignment="Left" Margin="731,6,0,0" VerticalAlignment="Top" Width="49" Click="Button_Click" Background="Red"/>
 
 
 

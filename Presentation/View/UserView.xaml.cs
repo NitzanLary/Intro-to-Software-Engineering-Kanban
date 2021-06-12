@@ -49,5 +49,10 @@ namespace Presentation.View
             addBoardView.Show();
             //this.Close();
         }
+
+        private void Remove_Board_Button_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.RemoveBoard();
+        }
     }
 }

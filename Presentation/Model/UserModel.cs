@@ -36,6 +36,12 @@ namespace Presentation.Model
            
         }
 
+        public void RemoveBoard(String BoardName)
+        {
+            BoardsNames.Remove(BoardName);
+
+        }
+
 
 
         private void HandleChange(object sender, NotifyCollectionChangedEventArgs e)
@@ -46,7 +52,14 @@ namespace Presentation.Model
                 {
                     Controller.AddBoard(Email, s);
                 }
+            }
 
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                foreach (String s in e.OldItems)
+                {
+                    Controller.RemoveBoard(Email, Email, s);
+                }
             }
         }
 

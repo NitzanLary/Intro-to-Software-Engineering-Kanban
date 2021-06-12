@@ -6,6 +6,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 
 namespace Presentation.ViewModel
@@ -75,28 +76,43 @@ namespace Presentation.ViewModel
             }
         }
 
+        public void RemoveBoard()
+        {
+            try
+            {
+                User.RemoveBoard(SelectedBoard);
+                MessageBox.Show("Board Removed Successfully!");
 
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Cannot Remove this board. " + e.Message);
 
-
-        //private void HandleChange(object sender, NotifyCollectionChangedEventArgs e)
-        //{
-        //    if (e.Action == NotifyCollectionChangedAction.Add)
-        //    {
-        //        RaisePropertyChanged("BoardsNames");
-        //        CollectionViewSource.GetDefaultView(BoardsNames).Refresh();
-
-
-
-        //    }
-        //}
-
-
+            }
+        }
 
 
 
 
+            //private void HandleChange(object sender, NotifyCollectionChangedEventArgs e)
+            //{
+            //    if (e.Action == NotifyCollectionChangedAction.Add)
+            //    {
+            //        RaisePropertyChanged("BoardsNames");
+            //        CollectionViewSource.GetDefaultView(BoardsNames).Refresh();
 
-    }
+
+
+            //    }
+            //}
+
+
+
+
+
+
+
+        }
 
     
 }
