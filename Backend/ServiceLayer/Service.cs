@@ -23,13 +23,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
             userController = new UserController();
             boardController = new BoardController();
+            //LoadData();
         }
 
         ///<summary>This method loads the data from the persistance.
         ///         You should call this function when the program starts. </summary>
         public Response LoadData()
         {
-            return TryAndApply(() =>
+            try
             {
                 Response<List<BusinessLayer.User>> r = Response<List<BusinessLayer.User>>.FromBLResponse(userController.LoadDate());
                 WriteToLog(r, "Usres Loaded");
@@ -39,13 +40,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Response r2 = new Response(boardController.LoadData());
                 WriteToLog(r2, "Loaded data successfully");
                 return r2;
-            });
+            }
+            catch(Exception e)
+            {
+                return new Response(e.Message);
+            }
         }
 
         ///<summary>Removes all persistent data.</summary>
         public Response DeleteData()
         {
-            return TryAndApply(() =>
+            try
             {
                 Response r = new Response(userController.DeleteData());
                 if (r.ErrorOccured)
@@ -53,7 +58,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Response r2 = new(boardController.DeleteData());
                 WriteToLog(r2, "Data deleted successfully");
                 return r2;
-            });
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
         }
 
         /// <summary>
@@ -64,17 +73,21 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error<returns>
         public Response Register(string userEmail, string password)
         {
-            return TryAndApply(() =>
+            try
             {
                 log.Info($"User {userEmail} is trying to Register");
                 Response r = new(userController.Register(userEmail, password));
                 WriteToLog(r, $"{userEmail} succesfully registered");
-                boardController.addNewUserToMembers(userEmail);
+                if (!r.ErrorOccured)
+                    boardController.addNewUserToMembers(userEmail);
                 return r;
-            });
+            }
+            catch (Exception e)
+            {
+                return new Response(e.Message);
+            }
         }
 
-        /// <summary>
         /// Log in an existing user
         /// </summary>
         /// <param name="userEmail">The email address of the user to login</param>
@@ -82,7 +95,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the user, instead the response should contain a error message in case of an error</returns>
         public Response<User> Login(string userEmail, string password)
         {
-            return TryAndApplyT<User>(() =>
+            try
             {
                 log.Info($"User {userEmail} is trying to Login");
                 Response r = new(userController.Login(userEmail, password));
@@ -90,8 +103,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     return Response<User>.FromError(r.ErrorMessage);
                 WriteToLog(r, $"{userEmail} login successfully");
                 return Response<User>.FromValue(new User(userEmail));
-            });
+            }
+            catch (Exception e)
+            {
+                return Response<User>.FromError(e.Message);
+            }
         }
+
         /// <summary>        
         /// Log out an logged-in user. 
         /// </summary>
@@ -99,7 +117,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response Logout(string userEmail)
         {
-            return TryAndApply(() =>
+            try
             {
                 log.Info($"User {userEmail} is trying to Logout");
                 Response r = new(userController.Logout(userEmail));

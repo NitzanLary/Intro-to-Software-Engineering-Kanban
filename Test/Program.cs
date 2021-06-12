@@ -248,7 +248,7 @@ namespace Test
             //Console.WriteLine(bb.Boardname);
 
             s.DeleteData();
-            //Register();
+            Register();
             //Login();
             //AddBoard();
             //JoinBoard();
@@ -271,8 +271,9 @@ namespace Test
 
         static void Register()
         {
-            Print(s.Register("Rafa@gmail.com", "Rf12345678"));
-            Print(s.Register("Nitzan@gmail.com", "Rf12345678"));
+            Print(s.Register("Rafa@gmail.com", null));
+            Print(s.Register("Rafa@gmail.com", null));
+            //Print(s.Register("Nitzan@gmail.com", "Rf12345678"));
         }
 
         static void Login()
