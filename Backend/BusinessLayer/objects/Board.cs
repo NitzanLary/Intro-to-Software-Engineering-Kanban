@@ -142,6 +142,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return new MFResponse($"Can not remove column in index {columnOrdinal}, max {Columns.Count}");
             if (Columns.Count < 2)
                 return new MFResponse($"Can not remove any columns, the minimum that is possible is {Columns.Count}");
+            //When a column is removed, its existing tasks are moved to the column on its
+            //left(unless it is the leftmost column — then its tasks are moved to the column
+            //on its right).The operation should fail if the tasks cannot be moved to the new
+            //column(since it will exceed the limit).
             Columns.RemoveAt(columnOrdinal);
             return new MFResponse();
         }
