@@ -301,8 +301,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AddBoard(string userEmail, string boardName)
         {
-
-            throw new NotImplementedException();
+            log.Info($"User {userEmail} is trying to AddBoard: {userEmail}, {boardName}");
+            return ConfirmAndApply(userEmail, () =>
+            {
+                Response r = new(boardController.AddBoard(userEmail, boardName));
+                WriteToLog(r, "Board added successfully");
+                return r;
+            });
         }
 
         /// <summary>
@@ -314,7 +319,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response JoinBoard(string userEmail, string creatorEmail, string boardName)
         {
-            throw new NotImplementedException();
+            log.Info($"User {userEmail} is trying to JoinBoard in: {userEmail}, {boardName}");
+            return ConfirmAndApply(userEmail, () =>
+            {
+                Response r = new(boardController.JoinBoard(userEmail, creatorEmail, boardName));
+                WriteToLog(r, "JoinBoard finished successfully");
+                return r;
+            });
         }
 
         /// <summary>
@@ -326,7 +337,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response RemoveBoard(string userEmail, string creatorEmail, string boardName)
         {
-            throw new NotImplementedException();
+            log.Info($"User {userEmail} is trying to RemoveBoard in: {creatorEmail},  {boardName}");
+            return ConfirmAndApply(userEmail, () =>
+            {
+                Response r = new(boardController.RemoveBoard(userEmail, creatorEmail, boardName));
+                WriteToLog(r, "Board removed successfully");
+                return r;
+            });
         }
 
 

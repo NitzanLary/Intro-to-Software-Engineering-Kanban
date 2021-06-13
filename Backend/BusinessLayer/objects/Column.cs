@@ -15,6 +15,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             get => tasks.Values.ToList();
         }
 
+        private int columnOrdinal;
+        public int ColumnOrdinal
+        {
+            get => columnOrdinal;
+            set
+            {
+                dto.ColumnOrdinal = value;
+                columnOrdinal = value;
+                foreach(Task task in Tasks)
+                    task.DTO.ColumnOrdinal = value;
+            } }
+
         private string name;
         public string Name
         {
@@ -54,10 +66,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Column(string name, string creator, string boardName, int columnOrdinal)
         {
+            
             persisted = false;
             Name = name;
             tasks = new Dictionary<int, Task>();
             maxTasks = -1;
+            ColumnOrdinal = columnOrdinal;
             dto = new ColumnDTO(creator, boardName, columnOrdinal, MaxTasks, Name, new List<TaskDTO>()); // TODO add name
             dto.Insert();
             persisted = true;

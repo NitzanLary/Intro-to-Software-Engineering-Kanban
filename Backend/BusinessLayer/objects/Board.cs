@@ -138,6 +138,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             //left(unless it is the leftmost column — then its tasks are moved to the column
             //on its right).The operation should fail if the tasks cannot be moved to the new
             //column(since it will exceed the limit).
+            Column srcCol = Columns[columnOrdinal];
+            IList<Task> tasks = srcCol.Tasks;
+            if (columnOrdinal == 0)
+            {
+                Column destCol = Columns[1];
+                if (destCol.MaxTasks < (destCol.Tasks.Count + srcCol.Tasks.Count))
+                    return new MFResponse("tasks exceeded the limit");
+                Columns.RemoveAt(0);
+                foreach (Task task in tasks)
+                    Columns[1].AddTask(task);
+                for (int i = 0; i < Columns.Count; i++)
+                    Columns[i].ColumnOrdinal = i;
+            }
+            
             Columns.RemoveAt(columnOrdinal);
             return new MFResponse();
         }

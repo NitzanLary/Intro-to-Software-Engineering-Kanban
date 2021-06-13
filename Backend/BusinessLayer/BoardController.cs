@@ -499,7 +499,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return r;
             Board board = boards[creatorEmail][boardName];
             return board.RemoveColumn(columnOrdinal);
-            throw new NotImplementedException();
         }
 
         /// <summary>
