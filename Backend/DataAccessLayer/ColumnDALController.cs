@@ -53,19 +53,22 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 {
                     connection.Open();
                     command.CommandText = $"INSERT INTO {ColumnsTableName} ({ColumnDTO.CreatorColumnName}" +
-                        $"               ,{ColumnDTO.BoardNameColumnName}, {ColumnDTO.ColumnOrdinalColumName}, {ColumnDTO.MaxTasksNumberColumnName}) " +
-                        $"VALUES (@boardCreatorVal, @boardNameVal, @columnOrdinalVal, @maxTasksVal);";
+                        $"               ,{ColumnDTO.BoardNameColumnName}, {ColumnDTO.ColumnOrdinalColumName}" +
+                        $"               , {ColumnDTO.MaxTasksNumberColumnName}, {ColumnDTO.ColumnNameColumnName}) " +
+                        $"VALUES (@boardCreatorVal, @boardNameVal, @columnOrdinalVal, @maxTasksVal, @columnNameVal);";
 
                     SQLiteParameter creatorParam = new SQLiteParameter(@"boardCreatorVal", column.Creator);
                     SQLiteParameter boardNameParam = new SQLiteParameter(@"boardNameVal", column.Boardname);
                     SQLiteParameter columnOrdParam = new SQLiteParameter(@"columnOrdinalVal", column.ColumnOrdinal);
-                    SQLiteParameter maxTasksParm = new SQLiteParameter(@"maxTasksVal", column.MaxTasksNumber);
+                    SQLiteParameter maxTasksParam = new SQLiteParameter(@"maxTasksVal", column.MaxTasksNumber);
+                    SQLiteParameter columnNameParam = new SQLiteParameter(@"columnNameVal", column.ColumnName);
 
 
                     command.Parameters.Add(creatorParam);
                     command.Parameters.Add(boardNameParam);
                     command.Parameters.Add(columnOrdParam);
-                    command.Parameters.Add(maxTasksParm);
+                    command.Parameters.Add(maxTasksParam);
+                    command.Parameters.Add(columnNameParam);
 
 
                     command.Prepare();
@@ -89,7 +92,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
         protected override DTO ConvertReaderToObject(SQLiteDataReader reader)
         {
-            return new ColumnDTO(reader.GetString(0), reader.GetString(1), reader.GetInt32(2), reader.GetInt32(3), null);
+            return new ColumnDTO(reader.GetString(0), reader.GetString(1), reader.GetInt32(2), reader.GetInt32(3), reader.GetString(4), null);
         }
 
         public override bool Delete(DTO DTOobj)
