@@ -125,6 +125,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return MFResponse<IList<Task>>.FromValue(Columns[columnOrdinal].Tasks);
         }
 
+        internal MFResponse<IList<Column>> getColumns()
+        {
+            return MFResponse<IList<Column>>.FromValue(Columns);
+        }
+
         //public Response advanceTask(int taskId, int columnOrd)
         //{
         //    if (!containsTask(taskId))

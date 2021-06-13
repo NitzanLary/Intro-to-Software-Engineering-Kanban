@@ -15,5 +15,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.Objects
             this.tasks = tasks;
             this.maxTasks = maxTasks;
         }
+
+        internal Column(BusinessLayer.Column column)
+        {
+            this.tasks = column.Tasks.Select(t => new Task(t)).ToList();
+            this.maxTasks = column.MaxTasks;
+        }
     }
 }
