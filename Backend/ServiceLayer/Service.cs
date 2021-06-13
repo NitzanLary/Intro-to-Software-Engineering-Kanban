@@ -771,8 +771,10 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     if (r.ErrorOccured)
                         return Response<IList<String>>.FromError(r.ErrorMessage);
                     Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetBoardNames(userEmail));
+                    if (r2.ErrorOccured)
+                        return Response<IList<String>>.FromError(r2.ErrorMessage);
                     WriteToLog(r2, "GetBoardNames finished successfully");
-                    return r2;
+                        return r2;
                 }
                 catch (Exception e)
                 {
@@ -780,27 +782,112 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 }
             }
 
-            //public Response<IList<Column>> GetColumns(string userEmail, string creatorEmail, string boardName)
-            //{
-            //    try
-            //    {
-            //        log.Info($"{userEmail} is Trying to get all columns from board {boardName}");
-            //        Response r = IsLoggedIn(userEmail);
-            //        if (r.ErrorOccured)
-            //            return Response<IList<Column>>.FromError(r.ErrorMessage);
-            //        Response<IList<BusinessLayer.Column>> returned = Response<IList<BusinessLayer.Column>>.FromBLResponse(boardController.getColumns(userEmail, creatorEmail, boardName));
-            //        if (returned.ErrorOccured)
-            //        {
-            //            return Response<IList<Column>>.FromError(returned.ErrorMessage);
-            //        }
-            //        WriteToLog(r, $"getColumns finished successfully");
-            //        return Response<IList<Column>>.FromValue(returned.Value);
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        return Response<IList<Column>>.FromError(e.Message);
-            //    }
-            //}
+        public Response<IList<String>> GetMyBoardNames(string userEmail)
+        {
+            try
+            {
+                Response r = IsLoggedIn(userEmail);
+                if (r.ErrorOccured)
+                    return Response<IList<String>>.FromError(r.ErrorMessage);
+                Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetMyBoardNames(userEmail));
+                if (r2.ErrorOccured)
+                    return Response<IList<String>>.FromError(r2.ErrorMessage);
+                WriteToLog(r2, "GetNyBoardNames finished successfully");
+                return r2;
+            }
+            catch (Exception e)
+            {
+                return Response<IList<String>>.FromError(e.Message);
+            }
+        }
+
+        public Response<IList<String>> GetBoardIMemberOfNames(string userEmail)
+        {
+            try
+            {
+                Response r = IsLoggedIn(userEmail);
+                if (r.ErrorOccured)
+                    return Response<IList<String>>.FromError(r.ErrorMessage);
+                Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetBoardIMemberOfNames(userEmail));
+                if (r2.ErrorOccured)
+                    return Response<IList<String>>.FromError(r2.ErrorMessage);
+                WriteToLog(r2, "GetBoardIMemberOfNames finished successfully");
+                return r2;
+            }
+            catch (Exception e)
+            {
+                return Response<IList<String>>.FromError(e.Message);
+            }
+        }
+
+        public Response<IntroSE.Kanban.Backend.ServiceLayer.Objects.Board> GetBoard(string userEmail, string creatorEmail, string boardName)
+        {
+            try
+            {
+                Response r = IsLoggedIn(userEmail);
+                if (r.ErrorOccured)
+                    return Response<IntroSE.Kanban.Backend.ServiceLayer.Objects.Board>.FromError(r.ErrorMessage);
+                Response<Board> r2 = Response<Board>.FromBLResponse(boardController.GetBoard(userEmail, creatorEmail, boardName));
+                if (r2.ErrorOccured)
+                    return Response<IntroSE.Kanban.Backend.ServiceLayer.Objects.Board>.FromError(r2.ErrorMessage);
+                WriteToLog(r2, "GetBoard finished successfully");
+                Objects.Board board = convertBLBoard2SL(r2.Value);
+                return Response<Objects.Board>.FromValue(board);
+            }
+            catch (Exception e)
+            {
+                return Response<Objects.Board>.FromError(e.Message);
+            }
+        }
+
+        private Objects.Board convertBLBoard2SL(Board board)
+        {
+            List<Objects.Column> SLColumns= convertBLColumns2SL(board.Columns);
+            return new Objects.Board(board.Name, board.Creator, SLColumns);
+        }
+
+        private List<Objects.Column> convertBLColumns2SL(List<Column> columns)
+        {
+            //List<Task> SLColumns = convertBLColumns2SL(board.Columns);
+            List<Objects.Column> SLColumns = new List<Objects.Column>();
+            foreach (Column column in columns)
+            {
+                SLColumns.Add(new Objects.Column(convertBLTasks2SL(column.Tasks), column.MaxTasks));
+            }
+            return SLColumns;
+        }
+
+        private List<Task> convertBLTasks2SL(IList<BusinessLayer.Task> tasks)
+        {
+            List<Task> SLTasks = new List<Task>();
+            foreach (BusinessLayer.Task BLTask in tasks)
+            {
+                SLTasks.Add(new Task(BLTask.ID, BLTask.CreationTime, BLTask.Title, BLTask.Description, BLTask.DueDate, BLTask.Assignee));
+            }
+            return SLTasks;
+        }
+
+        public Response<IList<Objects.Column>> GetColumns(string userEmail, string creatorEmail, string boardName)
+            {
+                try
+                {
+                    log.Info($"{userEmail} is Trying to get all columns from board {boardName}");
+                    Response r = IsLoggedIn(userEmail);
+                    if (r.ErrorOccured)
+                        return Response<IList<Objects.Column>>.FromError(r.ErrorMessage);
+                    Response<IList<BusinessLayer.Column>> returned = Response<IList<BusinessLayer.Column>>.FromBLResponse(boardController.getColumns(userEmail, creatorEmail, boardName));
+                    if (returned.ErrorOccured)
+                    {
+                        return Response<IList<Objects.Column>>.FromError(returned.ErrorMessage);
+                    }
+                    WriteToLog(r, $"getColumns finished successfully");
+                    return Response<IList<Objects.Column>>.FromValue(convertBLColumns2SL(returned.Value.ToList()));
+                }
+                catch (Exception e)
+                {
+                    return Response<IList<Objects.Column>>.FromError(e.Message);
+                }
+            }
 
 
 
