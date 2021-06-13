@@ -15,6 +15,11 @@ namespace Presentation.Model
 
         public ObservableCollection<String> BoardsNames { get; set; }
 
+        private ObservableCollection<TaskModel> _inProgressTasks;
+        public ObservableCollection<TaskModel> InProgressTasks { get => _inProgressTasks; set { this._inProgressTasks = value; RaisePropertyChanged("InProgressTasks"); } }
+
+
+
 
         public UserModel(BackendController controller, string email) : base(controller)
         {
@@ -25,15 +30,15 @@ namespace Presentation.Model
                 controller.GetBoardNames(Email).ToList().ForEach(BoardsNames.Add);
 
             }
-            BoardsNames.CollectionChanged += HandleChange;
+            BoardsNames.CollectionChanged += HandleChangeBoardNames;
 
-
+            this.InProgressTasks = new ObservableCollection<TaskModel>(controller.InProgressTasks(Email));
         }
 
         public void AddBoard(String BoardName)
         {
             BoardsNames.Add(BoardName);
-           
+
         }
 
         public void RemoveBoard(String BoardName)
@@ -44,7 +49,7 @@ namespace Presentation.Model
 
 
 
-        private void HandleChange(object sender, NotifyCollectionChangedEventArgs e)
+        private void HandleChangeBoardNames(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
@@ -63,6 +68,14 @@ namespace Presentation.Model
             }
         }
 
+        //    private void HandleChangeTasks(object sender, NotifyCollectionChangedEventArgs e)
+        //    {
+        //        if (e.Action == NotifyCollectionChangedAction.Move)
+        //        {
 
+        //    }
+
+
+        //}
     }
 }

@@ -48,5 +48,10 @@ namespace Presentation.View
             mainView.Show();
             this.Close();
         }
+
+        private void Sort_By_DueDate_Button_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.SortTasksByDueDate();
+        }
     }
 }

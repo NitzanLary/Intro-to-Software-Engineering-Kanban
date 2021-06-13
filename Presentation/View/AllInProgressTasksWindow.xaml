@@ -15,16 +15,33 @@
             <Grid.Background>
                 <ImageBrush TileMode="Tile" ViewportUnits="Absolute" Viewport="0 0 500 500"  ImageSource="/Presentation;component/Images/bg.png" />
             </Grid.Background>
+
             <StackPanel Grid.ColumnSpan="2">
                 <Border BorderThickness="1" CornerRadius="10" Background="White" Margin="40,65,40,60" Height="350" >
                     <Grid>
-                        <ListBox Background="WhiteSmoke"
-                            ItemsSource="{Binding Path=Tasks}" SelectedItem="{Binding Path=SelectedTask, Mode=TwoWay}" 
-                            ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="78,10,230,10">
+
+                        <ListBox Background="WhiteSmoke" ScrollViewer.VerticalScrollBarVisibility="Visible" ItemsSource="{Binding Path=User.InProgressTasks}" SelectedItem="{Binding Path=SelectedTask, Mode=TwoWay}" Margin="146,49,233,23">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderThickness="2">
+                                        <StackPanel Orientation="Vertical" >
+                                            <TextBox FontSize="16" IsReadOnly="True" Text="{Binding Path=Title, Mode=TwoWay}" BorderBrush="{x:Null}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
                         </ListBox>
-                        <Button Content="Back" HorizontalAlignment="Left" Margin="7,22,0,0" VerticalAlignment="Top" Width="63" Click="Back_Button_Click"/>
-                        <TextBlock HorizontalAlignment="Left" Background="WhiteSmoke" Margin="501,10,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="32" Width="197"/>
-                        <TextBlock HorizontalAlignment="Left" Background="WhiteSmoke" Margin="501,49,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="289" Width="197"/>
+                        <Button Content="Back" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="63" Click="Back_Button_Click"/>
+                        <TextBlock HorizontalAlignment="Left" Background="WhiteSmoke" Margin="501,49,0,0" Text="{Binding Path=SelectedTask.DueDate}" FontWeight="SemiBold" TextWrapping="Wrap" FontSize="18" VerticalAlignment="Top" Height="32" Width="197"/>
+                        <TextBlock HorizontalAlignment="Left" Background="WhiteSmoke" Margin="501,144,0,0" Text="{Binding Path=SelectedTask.Description}" TextWrapping="Wrap" VerticalAlignment="Top" Height="181" Width="197"/>
+                        <TextBlock HorizontalAlignment="Left" Background="WhiteSmoke" Margin="501,96,0,0" Text="{Binding SelectedTask.Title}" TextWrapping="Wrap" FontWeight="SemiBold" FontSize="16" VerticalAlignment="Top" Height="32" Width="197"/>
+                        <Label Content="Due Date" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="561,18,0,0" VerticalAlignment="Top"/>
+                        <Border BorderThickness="1" CornerRadius="1" Background="WhiteSmoke" BorderBrush="Black" Margin="10,49,577,0" Height="276" VerticalAlignment="Top"/>
+                        <Grid/>
+                        <Button Content="Search" HorizontalAlignment="Left" Margin="22,96,0,0" VerticalAlignment="Top" Width="97" />
+                        <Button Content="sort by due date" HorizontalAlignment="Left" Margin="22,129,0,0" VerticalAlignment="Top" Width="97" Click="Sort_By_DueDate_Button_Click"/>
+                        <TextBox HorizontalAlignment="Left" Margin="22,65,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="97"/>
+
 
                     </Grid>
                 </Border>

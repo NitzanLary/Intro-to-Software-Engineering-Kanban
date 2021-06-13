@@ -95,7 +95,7 @@ namespace Presentation.Model
             {
                 throw new Exception(res.ErrorMessage);
             }
-            return new TaskModel(this, title, description, dueDate); // TODO: need to implement Taskmodel
+            return new TaskModel(this, title, description, dueDate, userEmail); // TODO: need to implement Taskmodel
         }
 
         internal void UpdateTaskDueDate(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
@@ -134,20 +134,20 @@ namespace Presentation.Model
             }
         }
 
-        internal IList<TaskModel> GetColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
-        {
-            Response<IList<IntroSE.Kanban.Backend.ServiceLayer.Task>> res = Service.GetColumn(userEmail, creatorEmail, boardName, columnOrdinal);
-            if (res.ErrorOccured)
-            {
-                throw new Exception(res.ErrorMessage);
-            }
-            IList<TaskModel> lst = new List<TaskModel>();
-            foreach (IntroSE.Kanban.Backend.ServiceLayer.Task task in res.Value)
-            {
-                lst.Add(new TaskModel(this, task.Title, task.Description, task.DueDate)); // TODO: implement Task model
-            }
-            return lst;
-        }
+        //internal IList<TaskModel> GetColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
+        //{
+        //    Response<IList<IntroSE.Kanban.Backend.ServiceLayer.Task>> res = Service.GetColumn(userEmail, creatorEmail, boardName, columnOrdinal);
+        //    if (res.ErrorOccured)
+        //    {
+        //        throw new Exception(res.ErrorMessage);
+        //    }
+        //    IList<TaskModel> lst = new List<TaskModel>();
+        //    foreach (IntroSE.Kanban.Backend.ServiceLayer.Task task in res.Value)
+        //    {
+        //        lst.Add(new TaskModel(this, task.Title, task.Description, task.DueDate)); // TODO: implement Task model
+        //    }
+        //    return lst;
+        //}
 
         internal void AddBoard(string userEmail, string boardName)
         {
@@ -177,7 +177,7 @@ namespace Presentation.Model
             IList<TaskModel> lst = new List<TaskModel>();
             foreach (IntroSE.Kanban.Backend.ServiceLayer.Task task in res.Value)
             {
-                lst.Add(new TaskModel(this, task.Title, task.Description, task.DueDate)); // TODO: implement Task model
+                lst.Add(new TaskModel(this, task.Title, task.Description, task.DueDate, userEmail)); // TODO: implement Task model
             }
             return lst;
         }
@@ -246,15 +246,15 @@ namespace Presentation.Model
             }
         }
 
-        internal IList<ColumnModel> GetColumns(string userEmail, string creatorEmail, string boardName)
-        {
-            Response<IList<IntroSE.Kanban.Backend.BusinessLayer.Column>> res = Service.GetColumns(userEmail, creatorEmail, boardName);
-            if (res.ErrorOccured)
-            {
-                throw new Exception(res.ErrorMessage);
-            }
-            return res.Value;
-        }
+        //internal IList<ColumnModel> GetColumns(string userEmail, string creatorEmail, string boardName)
+        //{
+        //    Response<IList<IntroSE.Kanban.Backend.BusinessLayer.Column>> res = Service.GetColumns(userEmail, creatorEmail, boardName);
+        //    if (res.ErrorOccured)
+        //    {
+        //        throw new Exception(res.ErrorMessage);
+        //    }
+        //    return res.Value;
+        //}
 
     }
 }

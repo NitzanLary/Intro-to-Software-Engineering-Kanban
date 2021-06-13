@@ -780,27 +780,27 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 }
             }
 
-            public Response<IList<Column>> GetColumns(string userEmail, string creatorEmail, string boardName)
-            {
-                try
-                {
-                    log.Info($"{userEmail} is Trying to get all columns from board {boardName}");
-                    Response r = IsLoggedIn(userEmail);
-                    if (r.ErrorOccured)
-                        return Response<IList<Column>>.FromError(r.ErrorMessage);
-                    Response<IList<BusinessLayer.Column>> returned = Response<IList<BusinessLayer.Column>>.FromBLResponse(boardController.getColumns(userEmail, creatorEmail, boardName));
-                    if (returned.ErrorOccured)
-                    {
-                        return Response<IList<Column>>.FromError(returned.ErrorMessage);
-                    }
-                    WriteToLog(r, $"getColumns finished successfully");
-                    return Response<IList<Column>>.FromValue(returned.Value);
-                }
-                catch (Exception e)
-                {
-                    return Response<IList<Column>>.FromError(e.Message);
-                }
-            }
+            //public Response<IList<Column>> GetColumns(string userEmail, string creatorEmail, string boardName)
+            //{
+            //    try
+            //    {
+            //        log.Info($"{userEmail} is Trying to get all columns from board {boardName}");
+            //        Response r = IsLoggedIn(userEmail);
+            //        if (r.ErrorOccured)
+            //            return Response<IList<Column>>.FromError(r.ErrorMessage);
+            //        Response<IList<BusinessLayer.Column>> returned = Response<IList<BusinessLayer.Column>>.FromBLResponse(boardController.getColumns(userEmail, creatorEmail, boardName));
+            //        if (returned.ErrorOccured)
+            //        {
+            //            return Response<IList<Column>>.FromError(returned.ErrorMessage);
+            //        }
+            //        WriteToLog(r, $"getColumns finished successfully");
+            //        return Response<IList<Column>>.FromValue(returned.Value);
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        return Response<IList<Column>>.FromError(e.Message);
+            //    }
+            //}
 
 
 

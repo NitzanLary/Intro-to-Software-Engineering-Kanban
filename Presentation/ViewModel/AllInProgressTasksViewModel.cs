@@ -15,7 +15,7 @@ namespace Presentation.ViewModel
     {
         private BackendController controller;
 
-        public List<TaskModel> Tasks { get; set; }
+        //public List<TaskModel> Tasks { get; set; }
 
         public UserModel User { get; private set; }
         private string _message;
@@ -53,7 +53,7 @@ namespace Presentation.ViewModel
         {
             this.controller = user.Controller;
             this.User = user;
-            this.Tasks = new List<TaskModel>(controller.InProgressTasks(user.Email));
+            
             
         }
 
@@ -71,7 +71,13 @@ namespace Presentation.ViewModel
             }
         }
 
+        internal void SortTasksByDueDate()
+        {
+            //Not Ideal, need to find a way to sort this list IN PLACE.
+             User.InProgressTasks = new ObservableCollection<TaskModel>(User.InProgressTasks.OrderBy(d => d.DueDate).ToList());
+        }
 
+        
 
 
     }
