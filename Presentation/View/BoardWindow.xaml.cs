@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Presentation.Model;
+using Presentation.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,17 @@ namespace Presentation.View
     /// </summary>
     public partial class BoardWindow : Window
     {
-        public BoardWindow()
+        private BoardViewModel viewModel;
+        
+        UserModel user;
+        BoardModel Board; //maybe no need
+        public BoardWindow(UserModel user, BoardModel selctedBoard)
         {
             InitializeComponent();
+            this.viewModel = new BoardViewModel(user, selctedBoard);
+            this.DataContext = viewModel;
+            this.user = user;
+            this.Board = selctedBoard; //maybe no need
         }
     }
 }

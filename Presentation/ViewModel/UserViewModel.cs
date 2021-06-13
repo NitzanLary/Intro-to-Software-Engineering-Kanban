@@ -91,6 +91,11 @@ namespace Presentation.ViewModel
             }
         }
 
+        public void SelectBoard()
+        {
+
+        }
+
 
 
 

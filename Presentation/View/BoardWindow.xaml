@@ -5,8 +5,119 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Presentation.View"
         mc:Ignorable="d"
-        Title="BoardWindow" Height="450" Width="800">
+        Title="BoardWindow" Height="650" Width="1064">
     <Grid>
-        
+        <Grid.Background>
+            <ImageBrush TileMode="Tile" ViewportUnits="Absolute" Viewport="0 0 500 500"  ImageSource="/Presentation;component/Images/bg.png" />
+        </Grid.Background>
+
+        <Border BorderThickness="1" CornerRadius="10" BorderBrush="Black" Margin="10,10,889,10" Background="SkyBlue">
+            <Grid>
+                <Button Content="Search" HorizontalAlignment="Left" Margin="10,125,0,0" VerticalAlignment="Top" Width="62"/>
+                <Button Content="Back" HorizontalAlignment="Left" Margin="91,125,0,0" VerticalAlignment="Top" Width="62"/>
+                <Button Content="sort by due date" HorizontalAlignment="Center" Margin="0,159,0,0" VerticalAlignment="Top" Width="142"/>
+                <Button Content="Logout" HorizontalAlignment="Center" Margin="0,21,0,0" VerticalAlignment="Top" Width="118" />
+            </Grid>
+        </Border>
+        <Border BorderThickness="1" CornerRadius="10" BorderBrush="Black" Margin="795,10,10,10" Background="SkyBlue">
+            <Grid>
+                <Label Content="My Task" FontSize="22" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Center" Margin="0,63,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="238" Background="WhiteSmoke"/>
+                <TextBlock HorizontalAlignment="Center" Margin="0,91,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="182" Width="238" Background="WhiteSmoke"/>
+                <TextBlock HorizontalAlignment="Left" Margin="92,306,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="155" Background="WhiteSmoke"/>
+                <TextBlock HorizontalAlignment="Left" Margin="92,345,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="156" Background="WhiteSmoke"/>
+                <TextBlock HorizontalAlignment="Left" Margin="91,384,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="156" Background="WhiteSmoke"/>
+                <TextBlock HorizontalAlignment="Left" Margin="-783,73,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="155" Background="WhiteSmoke"/>
+
+            </Grid>
+        </Border>
+        <Border BorderThickness="1" CornerRadius="10" BorderBrush="Black" Margin="180,10,274,10" Background="SkyBlue" >
+            <Grid>
+                <Grid>
+                    <Label Content="Column Settings" FontSize="22" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,468,0,0" VerticalAlignment="Top"/>
+                    <Button Content="New Column" HorizontalAlignment="Left" Margin="23,563,0,0" VerticalAlignment="Top" Width="171" Height="29"/>
+                    <Button Content="New Task" HorizontalAlignment="Left" Margin="23,514,0,0" VerticalAlignment="Top" Width="171" Height="29"/>
+                    <Button Content="Edit Column" HorizontalAlignment="Left" Margin="216,514,0,0" VerticalAlignment="Top" Width="171" Height="29"/>
+                    <Button Content="Move Right  -->" HorizontalAlignment="Left" Margin="419,514,0,0" VerticalAlignment="Top" Width="171" Height="29"/>
+                    <Button Content="Remove Column" HorizontalAlignment="Left" Margin="216,563,0,0" VerticalAlignment="Top" Width="171" Height="29"/>
+                    <Button Content="&lt;--  Move Left" HorizontalAlignment="Left" Margin="419,563,0,0" VerticalAlignment="Top" Width="171" Height="29"/>
+
+                </Grid>
+            </Grid>
+
+        </Border>
+        <ListBox   x:Name="list" ItemsSource="{Binding Path=Board.Columns}"      Background="#FFE5E5E5" SelectedItem="{Binding Path=SelectedColumn, Mode=TwoWay}" Margin="205,78,291,164" Padding="0" >
+
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate >
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="Transparent" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Path=Name, Mode=TwoWay}" FontWeight="Bold" FontStyle="Italic" Foreground="Black" HorizontalAlignment="Center"    />
+                            <Grid>
+                                <Grid.ColumnDefinitions >
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Limt: " Grid.Column="0"  HorizontalAlignment="Center"   />
+                                <TextBlock Text="{Binding Path=Limit, Mode=TwoWay}" Grid.Column="1"    HorizontalAlignment="Center"/>
+                            </Grid>
+
+
+                            <Separator></Separator>
+                            <!--tasks-->
+                            <ListBox  Width="210"  Height="330" Margin="5,5,5,5" Padding="0" >
+
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate >
+                                        <StackPanel Orientation="Vertical"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="{Binding Path=BorderColor, Mode=OneWay}" BorderThickness="1" >
+                                            <StackPanel  >
+                                                <Grid Margin="2" >
+                                                    <TextBlock Text="{Binding Path=Title, Mode=TwoWay}" Margin="5" Background="{Binding Path=BackgroundColor, Mode=OneWay}"   FontWeight="Bold" VerticalAlignment="Center"  HorizontalAlignment="Center" />
+                                                </Grid>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+
+                            </ListBox>
+                        </StackPanel>
+
+
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+
+        </ListBox>
+        <Border BorderThickness="1" CornerRadius="10" BorderBrush="Black" Margin="795,10,10,10" Background="SkyBlue">
+            <Grid>
+                <Label Content="My Task" FontSize="22" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top"/>
+                <TextBlock HorizontalAlignment="Center" Margin="0,63,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="238" Background="WhiteSmoke"/>
+                <TextBlock HorizontalAlignment="Center" Margin="0,91,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="182" Width="238" Background="WhiteSmoke"/>
+                <TextBlock HorizontalAlignment="Left" Margin="92,306,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="155" Background="WhiteSmoke"/>
+                <TextBlock HorizontalAlignment="Left" Margin="92,345,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="156" Background="WhiteSmoke"/>
+                <TextBlock HorizontalAlignment="Left" Margin="91,384,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="156" Background="WhiteSmoke"/>
+                <TextBlock HorizontalAlignment="Left" Margin="-783,73,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="155" Background="WhiteSmoke"/>
+                <Label Content="Assignee Email:" HorizontalAlignment="Left" Margin="0,303,0,0" VerticalAlignment="Top"/>
+                <Label Content="Creation Date:" HorizontalAlignment="Left" Margin="0,342,0,0" VerticalAlignment="Top"/>
+                <Label Content="Due Date:" HorizontalAlignment="Left" Margin="1,379,0,0" VerticalAlignment="Top"/>
+                <Label Content="Task Settings" HorizontalAlignment="Center" Margin="0,433,0,0" VerticalAlignment="Top" FontSize="19" FontWeight="SemiBold"/>
+                <Button Content="Advance" HorizontalAlignment="Center" Margin="0,484,0,0" VerticalAlignment="Top" Width="237" Height="28"/>
+                <Button Content="Delete" HorizontalAlignment="Center" Margin="0,517,0,0" VerticalAlignment="Top" Width="236" Height="28"/>
+                <Button Content="Task Info" HorizontalAlignment="Left" Margin="12,550,0,0" VerticalAlignment="Top" Width="236" Height="28"/>
+
+
+            </Grid>
+        </Border>
+        <Label Content="My Board" FontSize="30" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="414,12,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

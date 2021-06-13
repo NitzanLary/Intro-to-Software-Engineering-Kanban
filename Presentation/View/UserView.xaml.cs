@@ -54,5 +54,17 @@ namespace Presentation.View
         {
             viewModel.RemoveBoard();
         }
+
+        private void Select_Board_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //viewModel.
+        }
+
+        private void All_In_Progress_Tasks_Button_Click(object sender, RoutedEventArgs e)
+        {
+            AllInProgressTasksWindow allInProgressTasksView = new AllInProgressTasksWindow(user);
+            allInProgressTasksView.Show();
+            this.Close();
+        }
     }
 }

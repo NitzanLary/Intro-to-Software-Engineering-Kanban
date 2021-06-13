@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Presentation.Model;
+using Presentation.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,32 @@ namespace Presentation.View
     /// </summary>
     public partial class AllInProgressTasksWindow : Window
     {
-        public AllInProgressTasksWindow()
+        UserModel user;
+
+        private AllInProgressTasksViewModel viewModel;
+        public AllInProgressTasksWindow(UserModel user)
         {
             InitializeComponent();
+            this.viewModel = new AllInProgressTasksViewModel(user);
+            this.DataContext = viewModel;
+            this.user = user;
+        }
+
+        private void Back_Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+            UserView userView = new UserView(user);
+            userView.Show();
+            this.Close();
+        }
+
+        private void Logout_Button_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.Logout();
+            this.Hide();
+            MainWindow mainView = new MainWindow();
+            mainView.Show();
+            this.Close();
         }
     }
 }
