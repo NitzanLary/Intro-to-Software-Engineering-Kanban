@@ -354,8 +354,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the list of tasks, The response should contain a error message in case of an error</returns>
         public Response<IList<Task>> InProgressTasks(string userEmail)
         {
-            throw new NotImplementedException();
+            log.Info($"User {userEmail} is trying to get all in-progress Tasks in.");
+            return ConfirmAndApplyT<IList<Task>>(userEmail, () =>
+            {
+                MFResponse<IList<BusinessLayer.Task>> BLTasks = boardController.InProgressTask(userEmail);
+                if(BLTasks.ErrorOccured)
+                    return Response<IList<Task>>.FromError(BLTasks.ErrorMessage);
+                List<Task> SLTasks = BLTasks.Value.Select(BLTask => new Task(BLTask)).ToList();
+                log.Info("user get all in progress Tasks successfully");
+                return Response<IList<Task>>.FromValue(SLTasks);
+            });
         }
+
 
         /// <summary>
         /// Assigns a task to a user
@@ -369,7 +379,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AssignTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string emailAssignee)
         {
-            throw new NotImplementedException();
+            log.Info($"User {userEmail} is trying to assign task to {emailAssignee} in: {creatorEmail},  {boardName}");
+            return ConfirmAndApply(userEmail, () =>
+            {
+                Response r = new(boardController.AssignTask(userEmail, creatorEmail, boardName, columnOrdinal, taskId, emailAssignee));
+                WriteToLog(r, "Assign Task successfully");
+                return r;
+            });
         }
 
         /// <summary>

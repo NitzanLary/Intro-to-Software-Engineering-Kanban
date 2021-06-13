@@ -438,17 +438,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// </summary>
         /// <param name="email">Email of the user. Must be logged in</param>
         /// <returns>A response object with a value set to the list of tasks, The response should contain a error message in case of an error</returns>
-
-        //TODO: complicated for now.. todo after all things fix
         public MFResponse<IList<Task>> InProgressTask(string email) 
         {
            List<Task> tasks = new List<Task>();
             foreach(Board board in members[email])
             {
-                MFResponse<IList<Task>> r = board.GetColumn(1); // 1 is the column ordinal of inProgress
-                if (r.ErrorOccured)
-                    return MFResponse<IList<Task>>.FromError(r.ErrorMessage);
-                tasks.AddRange(r.Value.Where((task) => task.Assignee == email).ToList());
+                for(int i = 1; i < board.Columns.Count - 1; i++)
+                {
+                    MFResponse<IList<Task>> r = board.GetColumn(i);
+                    if (r.ErrorOccured)
+                        return MFResponse<IList<Task>>.FromError(r.ErrorMessage);
+                    tasks.AddRange(r.Value.Where((task) => task.Assignee == email).ToList());
+                }
+                
             }
             return MFResponse<IList<Task>>.FromValue(tasks);
         }

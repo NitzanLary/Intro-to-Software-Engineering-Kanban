@@ -122,7 +122,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         internal MFResponse AddColumn(int columnOrdinal, string columnName)
         {
-            if (columnOrdinal > Columns.Count && columnOrdinal >= 0)
+            if (columnOrdinal > Columns.Count || columnOrdinal < 0)
                 return new MFResponse($"Can not insert to index {columnOrdinal}, max {Columns.Count}");
             Columns.Insert(columnOrdinal, new Column(columnName, Creator, Name, columnOrdinal));
             return new MFResponse();
@@ -130,7 +130,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         internal MFResponse RemoveColumn(int columnOrdinal)
         {
-            if (columnOrdinal >= Columns.Count && columnOrdinal >= 0)
+            if (columnOrdinal >= Columns.Count || columnOrdinal < 0)
                 return new MFResponse($"Can not remove column in index {columnOrdinal}, max {Columns.Count}");
             if (Columns.Count < 2)
                 return new MFResponse($"Can not remove any columns, the minimum that is possible is {Columns.Count}");
@@ -151,14 +151,23 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 for (int i = 0; i < Columns.Count; i++)
                     Columns[i].ColumnOrdinal = i;
             }
-            
-            Columns.RemoveAt(columnOrdinal);
+            else
+            {
+                Column destCol = Columns[columnOrdinal - 1];
+                if (destCol.MaxTasks < (destCol.Tasks.Count + srcCol.Tasks.Count))
+                    return new MFResponse("tasks exceeded the limit");
+                Columns.RemoveAt(columnOrdinal);
+                foreach (Task task in tasks)
+                    Columns[columnOrdinal - 1].AddTask(task);
+                for (int i = columnOrdinal; i < Columns.Count; i++)
+                    Columns[i].ColumnOrdinal = i;
+            }
             return new MFResponse();
         }
 
         internal MFResponse RenameColumn(int columnOrdinal, string newColumnName)
         {
-            if (columnOrdinal >= Columns.Count && columnOrdinal >= 0)
+            if (columnOrdinal >= Columns.Count || columnOrdinal < 0)
                 return new MFResponse($"Can not rename column in index {columnOrdinal}, max {Columns.Count}");
             Columns[columnOrdinal].Name = newColumnName;
             return new MFResponse();
