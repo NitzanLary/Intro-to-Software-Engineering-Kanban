@@ -17,5 +17,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.Objects
             this.creator = creator;
             this.columns = columns;
         }
+
+        internal Board(BusinessLayer.Board board)
+        {
+            this.columns = board.Columns.Select(c => new Column(c)).ToList();
+            this.name = board.Name;
+            this.creator = board.Creator;
+            
+        }
     }
 }

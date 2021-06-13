@@ -43,9 +43,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             Name = name;
             Creator = creator;
-            columns = new List<Column> { new Column("backlog"), new Column("in progress"), new Column("done") };
-            for (int i = 0; i < 3; i++)
-                columns[i].AttachDto(creator, name, i);
+            columns = new List<Column> { new Column("backlog", creator, Name, 0), new Column("in progress", creator, Name, 1), new Column("done", creator, Name, 2) };
             dto = new BoardDTO(creator, name, new List<string>(), columns.Select(col => col.DTO).ToList());
             dto.Insert();
             dto.InsertNewBoardMember(creator);
@@ -80,15 +78,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             if (columnOrdinal >= columns.Count || columnOrdinal < 0)
                 return new MFResponse("there is no such column number");
-            try
-            {
-                Columns[columnOrdinal].MaxTasks = limit;
-            }
-            catch (Exception e)
-            {
-                return new MFResponse(e.Message);
-            }
-
+            Columns[columnOrdinal].MaxTasks = limit;
             return new MFResponse();
     }
 
@@ -125,9 +115,77 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return MFResponse<IList<Task>>.FromValue(Columns[columnOrdinal].Tasks);
         }
 
-        public MFResponse<IList<Column>> getColumns()
+        internal MFResponse<IList<Column>> getColumns()
         {
             return MFResponse<IList<Column>>.FromValue(Columns);
+        }
+
+        internal MFResponse AddColumn(int columnOrdinal, string columnName)
+        {
+            if (columnOrdinal > Columns.Count || columnOrdinal < 0)
+                return new MFResponse($"Can not insert to index {columnOrdinal}, max {Columns.Count}");
+            Columns.Insert(columnOrdinal, new Column(columnName, Creator, Name, columnOrdinal));
+            return new MFResponse();
+        }
+
+        internal MFResponse RemoveColumn(int columnOrdinal)
+        {
+            if (columnOrdinal >= Columns.Count || columnOrdinal < 0)
+                return new MFResponse($"Can not remove column in index {columnOrdinal}, max {Columns.Count}");
+            if (Columns.Count < 2)
+                return new MFResponse($"Can not remove any columns, the minimum that is possible is {Columns.Count}");
+            //When a column is removed, its existing tasks are moved to the column on its
+            //left(unless it is the leftmost column — then its tasks are moved to the column
+            //on its right).The operation should fail if the tasks cannot be moved to the new
+            //column(since it will exceed the limit).
+            Column srcCol = Columns[columnOrdinal];
+            IList<Task> tasks = srcCol.Tasks;
+            if (columnOrdinal == 0)
+            {
+                Column destCol = Columns[1];
+                if (destCol.MaxTasks < (destCol.Tasks.Count + srcCol.Tasks.Count))
+                    return new MFResponse("tasks exceeded the limit");
+                Columns.RemoveAt(0);
+                foreach (Task task in tasks)
+                    Columns[1].AddTask(task);
+                for (int i = 0; i < Columns.Count; i++)
+                    Columns[i].ColumnOrdinal = i;
+            }
+            else
+            {
+                Column destCol = Columns[columnOrdinal - 1];
+                if (destCol.MaxTasks < (destCol.Tasks.Count + srcCol.Tasks.Count))
+                    return new MFResponse("tasks exceeded the limit");
+                Columns.RemoveAt(columnOrdinal);
+                foreach (Task task in tasks)
+                    Columns[columnOrdinal - 1].AddTask(task);
+                for (int i = columnOrdinal; i < Columns.Count; i++)
+                    Columns[i].ColumnOrdinal = i;
+            }
+            return new MFResponse();
+        }
+
+        internal MFResponse RenameColumn(int columnOrdinal, string newColumnName)
+        {
+            if (columnOrdinal >= Columns.Count || columnOrdinal < 0)
+                return new MFResponse($"Can not rename column in index {columnOrdinal}, max {Columns.Count}");
+            Columns[columnOrdinal].Name = newColumnName;
+            return new MFResponse();
+        }
+
+        internal MFResponse MoveColumn(int columnOrdinal, int shiftSize)
+        {
+            if(columnOrdinal >= Columns.Count || columnOrdinal < 0)
+                return new MFResponse($"Can not move column column in index {columnOrdinal}, max {Columns.Count}");
+            int loc = columnOrdinal + shiftSize;
+            if(loc >= Columns.Count || loc < 0)
+                return new MFResponse($"Can not move column to index {columnOrdinal + shiftSize}");
+            Column col = Columns[columnOrdinal];
+            if (col.Tasks.Count > 0)
+                return new MFResponse($"Only empty columns can be moved");
+            Columns.RemoveAt(columnOrdinal);
+            Columns.Insert(loc, col);
+            return new MFResponse();
         }
 
         //public Response advanceTask(int taskId, int columnOrd)

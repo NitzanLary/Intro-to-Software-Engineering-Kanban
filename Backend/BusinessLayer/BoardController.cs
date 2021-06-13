@@ -173,14 +173,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
             if (r.ErrorOccured)
                 return MFResponse<string>.FromError(r.ErrorMessage);
-            if (!members[userEmail].Contains(boards[creatorEmail][boardName]))
-            {
-                log.Debug("The user is not a board member");
-                return MFResponse<string>.FromError("The user is not a board member");
-            }
             Board b = boards[userEmail][boardName];
-            if (columnOrdinal >= b.Columns.Count)
-                return MFResponse<string>.FromError("column ordinal dose not exist. max " + b.Columns.Count);
             return b.GetColumnName(columnOrdinal);
         }
 
@@ -445,17 +438,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// </summary>
         /// <param name="email">Email of the user. Must be logged in</param>
         /// <returns>A response object with a value set to the list of tasks, The response should contain a error message in case of an error</returns>
-
-        //TODO: complicated for now.. todo after all things fix
         public MFResponse<IList<Task>> InProgressTask(string email) 
         {
            List<Task> tasks = new List<Task>();
             foreach(Board board in members[email])
             {
-                MFResponse<IList<Task>> r = board.GetColumn(1); // 1 is the column ordinal of inProgress
-                if (r.ErrorOccured)
-                    return MFResponse<IList<Task>>.FromError(r.ErrorMessage);
-                tasks.AddRange(r.Value.Where((task) => task.Assignee == email).ToList());
+                for(int i = 1; i < board.Columns.Count - 1; i++)
+                {
+                    MFResponse<IList<Task>> r = board.GetColumn(i);
+                    if (r.ErrorOccured)
+                        return MFResponse<IList<Task>>.FromError(r.ErrorMessage);
+                    tasks.AddRange(r.Value.Where((task) => task.Assignee == email).ToList());
+                }
+                
             }
             return MFResponse<IList<Task>>.FromValue(tasks);
         }
@@ -490,6 +485,24 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return new MFResponse();
         }
 
+        internal MFResponse AddColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, string columnName)
+        {
+            MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return r;
+            Board board = boards[creatorEmail][boardName];
+            return board.AddColumn(columnOrdinal, columnName);
+        }
+
+        internal MFResponse RemoveColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
+        {
+            MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return r;
+            Board board = boards[creatorEmail][boardName];
+            return board.RemoveColumn(columnOrdinal);
+        }
+
         /// <summary>
         /// Assigns a task to a user
         /// Asumption: only task's assignee can assign other board member to the task
@@ -504,6 +517,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public MFResponse AssignTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string emailAssignee)
         {
             return UpdateTask<string>(userEmail, creatorEmail, boardName, columnOrdinal, taskId, (task) => task.Assignee = emailAssignee);
+        }
+
+        internal MFResponse RenameColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, string newColumnName)
+        {
+            MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return r;
+            Board board = boards[creatorEmail][boardName];
+            return board.RenameColumn(columnOrdinal, newColumnName);
         }
 
         /// <summary>
@@ -523,8 +545,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public MFResponse<IList<String>> GetBoardIMemberOfNames(string userEmail)
         {
-            MFResponse<IList<String>> myBoards = GetMyBoardNames(userEmail);
-            return MFResponse<IList<String>>.FromValue(members[userEmail].Select((b) => b.Name).ToList().Where(x => !myBoards.Value.Contains(x)).ToList());
+            IList<String> myBoards = GetMyBoardNames(userEmail).Value;
+            return MFResponse<IList<String>>.FromValue(members[userEmail].Select((b) => b.Name).ToList().Where(x => !myBoards.Contains(x)).ToList());
+        }
+
+        internal MFResponse MoveColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int shiftSize)
+        {
+            MFResponse response = CheckArgs(userEmail, creatorEmail, boardName);
+            if (response.ErrorOccured)
+                return response;
+            return boards[creatorEmail][boardName].MoveColumn(columnOrdinal, shiftSize);
         }
 
         /// <summary>

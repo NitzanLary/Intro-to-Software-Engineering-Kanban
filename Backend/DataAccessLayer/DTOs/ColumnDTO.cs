@@ -44,8 +44,9 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
 
 
 
-        public ColumnDTO(string creator, string boardname, int columnOrdinal, int maxTasks, List<TaskDTO> tasks) : base(new ColumnDALController())
+        public ColumnDTO(string creator, string boardname, int columnOrdinal, int maxTasks, string name, List<TaskDTO> tasks) : base(new ColumnDALController())
         {
+            _columnName = name;
             _creator = creator;
             _boardname = boardname;
             _columnOrdinal = columnOrdinal;

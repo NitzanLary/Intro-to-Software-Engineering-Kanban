@@ -15,6 +15,18 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             get => tasks.Values.ToList();
         }
 
+        private int columnOrdinal;
+        public int ColumnOrdinal
+        {
+            get => columnOrdinal;
+            set
+            {
+                dto.ColumnOrdinal = value;
+                columnOrdinal = value;
+                foreach(Task task in Tasks)
+                    task.DTO.ColumnOrdinal = value;
+            } }
+
         private string name;
         public string Name
         {
@@ -24,7 +36,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 if (value == null)
                     throw new ArgumentException("Column name can not be null");
                 if (persisted)
-                    //dto.Name = value;
+                    dto.ColumnName = value;
                 name = value;
             }
         }
@@ -52,17 +64,22 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             }
         }
 
-        public Column(string name)
+        public Column(string name, string creator, string boardName, int columnOrdinal)
         {
+            
             persisted = false;
             Name = name;
             tasks = new Dictionary<int, Task>();
             maxTasks = -1;
+            ColumnOrdinal = columnOrdinal;
+            dto = new ColumnDTO(creator, boardName, columnOrdinal, MaxTasks, Name, new List<TaskDTO>()); // TODO add name
+            dto.Insert();
+            persisted = true;
         }
 
         public Column(ColumnDTO columnDTO)
         {
-            //Name = columnDTO.Name;
+            Name = columnDTO.ColumnName;
             tasks = new Dictionary<int, Task>();
             MaxTasks = columnDTO.MaxTasksNumber;
             foreach (TaskDTO taskDTO in columnDTO.Tasks)
@@ -71,12 +88,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             dto = columnDTO;
         }
 
-        public void AttachDto(string creator, string boardName, int columnOrdinal)
-        {
-            dto = new ColumnDTO(creator, boardName, columnOrdinal, MaxTasks, new List<TaskDTO>()); // TODO add name
-            dto.Insert();
-            persisted = true;
-        }
 
         public Task AddTask(DateTime dueDate, string title, string description, string assignee)
         {

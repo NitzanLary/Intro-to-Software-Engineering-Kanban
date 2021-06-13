@@ -136,758 +136,429 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="columnOrdinal">The column location. The first column location is identified by 0, the location increases by 1 for each column</param>
         /// <param name="limit">The new limit value. A value of -1 indicates no limit.</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-  //      public Response LimitColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int limit)
-  //      {
-  //          throw new NotImplementedException();
-  //      }
-
-  //      /// <summary>
-  //      /// Get the limit of a specific column
-  //      /// </summary>
-  //      /// <param name="userEmail">Email of the current user. Must be logged in</param>
-  //      /// <param name="creatorEmail">Email of the board creator</param>
-  //      /// <param name="boardName">The name of the board</param>
-  //      /// <param name="columnOrdinal">The column location. The first column location is identified by 0, the location increases by 1 for each column</param>
-  //      /// <returns>The limit of the column.</returns>
-  //      public Response<int> GetColumnLimit(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
-  //      {
-  //          throw new NotImplementedException();
-  //      }
-
-  //      /// <summary>
-  //      /// Get the name of a specific column
-  //      /// </summary>
-  //      /// <param name="userEmail">Email of the current user. Must be logged in</param>
-  //      /// <param name="creatorEmail">Email of the board creator</param>
-  //      /// <param name="boardName">The name of the board</param>
-  //      /// <param name="columnOrdinal">The column location. The first column location is identified by 0, the location increases by 1 for each column</param>
-  //      /// <returns>The name of the column.</returns>
-  //      public Response<string> GetColumnName(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
-  //      {
-  //          throw new NotImplementedException();
-  //      }
-
-  //      /// <summary>
-  //      /// Add a new task.
-  //      /// </summary>
-		///// <param name="userEmail">Email of the current user. Must be logged in</param>
-  //      /// <param name="creatorEmail">Email of the board creator</param>
-  //      /// <param name="boardName">The name of the board</param>
-  //      /// <param name="title">Title of the new task</param>
-  //      /// <param name="description">Description of the new task</param>
-  //      /// <param name="dueDate">The due date if the new task</param>
-  //      /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
-  //      public Response<Task> AddTask(string userEmail,string creatorEmail, string boardName, string title, string description, DateTime dueDate)
-  //      {
-  //          throw new NotImplementedException();
-  //      }
-  //      /// <summary>
-  //      /// Update the due date of a task
-  //      /// </summary>
-  //      /// <param name="userEmail">Email of the current user. Must be logged in</param>
-  //      /// <param name="creatorEmail">Email of the board creator</param>
-  //      /// <param name="boardName">The name of the board</param>
-  //      /// <param name="columnOrdinal">The column location. The first column location is identified by 0, the location increases by 1 for each column</param>
-  //      /// <param name="taskId">The task to be updated identified task ID</param>
-  //      /// <param name="dueDate">The new due date of the column</param>
-  //      /// <returns>A response object. The response should contain a error message in case of an error</returns>
-  //      public Response UpdateTaskDueDate(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
-  //      {
-  //          throw new NotImplementedException();
-  //      }
-  //      /// <summary>
-  //      /// Update task title
-  //      /// </summary>
-  //      /// <param name="userEmail">Email of the current user. Must be logged in</param>
-  //      /// <param name="creatorEmail">Email of the board creator</param>
-  //      /// <param name="boardName">The name of the board</param>
-  //      /// <param name="columnOrdinal">The column location. The first column location is identified by 0, the location increases by 1 for each column</param>
-  //      /// <param name="taskId">The task to be updated identified task ID</param>
-  //      /// <param name="title">New title for the task</param>
-  //      /// <returns>A response object. The response should contain a error message in case of an error</returns>
-  //      public Response UpdateTaskTitle(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string title)
-  //      {
-  //          throw new NotImplementedException();
-  //      }
-  //      /// <summary>
-  //      /// Update the description of a task
-  //      /// </summary>
-  //      /// <param name="userEmail">Email of the current user. Must be logged in</param>
-  //      /// <param name="creatorEmail">Email of the board creator</param>
-  //      /// <param name="boardName">The name of the board</param>
-  //      /// <param name="columnOrdinal">The column location. The first column location is identified by 0, the location increases by 1 for each column</param>
-  //      /// <param name="taskId">The task to be updated identified task ID</param>
-  //      /// <param name="description">New description for the task</param>
-  //      /// <returns>A response object. The response should contain a error message in case of an error</returns>
-  //      public Response UpdateTaskDescription(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string description)
-  //      {
-  //          throw new NotImplementedException();
-  //      }
-  //      /// <summary>
-  //      /// Advance a task to the next column
-  //      /// </summary>
-  //      /// <param name="userEmail">Email of the current user. Must be logged in</param>
-  //      /// <param name="creatorEmail">Email of the board creator</param>
-  //      /// <param name="boardName">The name of the board</param>
-  //      /// <param name="columnOrdinal">The column location. The first column location is identified by 0, the location increases by 1 for each column</param>
-  //      /// <param name="taskId">The task to be updated identified task ID</param>
-  //      /// <returns>A response object. The response should contain a error message in case of an error</returns>
-  //      public Response AdvanceTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId)
-  //      {
-  //          throw new NotImplementedException();
-  //      }
-  //      /// <summary>
-  //      /// Returns a column given it's name
-  //      /// </summary>
-  //      /// <param name="userEmail">Email of the current user. Must be logged in</param>
-  //      /// <param name="creatorEmail">Email of the board creator</param>
-  //      /// <param name="boardName">The name of the board</param>
-  //      /// <param name="columnOrdinal">The column location. The first column location is identified by 0, the location increases by 1 for each column</param>
-  //      /// <returns>A response object with a value set to the Column, The response should contain a error message in case of an error</returns>
-  //      public Response<IList<Task>> GetColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
-  //      {
-  //          throw new NotImplementedException();
-  //      }
-
-
-  //      /// <summary>
-  //      /// Creates a new board for the logged-in user.
-  //      /// </summary>
-  //      /// <param name="userEmail">Email of the current user. Must be logged in</param>
-  //      /// <param name="boardName">The name of the new board</param>
-  //      /// <returns>A response object. The response should contain a error message in case of an error</returns>
-  //      public Response AddBoard(string userEmail, string boardName)
-  //      {
-  //          throw new NotImplementedException();
-  //      }
-
-  //      /// <summary>
-  //      /// Adds a board created by another user to the logged-in user. 
-  //      /// </summary>
-  //      /// <param name="userEmail">Email of the current user. Must be logged in</param>
-  //      /// <param name="creatorEmail">Email of the board creator</param>
-  //      /// <param name="boardName">The name of the new board</param>
-  //      /// <returns>A response object. The response should contain a error message in case of an error</returns>
-  //      public Response JoinBoard(string userEmail, string creatorEmail, string boardName)
-  //      {
-  //          throw new NotImplementedException();
-  //      }
-
-  //      /// <summary>
-  //      /// Removes a board.
-  //      /// </summary>
-  //      /// <param name="userEmail">Email of the current user. Must be logged in</param>
-  //      /// <param name="creatorEmail">Email of the board creator. Must be logged in</param>
-  //      /// <param name="boardName">The name of the board</param>
-  //      /// <returns>A response object. The response should contain a error message in case of an error</returns>
-  //      public Response RemoveBoard(string userEmail, string creatorEmail, string boardName)
-  //      {
-  //          throw new NotImplementedException();
-  //      }
-
-
-  //      /// <summary>
-  //      /// Returns all the in-progress tasks of the logged-in user is assigned to.
-  //      /// </summary>
-  //      /// <param name="userEmail">Email of the logged in user</param>
-  //      /// <returns>A response object with a value set to the list of tasks, The response should contain a error message in case of an error</returns>
-  //      public Response<IList<Task>> InProgressTasks(string userEmail)
-  //      {
-  //          throw new NotImplementedException();
-  //      }
-
-  //      /// <summary>
-  //      /// Assigns a task to a user
-  //      /// </summary>
-  //      /// <param name="userEmail">Email of the current user. Must be logged in</param>
-  //      /// <param name="creatorEmail">Email of the board creator</param>
-  //      /// <param name="boardName">The name of the board</param>
-  //      /// <param name="columnOrdinal">The column location. The first column location is identified by 0, the location increases by 1 for each column</param>
-  //      /// <param name="taskId">The task to be updated identified task ID</param>        
-  //      /// <param name="emailAssignee">Email of the user to assign to task to</param>
-  //      /// <returns>A response object. The response should contain a error message in case of an error</returns>
-  //      public Response AssignTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string emailAssignee)
-  //      {
-  //          throw new NotImplementedException();
-  //      }
-
-  //      /// <summary>
-  //      /// Returns the list of board of a user. The user must be logged-in. The function returns all the board names the user created or joined.
-  //      /// </summary>
-  //      /// <param name="userEmail">The email of the user. Must be logged-in.</param>
-  //      /// <returns>A response object with a value set to the board, instead the response should contain a error message in case of an error</returns>
-  //      public Response<IList<String>> GetBoardNames(string userEmail)
-  //      {
-  //          throw new NotImplementedException();
-  //      }
-
-
-
-            /// <summary>        
-            /// Checks if a user is logged in
-            /// </summary>
-            /// <param name="email">The email of the user</param>
-            /// <returns>A response object. The response should contain a error message in case of an error</returns>
-            private Response IsLoggedIn(string email)
+        public Response LimitColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int limit)
+        {
+            log.Info($"User {userEmail} is trying to limit column: {creatorEmail}, {boardName}, {columnOrdinal}, {limit}");
+            return ConfirmAndApply(userEmail, () =>
             {
-                try
-                {
-                    Response<bool> r = Response<bool>.FromBLResponse(userController.isLoggedIn(email));
-                    if (r.ErrorOccured)
-                    {
-                        log.Debug(r.ErrorMessage);
-                        return r;
-                    }
+                Response response = new Response(boardController.LimitColumn(userEmail, creatorEmail, boardName, columnOrdinal, limit));
+                WriteToLog(response, "Column limited successfully");
+                return response;
+            });
+        }
 
-                    if (!r.Value)
-                    {
-                        string msg = $"User {email} is not logged in";
-                        log.Debug(msg);
-                        return new Response(msg);
-                    }
-
-                    return new Response();
-                }
-                catch (Exception e)
-                {
-                    return Response<User>.FromError(e.Message);
-                }
-
-            }
-
-            /// <summary>
-            /// Limit the number of tasks in a specific column
-            /// </summary>
-            /// <param name="userEmail">Email of the current user. Must be logged in</param>
-            /// <param name="creatorEmail">Email of the board creator</param>
-            /// <param name="boardName">The name of the board</param>
-            /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
-            /// <param name="limit">The new limit value. A value of -1 indicates no limit.</param>
-            /// <returns>A response object. The response should contain a error message in case of an error</returns>
-            public Response LimitColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int limit)
+        /// <summary>
+        /// Get the limit of a specific column
+        /// </summary>
+        /// <param name="userEmail">Email of the current user. Must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column location. The first column location is identified by 0, the location increases by 1 for each column</param>
+        /// <returns>The limit of the column.</returns>
+        public Response<int> GetColumnLimit(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
+        {
+            log.Info($"User {userEmail} is trying to get column's limit: {creatorEmail}, {boardName}, {columnOrdinal}");
+            return ConfirmAndApplyT<int>(userEmail, () =>
             {
-                try
-                {
-                    log.Info($"User {userEmail} is trying to LimitColumn in board {boardName}, column {columnOrdinal} with limit: {limit}");
-                    Response r = IsLoggedIn(userEmail);
-                    if (r.ErrorOccured)
-                        return r;
-                    r = new(boardController.LimitColumn(userEmail, creatorEmail, boardName, columnOrdinal, limit));// TODO: this func just the creator can do
-                    WriteToLog(r, "Column limited successfully");
-                    return r;
-                }
-                catch (Exception e)
-                {
-                    return new Response(e.Message);
-                }
+                Response<int> response = Response<int>.FromBLResponse(boardController.GetColumnLimit(userEmail, creatorEmail, boardName, columnOrdinal));
+                WriteToLog(response, "GetColumnLimit finished successfully");
+                return response;
+            });
+        }
 
-            }
-
-            /// <summary>
-            /// Get the limit of a specific column
-            /// </summary>
-            /// <param name="userEmail">Email of the current user. Must be logged in</param>
-            /// <param name="creatorEmail">Email of the board creator</param>
-            /// <param name="boardName">The name of the board</param>
-            /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
-            /// <returns>The limit of the column.</returns>
-            public Response<int> GetColumnLimit(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
+        /// <summary>
+        /// Get the name of a specific column
+        /// </summary>
+        /// <param name="userEmail">Email of the current user. Must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column location. The first column location is identified by 0, the location increases by 1 for each column</param>
+        /// <returns>The name of the column.</returns>
+        public Response<string> GetColumnName(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
+        {
+            log.Info($"User {userEmail} is trying to get column's name: {creatorEmail}, {boardName}, {columnOrdinal}");
+            return ConfirmAndApplyT<string>(userEmail, () =>
             {
-                try
-                {
-                    log.Info($"User {userEmail} is trying to GetColumnLimit in board {boardName}, column {columnOrdinal}");
-                    Response<int> r = Response<int>.FromBLResponse(boardController.GetColumnLimit(userEmail, creatorEmail, boardName, columnOrdinal));
-                    WriteToLog(r, $"GetColumnLimit finished successfully");
-                    return r;
-                }
-                catch (Exception e)
-                {
-                    return Response<int>.FromError(e.Message);
-                }
+                Response<string> response = Response<string>.FromBLResponse(boardController.GetColumnName(userEmail, creatorEmail, boardName, columnOrdinal));
+                WriteToLog(response, "GetColumnName successfully finished");
+                return response;
+            });
+        }
 
-            }
-
-            /// <summary>
-            /// Get the name of a specific column
-            /// </summary>
-            /// <param name="userEmail">Email of the current user. Must be logged in</param>
-            /// <param name="creatorEmail">Email of the board creator</param>
-            /// <param name="boardName">The name of the board</param>
-            /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
-            /// <returns>The name of the column.</returns>
-            public Response<string> GetColumnName(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
+        /// <summary>
+        /// Add a new task.
+        /// </summary>
+		/// <param name="userEmail">Email of the current user. Must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="title">Title of the new task</param>
+        /// <param name="description">Description of the new task</param>
+        /// <param name="dueDate">The due date if the new task</param>
+        /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
+        public Response<Task> AddTask(string userEmail,string creatorEmail, string boardName, string title, string description, DateTime dueDate)
+        {
+            log.Info($"User {userEmail} is trying to AddTask to: {creatorEmail}, {boardName}");
+            return ConfirmAndApplyT<Task>(userEmail, () =>
             {
-                try
-                {
-                    log.Info($"User {userEmail} is trying to GetColumnName in board {boardName}, column {columnOrdinal}");
-                    Response<string> r = Response<string>.FromBLResponse(boardController.GetColumnName(userEmail, creatorEmail, boardName, columnOrdinal));// TODO every one cad do this
-                    WriteToLog(r, $"GetColumnName finished successfully");
-                    return r;
-                }
-                catch (Exception e)
-                {
-                    return Response<string>.FromError(e.Message);
-                }
-            }
-
-            /// <summary>
-            /// Add a new task.
-            /// </summary>
-            /// <param name="userEmail">Email of the current user. Must be logged in</param>
-            /// <param name="creatorEmail">Email of the board creator</param>
-            /// <param name="boardName">The name of the board</param>
-            /// <param name="title">Title of the new task</param>
-            /// <param name="description">Description of the new task</param>
-            /// <param name="dueDate">The due date if the new task</param>
-            /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
-            public Response<Task> AddTask(string userEmail, string creatorEmail, string boardName, string title, string description, DateTime dueDate)
+                MFResponse<BusinessLayer.Task> BLTask = boardController.AddTask(userEmail, creatorEmail, boardName, title, description, dueDate);
+                if (BLTask.ErrorOccured)
+                    return Response<Task>.FromError(BLTask.ErrorMessage);
+                Task SLTask = new Task(BLTask.Value);
+                log.Info("Task added successfully");
+                return Response<Task>.FromValue(SLTask);
+            });
+        }
+        /// <summary>
+        /// Update the due date of a task
+        /// </summary>
+        /// <param name="userEmail">Email of the current user. Must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column location. The first column location is identified by 0, the location increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>
+        /// <param name="dueDate">The new due date of the column</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        public Response UpdateTaskDueDate(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
+        {
+            log.Info($"User {userEmail} is trying to UpdateTaskDueDate in: {creatorEmail}, {boardName}");
+            return ConfirmAndApply(userEmail, () =>
             {
-                try
-                {
-                    log.Info($"User {userEmail} is trying to AddTask: {boardName}, {title}, {description}, {dueDate}");
-
-                    Response<BusinessLayer.Task> rT = Response<BusinessLayer.Task>.FromBLResponse(boardController.AddTask(userEmail, creatorEmail, boardName, title, description, dueDate));
-                    if (rT.ErrorOccured)
-                    {
-                        log.Error(rT.ErrorMessage);
-                        return Response<Task>.FromError(rT.ErrorMessage);
-                    }
-                    BusinessLayer.Task task = rT.Value;
-                    log.Debug($"task {title} added successfully to board {boardName}");
-                    return Response<Task>.FromValue(new Task(task.ID, task.CreationTime, task.Title, task.Description, task.DueDate, task.Assignee));
-                }
-                catch (Exception e)
-                {
-                    return Response<Task>.FromError(e.Message);
-                }
-
-            }
-
-            /// <summary>
-            /// Update the due date of a task
-            /// </summary>
-            /// <param name="userEmail">Email of the current user. Must be logged in</param>
-            /// <param name="creatorEmail">Email of the board creator</param>
-            /// <param name="boardName">The name of the board</param>
-            /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
-            /// <param name="taskId">The task to be updated identified task ID</param>
-            /// <param name="dueDate">The new due date of the column</param>
-            /// <returns>A response object. The response should contain a error message in case of an error</returns>
-            public Response UpdateTaskDueDate(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
+                Response r = new(boardController.UpdateTaskDueDate(userEmail, creatorEmail, boardName, columnOrdinal, taskId, dueDate));
+                WriteToLog(r, "Task updated successfully");
+                return r;
+            });
+        }
+        /// <summary>
+        /// Update task title
+        /// </summary>
+        /// <param name="userEmail">Email of the current user. Must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column location. The first column location is identified by 0, the location increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>
+        /// <param name="title">New title for the task</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        public Response UpdateTaskTitle(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string title)
+        {
+            log.Info($"User {userEmail} is trying to UpdateTaskTitle in: {creatorEmail}, {boardName}");
+            return ConfirmAndApply(userEmail, () =>
             {
-                try
-                {
-                    log.Info($"User {userEmail} is trying to UpdateTaskDueDate");
-                    Response r = IsLoggedIn(userEmail);
-                    if (r.ErrorOccured)
-                        return r;
-                    r = new(boardController.UpdateTaskDueDate(userEmail, creatorEmail, boardName, columnOrdinal, taskId, dueDate));
-                    WriteToLog(r, $"Task updated successfully");
-                    return r;
-                }
-                catch (Exception e)
-                {
-                    return new Response(e.Message);
-                }
-
-            }
-
-            /// <summary>
-            /// Update task title
-            /// </summary>
-            /// <param name="userEmail">Email of the current user. Must be logged in</param>
-            /// <param name="creatorEmail">Email of the board creator</param>
-            /// <param name="boardName">The name of the board</param>
-            /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
-            /// <param name="taskId">The task to be updated identified task ID</param>
-            /// <param name="title">New title for the task</param>
-            /// <returns>A response object. The response should contain a error message in case of an error</returns>
-            public Response UpdateTaskTitle(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string title)
+                Response r = new(boardController.UpdateTaskTitle(userEmail, creatorEmail, boardName, columnOrdinal, taskId, title));
+                WriteToLog(r, "Task updated successfully");
+                return r;
+            });
+        }
+        /// <summary>
+        /// Update the description of a task
+        /// </summary>
+        /// <param name="userEmail">Email of the current user. Must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column location. The first column location is identified by 0, the location increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>
+        /// <param name="description">New description for the task</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        public Response UpdateTaskDescription(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string description)
+        {
+            log.Info($"User {userEmail} is trying to UpdateTaskDescription in: {creatorEmail}, {boardName}");
+            return ConfirmAndApply(userEmail, () =>
             {
-                try
-                {
-                    log.Info($"User {userEmail} is trying to UpdateTaskTitle");
-                    Response r = IsLoggedIn(userEmail);
-                    if (r.ErrorOccured)
-                        return r;
-                    r = new(boardController.UpdateTaskTitle(userEmail, creatorEmail, boardName, columnOrdinal, taskId, title));
-                    WriteToLog(r, $"Task updated successfully");
-                    return r;
-                }
-                catch (Exception e)
-                {
-                    return new Response(e.Message);
-                }
-            }
-
-            /// <summary>
-            /// Update the description of a task
-            /// </summary>
-            /// <param name="userEmail">Email of the current user. Must be logged in</param>
-            /// <param name="creatorEmail">Email of the board creator</param>
-            /// <param name="boardName">The name of the board</param>
-            /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
-            /// <param name="taskId">The task to be updated identified task ID</param>
-            /// <param name="description">New description for the task</param>
-            /// <returns>A response object. The response should contain a error message in case of an error</returns>
-            public Response UpdateTaskDescription(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string description)
+                Response r = new(boardController.UpdateTaskDescription(userEmail, creatorEmail, boardName, columnOrdinal, taskId, description));
+                WriteToLog(r, "Task updated successfully");
+                return r;
+            });
+        }
+        /// <summary>
+        /// Advance a task to the next column
+        /// </summary>
+        /// <param name="userEmail">Email of the current user. Must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column location. The first column location is identified by 0, the location increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        public Response AdvanceTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId)
+        {
+            log.Info($"User {userEmail} is trying to AdvanceTask in: {creatorEmail}, {boardName}");
+            return ConfirmAndApply(userEmail, () =>
             {
-                try
-                {
-                    log.Info($"User {userEmail} is trying to UpdateTaskDescription");
-                    Response r = IsLoggedIn(userEmail);
-                    if (r.ErrorOccured)
-                        return r;
-                    r = new(boardController.UpdateTaskDescription(userEmail, creatorEmail, boardName, columnOrdinal, taskId, description));
-                    WriteToLog(r, $"Task updated successfully");
-                    return r;
-                }
-                catch (Exception e)
-                {
-                    return new Response(e.Message);
-                }
-            }
-
-            /// <summary>
-            /// Advance a task to the next column
-            /// </summary>
-            /// <param name="userEmail">Email of the current user. Must be logged in</param>
-            /// <param name="creatorEmail">Email of the board creator</param>
-            /// <param name="boardName">The name of the board</param>
-            /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
-            /// <param name="taskId">The task to be updated identified task ID</param>
-            /// <returns>A response object. The response should contain a error message in case of an error</returns>
-            public Response AdvanceTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId)
+                Response r = new(boardController.AdvanceTask(userEmail, creatorEmail, boardName, columnOrdinal, taskId));
+                WriteToLog(r, "Task updated successfully");
+                return r;
+            });
+        }
+        /// <summary>
+        /// Returns a column given it's name
+        /// </summary>
+        /// <param name="userEmail">Email of the current user. Must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column location. The first column location is identified by 0, the location increases by 1 for each column</param>
+        /// <returns>A response object with a value set to the Column, The response should contain a error message in case of an error</returns>
+        public Response<IList<Task>> GetColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
+        {
+            log.Info($"User {userEmail} is trying to GetColumn in: {creatorEmail}, {boardName}");
+            return ConfirmAndApplyT<IList<Task>>(userEmail, () =>
             {
-                try
-                {
-                    log.Info($"User {userEmail} is trying to AdvanceTask in board {boardName}, column {columnOrdinal}, task {taskId}");
-                    Response r = IsLoggedIn(userEmail);
-                    if (r.ErrorOccured)
-                        return r;
-                    r = new(boardController.AdvanceTask(userEmail, creatorEmail, boardName, columnOrdinal, taskId));
-                    WriteToLog(r, $"Task updated successfully");
-                    return r;
-                }
-                catch (Exception e)
-                {
-                    return new Response(e.Message);
-                }
-            }
+                MFResponse<IList<BusinessLayer.Task>> BLTasks = (boardController.GetColumn(userEmail, creatorEmail, boardName, columnOrdinal));
+                if (BLTasks.ErrorOccured)
+                    return Response<IList<Task>>.FromError(BLTasks.ErrorMessage);
+                List<Task> SLTasks = BLTasks.Value.Select(BLTask => new Task(BLTask)).ToList();
+                log.Info("GetColumn finished successfully");
+                return Response<IList<Task>>.FromValue(SLTasks);
+            });
+        }
 
-            /// <summary>
-            /// Returns a column given it's name
-            /// </summary>
-            /// <param name="userEmail">Email of the current user. Must be logged in</param>
-            /// <param name="creatorEmail">Email of the board creator</param>
-            /// <param name="boardName">The name of the board</param>
-            /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
-            /// <returns>A response object with a value set to the Column, The response should contain a error message in case of an error</returns>
-            public Response<IList<Task>> GetColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
+
+        /// <summary>
+        /// Creates a new board for the logged-in user.
+        /// </summary>
+        /// <param name="userEmail">Email of the current user. Must be logged in</param>
+        /// <param name="boardName">The name of the new board</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        public Response AddBoard(string userEmail, string boardName)
+        {
+            log.Info($"User {userEmail} is trying to AddBoard: {userEmail}, {boardName}");
+            return ConfirmAndApply(userEmail, () =>
             {
-                try
-                {
-                    log.Info($"User {userEmail} is trying to GetColumn: {boardName}, {columnOrdinal}");
-                    Response r = IsLoggedIn(userEmail);
-                    if (r.ErrorOccured)
-                        return Response<IList<Task>>.FromError(r.ErrorMessage);
-                    Response<IList<BusinessLayer.Task>> returned = Response<IList<BusinessLayer.Task>>.FromBLResponse(boardController.GetColumn(userEmail, creatorEmail, boardName, columnOrdinal));
-                    WriteToLog(returned, $"GetColumn finished successfully");
-                    return ConvertBusinessToServiceTasksCollection(returned.Value);
-                }
-                catch (Exception e)
-                {
-                    return Response<IList<Task>>.FromError(e.Message);
-                }
-            }
+                Response r = new(boardController.AddBoard(userEmail, boardName));
+                WriteToLog(r, "Board added successfully");
+                return r;
+            });
+        }
 
-            /// <summary>
-            /// Creates a new board for the logged-in user.
-            /// </summary>
-            /// <param name="userEmail">Email of the current user. Must be logged in</param>
-            /// <param name="boardName">The name of the new board</param>
-            /// <returns>A response object. The response should contain a error message in case of an error</returns>
-            public Response AddBoard(string userEmail, string boardName)
+        /// <summary>
+        /// Adds a board created by another user to the logged-in user. 
+        /// </summary>
+        /// <param name="userEmail">Email of the current user. Must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
+        /// <param name="boardName">The name of the new board</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        public Response JoinBoard(string userEmail, string creatorEmail, string boardName)
+        {
+            log.Info($"User {userEmail} is trying to JoinBoard in: {userEmail}, {boardName}");
+            return ConfirmAndApply(userEmail, () =>
             {
-                try
-                {
-                    log.Info($"User {userEmail} is trying to AddBoard: {boardName}");
-                    Response r = IsLoggedIn(userEmail);
-                    if (r.ErrorOccured)
-                        return r;
-                    r = new(boardController.AddBoard(userEmail, boardName));
-                    WriteToLog(r, $"Borad for user {userEmail} succesfully added");
-                    return r;
-                }
-                catch (Exception e)
-                {
-                    return new Response(e.Message);
-                }
-            }
+                Response r = new(boardController.JoinBoard(userEmail, creatorEmail, boardName));
+                WriteToLog(r, "JoinBoard finished successfully");
+                return r;
+            });
+        }
 
-            /// <summary>
-            /// Removes a board.
-            /// </summary>
-            /// <param name="userEmail">Email of the current user. Must be logged in</param>
-            /// <param name="creatorEmail">Email of the board creator. Must be logged in</param>
-            /// <param name="boardName">The name of the board</param>
-            /// <returns>A response object. The response should contain a error message in case of an error</returns>
-            public Response RemoveBoard(string userEmail, string creatorEmail, string boardName)
+        /// <summary>
+        /// Removes a board.
+        /// </summary>
+        /// <param name="userEmail">Email of the current user. Must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator. Must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        public Response RemoveBoard(string userEmail, string creatorEmail, string boardName)
+        {
+            log.Info($"User {userEmail} is trying to RemoveBoard in: {creatorEmail},  {boardName}");
+            return ConfirmAndApply(userEmail, () =>
             {
-                try
-                {
-                    Response r = IsLoggedIn(userEmail);
-                    if (r.ErrorOccured)
-                        return r;
-                    r = new(boardController.RemoveBoard(userEmail, creatorEmail, boardName));
-                    WriteToLog(r, $"RemoveBoard finished successfully");
-                    return r;
-                }
-                catch (Exception e)
-                {
-                    return new Response(e.Message);
-                }
-            }
+                Response r = new(boardController.RemoveBoard(userEmail, creatorEmail, boardName));
+                WriteToLog(r, "Board removed successfully");
+                return r;
+            });
+        }
 
-            /// <summary>
-            /// Returns all the in-progress tasks of the logged-in user is assigned to.
-            /// </summary>
-            /// <param name="userEmail">Email of the logged in user</param>
-            /// <returns>A response object with a value set to the list of tasks, The response should contain a error message in case of an error</returns>
-            public Response<IList<Task>> InProgressTasks(string userEmail)
+
+        /// <summary>
+        /// Returns all the in-progress tasks of the logged-in user is assigned to.
+        /// </summary>
+        /// <param name="userEmail">Email of the logged in user</param>
+        /// <returns>A response object with a value set to the list of tasks, The response should contain a error message in case of an error</returns>
+        public Response<IList<Task>> InProgressTasks(string userEmail)
+        {
+            log.Info($"User {userEmail} is trying to get all in-progress Tasks in.");
+            return ConfirmAndApplyT<IList<Task>>(userEmail, () =>
             {
-                try
-                {
-                    log.Info($"{userEmail} is Trying to get InProgressTasks");
-                    Response r = IsLoggedIn(userEmail);
-                    if (r.ErrorOccured)
-                        return Response<IList<Task>>.FromError(r.ErrorMessage);
-                    Response<IList<BusinessLayer.Task>> returned = Response<IList<BusinessLayer.Task>>.FromBLResponse(boardController.InProgressTask(userEmail));
-                    if (returned.ErrorOccured)
-                    {
-                        return Response<IList<Task>>.FromError(returned.ErrorMessage);
-                    }
-                    WriteToLog(r, $"InProgressTasks finished successfully");
-                    return ConvertBusinessToServiceTasksCollection(returned.Value);
-                }
-                catch (Exception e)
-                {
-                    return Response<IList<Task>>.FromError(e.Message);
-                }
-            }
+                MFResponse<IList<BusinessLayer.Task>> BLTasks = boardController.InProgressTask(userEmail);
+                if(BLTasks.ErrorOccured)
+                    return Response<IList<Task>>.FromError(BLTasks.ErrorMessage);
+                List<Task> SLTasks = BLTasks.Value.Select(BLTask => new Task(BLTask)).ToList();
+                log.Info("user get all in progress Tasks successfully");
+                return Response<IList<Task>>.FromValue(SLTasks);
+            });
+        }
 
-            /// <summary>
-            /// Converts a collection of BusinessLayer Tasks into collection of ServiceLayer Tasks
-            /// </summary>
-            /// <param name="lst">IList of BL Tasks</param>
-            /// <returns>A response object with a value set to the list of SL tasks</returns>
-            //private Response<IList<Task>> ConvertBusinessToServiceTasksCollection(IList<BusinessLayer.Task> lst)
+
+        /// <summary>
+        /// Assigns a task to a user
+        /// </summary>
+        /// <param name="userEmail">Email of the current user. Must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <param name="columnOrdinal">The column location. The first column location is identified by 0, the location increases by 1 for each column</param>
+        /// <param name="taskId">The task to be updated identified task ID</param>        
+        /// <param name="emailAssignee">Email of the user to assign to task to</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
+        public Response AssignTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string emailAssignee)
+        {
+            log.Info($"User {userEmail} is trying to assign task to {emailAssignee} in: {creatorEmail},  {boardName}");
+            return ConfirmAndApply(userEmail, () =>
+            {
+                Response r = new(boardController.AssignTask(userEmail, creatorEmail, boardName, columnOrdinal, taskId, emailAssignee));
+                WriteToLog(r, "Assign Task successfully");
+                return r;
+            });
+        }
+
+        /// <summary>
+        /// Returns the list of board of a user. The user must be logged-in. The function returns all the board names the user created or joined.
+        /// </summary>
+        /// <param name="userEmail">The email of the user. Must be logged-in.</param>
+        /// <returns>A response object with a value set to the board, instead the response should contain a error message in case of an error</returns>
+        public Response<IList<String>> GetBoardNames(string userEmail)
+        {
+            return ConfirmAndApplyT<IList<String>>(userEmail, () =>
+            {
+                Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetBoardNames(userEmail));
+                if (r2.ErrorOccured)
+                    return Response<IList<String>>.FromError(r2.ErrorMessage);
+                WriteToLog(r2, "GetBoardNames finished successfully");
+                return r2;
+            });
+
+
+            //try
             //{
-            //    IList<Task> ret = new List<Task>();
-            //    foreach (BusinessLayer.Task t in lst)
-            //    {
-            //        Task toAdd = new Task(t.ID, t.CreationTime, t.Title, t.Description, t.DueDate, t.Assignee);
-            //        ret.Add(toAdd);
-            //    }
-            //    return Response<IList<Task>>.FromValue(ret);
+            //    Response r = IsLoggedIn(userEmail);
+            //    if (r.ErrorOccured)
+            //        return Response<IList<String>>.FromError(r.ErrorMessage);
+            //    Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetBoardNames(userEmail));
+            //    if (r2.ErrorOccured)
+            //        return Response<IList<String>>.FromError(r2.ErrorMessage);
+            //    WriteToLog(r2, "GetBoardNames finished successfully");
+            //    return r2;
             //}
-
-            /// <summary>
-            /// Write to the log the message from a given response
-            /// </summary>
-            /// <param name="r"> The given response </param>
-            /// <param name="msg"> The message to write if there was no error in the response </param>
-            private void WriteToLog(Response r, string msg)
-            {
-                if (r.ErrorOccured)
-                    log.Error(r.ErrorMessage);
-                else log.Info(msg);
-            }
-
-
-
-
-            /// <summary>
-            /// Adds a board created by another user to the logged-in user. 
-            /// </summary>
-            /// <param name="userEmail">Email of the current user. Must be logged in</param>
-            /// <param name="creatorEmail">Email of the board creator</param>
-            /// <param name="boardName">The name of the new board</param>
-            /// <returns>A response object. The response should contain a error message in case of an error</returns>
-            public Response JoinBoard(string userEmail, string creatorEmail, string boardName)
-            {
-                try
-                {
-                    Response r = IsLoggedIn(userEmail);
-                    if (r.ErrorOccured)
-                        return r;
-                    r = new(boardController.JoinBoard(userEmail, creatorEmail, boardName));
-                    WriteToLog(r, $"{userEmail} joined to the board");
-                    return r;
-                }
-                catch (Exception e)
-                {
-                    return new Response(e.Message);
-                }
-            }
-
-            /// <summary>
-            /// Assigns a task to a user
-            /// </summary>
-            /// <param name="userEmail">Email of the current user. Must be logged in</param>
-            /// <param name="creatorEmail">Email of the board creator</param>
-            /// <param name="boardName">The name of the board</param>
-            /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
-            /// <param name="taskId">The task to be updated identified task ID</param>        
-            /// <param name="emailAssignee">Email of the user to assign to task to</param>
-            /// <returns>A response object. The response should contain a error message in case of an error</returns>
-            public Response AssignTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string emailAssignee)
-            {
-                try
-                {
-                    Response r = IsLoggedIn(userEmail);
-                    if (r.ErrorOccured)
-                        return r;
-                    r = new(boardController.AssignTask(userEmail, creatorEmail, boardName, columnOrdinal, taskId, emailAssignee));
-                    WriteToLog(r, $"{userEmail} assgined task successfully");
-                    return r;
-                }
-                catch (Exception e)
-                {
-                    return new Response(e.Message);
-                }
-            }
-
-            /// <summary>
-            /// Returns the list of board of a user. The user must be logged-in. The function returns all the board names the user created or joined.
-            /// </summary>
-            /// <param name="userEmail">The email of the user. Must be logged-in.</param>
-            /// <returns>A response object with a value set to the board, instead the response should contain a error message in case of an error</returns>
-            public Response<IList<String>> GetBoardNames(string userEmail)
-            {
-                try
-                {
-                    Response r = IsLoggedIn(userEmail);
-                    if (r.ErrorOccured)
-                        return Response<IList<String>>.FromError(r.ErrorMessage);
-                    Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetBoardNames(userEmail));
-                    if (r2.ErrorOccured)
-                        return Response<IList<String>>.FromError(r2.ErrorMessage);
-                    WriteToLog(r2, "GetBoardNames finished successfully");
-                        return r2;
-                }
-                catch (Exception e)
-                {
-                    return Response<IList<String>>.FromError(e.Message);
-                }
-            }
+            //catch (Exception e)
+            //{
+            //    return Response<IList<String>>.FromError(e.Message);
+            //}
+        }
 
         public Response<IList<String>> GetMyBoardNames(string userEmail)
         {
-            try
+            return ConfirmAndApplyT<IList<String>>(userEmail, () =>
             {
-                Response r = IsLoggedIn(userEmail);
-                if (r.ErrorOccured)
-                    return Response<IList<String>>.FromError(r.ErrorMessage);
                 Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetMyBoardNames(userEmail));
                 if (r2.ErrorOccured)
                     return Response<IList<String>>.FromError(r2.ErrorMessage);
-                WriteToLog(r2, "GetNyBoardNames finished successfully");
+                WriteToLog(r2, "GetMyBoardNames finished successfully");
                 return r2;
-            }
-            catch (Exception e)
-            {
-                return Response<IList<String>>.FromError(e.Message);
-            }
+            });
+
+            //try
+            //{
+            //    Response r = IsLoggedIn(userEmail);
+            //    if (r.ErrorOccured)
+            //        return Response<IList<String>>.FromError(r.ErrorMessage);
+            //    Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetMyBoardNames(userEmail));
+            //    if (r2.ErrorOccured)
+            //        return Response<IList<String>>.FromError(r2.ErrorMessage);
+            //    WriteToLog(r2, "GetMyBoardNames finished successfully");
+            //    return r2;
+            //}
+            //catch (Exception e)
+            //{
+            //    return Response<IList<String>>.FromError(e.Message);
+            //}
         }
 
         public Response<IList<String>> GetBoardIMemberOfNames(string userEmail)
         {
-            try
+            return ConfirmAndApplyT<IList<String>>(userEmail, () =>
             {
-                Response r = IsLoggedIn(userEmail);
-                if (r.ErrorOccured)
-                    return Response<IList<String>>.FromError(r.ErrorMessage);
                 Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetBoardIMemberOfNames(userEmail));
                 if (r2.ErrorOccured)
                     return Response<IList<String>>.FromError(r2.ErrorMessage);
                 WriteToLog(r2, "GetBoardIMemberOfNames finished successfully");
                 return r2;
-            }
-            catch (Exception e)
-            {
-                return Response<IList<String>>.FromError(e.Message);
-            }
+            });
+
+            //try
+            //{
+            //    Response r = IsLoggedIn(userEmail);
+            //    if (r.ErrorOccured)
+            //        return Response<IList<String>>.FromError(r.ErrorMessage);
+            //    Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetBoardIMemberOfNames(userEmail));
+            //    if (r2.ErrorOccured)
+            //        return Response<IList<String>>.FromError(r2.ErrorMessage);
+            //    WriteToLog(r2, "GetBoardIMemberOfNames finished successfully");
+            //    return r2;
+            //}
+            //catch (Exception e)
+            //{
+            //    return Response<IList<String>>.FromError(e.Message);
+            //}
         }
 
-        public Response<IntroSE.Kanban.Backend.ServiceLayer.Objects.Board> GetBoard(string userEmail, string creatorEmail, string boardName)
+        public Response<Objects.Board> GetBoard(string userEmail, string creatorEmail, string boardName)
         {
-            try
+            return ConfirmAndApplyT<Objects.Board>(userEmail, () =>
             {
-                Response r = IsLoggedIn(userEmail);
-                if (r.ErrorOccured)
-                    return Response<IntroSE.Kanban.Backend.ServiceLayer.Objects.Board>.FromError(r.ErrorMessage);
                 Response<Board> r2 = Response<Board>.FromBLResponse(boardController.GetBoard(userEmail, creatorEmail, boardName));
                 if (r2.ErrorOccured)
-                    return Response<IntroSE.Kanban.Backend.ServiceLayer.Objects.Board>.FromError(r2.ErrorMessage);
+                    return Response<Objects.Board>.FromError(r2.ErrorMessage);
                 WriteToLog(r2, "GetBoard finished successfully");
-                Objects.Board board = convertBLBoard2SL(r2.Value);
+                Objects.Board board = new Objects.Board(r2.Value);
                 return Response<Objects.Board>.FromValue(board);
-            }
-            catch (Exception e)
-            {
-                return Response<Objects.Board>.FromError(e.Message);
-            }
+            });
+
+            //try
+            //{
+            //    Response r = IsLoggedIn(userEmail);
+            //    if (r.ErrorOccured)
+            //        return Response<Objects.Board>.FromError(r.ErrorMessage);
+            //    Response<Board> r2 = Response<Board>.FromBLResponse(boardController.GetBoard(userEmail, creatorEmail, boardName));
+            //    if (r2.ErrorOccured)
+            //        return Response<Objects.Board>.FromError(r2.ErrorMessage);
+            //    WriteToLog(r2, "GetBoard finished successfully");
+            //    Objects.Board board = new Objects.Board(r2.Value);
+            //    return Response<Objects.Board>.FromValue(board);
+            //}
+            //catch (Exception e)
+            //{
+            //    return Response<Objects.Board>.FromError(e.Message);
+            //}
         }
 
-        private Objects.Board convertBLBoard2SL(Board board)
-        {
-            List<Objects.Column> SLColumns= convertBLColumns2SL(board.Columns);
-            return new Objects.Board(board.Name, board.Creator, SLColumns);
-        }
-
-        private List<Objects.Column> convertBLColumns2SL(List<Column> columns)
-        {
-            //List<Task> SLColumns = convertBLColumns2SL(board.Columns);
-            List<Objects.Column> SLColumns = new List<Objects.Column>();
-            foreach (Column column in columns)
-            {
-                SLColumns.Add(new Objects.Column(convertBLTasks2SL(column.Tasks), column.MaxTasks));
-            }
-            return SLColumns;
-        }
-
-        private List<Task> convertBLTasks2SL(IList<BusinessLayer.Task> tasks)
-        {
-            List<Task> SLTasks = new List<Task>();
-            foreach (BusinessLayer.Task BLTask in tasks)
-            {
-                SLTasks.Add(new Task(BLTask.ID, BLTask.CreationTime, BLTask.Title, BLTask.Description, BLTask.DueDate, BLTask.Assignee));
-            }
-            return SLTasks;
-        }
+      
 
         public Response<IList<Objects.Column>> GetColumns(string userEmail, string creatorEmail, string boardName)
+        {
+            return ConfirmAndApplyT<IList<Objects.Column>>(userEmail, () =>
             {
-                try
+                Response<IList<BusinessLayer.Column>> returned = Response<IList<BusinessLayer.Column>>.FromBLResponse(boardController.getColumns(userEmail, creatorEmail, boardName));
+                if (returned.ErrorOccured)
                 {
-                    log.Info($"{userEmail} is Trying to get all columns from board {boardName}");
-                    Response r = IsLoggedIn(userEmail);
-                    if (r.ErrorOccured)
-                        return Response<IList<Objects.Column>>.FromError(r.ErrorMessage);
-                    Response<IList<BusinessLayer.Column>> returned = Response<IList<BusinessLayer.Column>>.FromBLResponse(boardController.getColumns(userEmail, creatorEmail, boardName));
-                    if (returned.ErrorOccured)
-                    {
-                        return Response<IList<Objects.Column>>.FromError(returned.ErrorMessage);
-                    }
-                    WriteToLog(r, $"getColumns finished successfully");
-                    return Response<IList<Objects.Column>>.FromValue(convertBLColumns2SL(returned.Value.ToList()));
+                    return Response<IList<Objects.Column>>.FromError(returned.ErrorMessage);
                 }
-                catch (Exception e)
-                {
-                    return Response<IList<Objects.Column>>.FromError(e.Message);
-                }
-            }
+                WriteToLog(returned, $"getColumns finished successfully");
+                return Response<IList<Objects.Column>>.FromValue(returned.Value.Select(c => new Objects.Column(c)).ToList());
+            });
+
+            //try
+            //{
+            //    log.Info($"{userEmail} is Trying to get all columns from board {boardName}");
+            //    Response r = IsLoggedIn(userEmail);
+            //    if (r.ErrorOccured)
+            //        return Response<IList<Objects.Column>>.FromError(r.ErrorMessage);
+            //    Response<IList<BusinessLayer.Column>> returned = Response<IList<BusinessLayer.Column>>.FromBLResponse(boardController.getColumns(userEmail, creatorEmail, boardName));
+            //    if (returned.ErrorOccured)
+            //    {
+            //        return Response<IList<Objects.Column>>.FromError(returned.ErrorMessage);
+            //    }
+            //    WriteToLog(returned, $"getColumns finished successfully");
+            //    return Response<IList<Objects.Column>>.FromValue(returned.Value.Select(c => new Objects.Column(c)).ToList());
+            //}
+            //catch (Exception e)
+            //{
+            //    return Response<IList<Objects.Column>>.FromError(e.Message);
+            //}
+        }
 
 
 
@@ -913,7 +584,25 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AddColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, string columnName)
         {
-            throw new NotImplementedException();
+            return ConfirmAndApply(userEmail, () =>
+            {
+                log.Info($"{userEmail} is Trying to add new column to board {boardName}");
+                return new Response(boardController.AddColumn(userEmail, creatorEmail, boardName, columnOrdinal, columnName));
+            });
+
+            //try
+            //{
+            //    log.Info($"{userEmail} is Trying to add new column to board {boardName}");
+            //    Response r = IsLoggedIn(userEmail);
+            //    if (r.ErrorOccured)
+            //        return new Response(r.ErrorMessage);
+            //    boardController.addColumn()
+            //}
+            //catch (Exception e)
+            //{
+            //    return Response<IList<Objects.Column>>.FromError(e.Message);
+            //}
+            //throw new NotImplementedException();
         }
 
 
@@ -928,7 +617,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response RemoveColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            return ConfirmAndApply(userEmail, () =>
+            {
+                log.Info($"{userEmail} is Trying to remove column in board {boardName}");
+                return new Response(boardController.RemoveColumn(userEmail, creatorEmail, boardName, columnOrdinal));
+            });
         }
 
 
@@ -943,7 +636,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response RenameColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, string newColumnName)
         {
-            throw new NotImplementedException();
+            return ConfirmAndApply(userEmail, () =>
+            {
+                log.Info($"{userEmail} is Trying to rename column in board {boardName}");
+                Response response = new Response(boardController.RenameColumn(userEmail, creatorEmail, boardName, columnOrdinal, newColumnName));
+                WriteToLog(response, "Column Successfully Renamed");
+                return response;
+            });
         }
 
         /// <summary>
@@ -957,7 +656,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response MoveColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int shiftSize)
         {
-            throw new NotImplementedException();
+            log.Info($"{userEmail} is Trying to move column {columnOrdinal} in board {boardName} to {columnOrdinal + shiftSize}");
+            return ConfirmAndApply(userEmail, () =>
+            {
+                Response response = new Response(boardController.MoveColumn(userEmail, creatorEmail, boardName, columnOrdinal, shiftSize));
+                WriteToLog(response, $"successfully moveed column {columnOrdinal} in board {boardName} to {columnOrdinal + shiftSize}");
+                return response;
+            });
         }
 
         /// <summary>
@@ -972,36 +677,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         //    else log.Info(msg);
         //}
 
-        /// <summary>
-        /// Converts a collection of BusinessLayer Tasks into collection of ServiceLayer Tasks
-        /// </summary>
-        /// <param name="lst">IList of BL Tasks</param>
-        /// <returns>A response object with a value set to the list of SL tasks</returns>
-        private Response<IList<Task>> ConvertBusinessToServiceTasksCollection(IList<BusinessLayer.Task> lst)
+        private Response IsLoggedIn(string email)
         {
-            return TryAndApplyT<IList<Task>>(() =>
-        {
-            IList<Task> ret = new List<Task>();
-            foreach (BusinessLayer.Task t in lst)
+            try
             {
-                Task toAdd = new Task(t.ID, t.CreationTime, t.Title, t.Description, t.DueDate, t.Assignee);
-                ret.Add(toAdd);
-            }
-            return Response<IList<Task>>.FromValue(ret);
-        });
-            
-        }
-
-        //private Response IsLoggedIn(string email)
-        //{
-        //    try
-        //    {
-        //        Response<bool> r = Response<bool>.FromBLResponse(userController.isLoggedIn(email));
-        //        if (r.ErrorOccured)
-        //        {
-        //            log.Debug(r.ErrorMessage);
-        //            return r;
-        //        }
+                Response<bool> r = Response<bool>.FromBLResponse(userController.isLoggedIn(email));
+                if (r.ErrorOccured)
+                {
+                    log.Debug(r.ErrorMessage);
+                    return r;
+                }
 
         //        if (!r.Value)
         //        {
@@ -1055,7 +740,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="func"> The function to apply which accepts no argiments and return Response<T>. </param>
         /// <param name="userEmail"> The user to confirm whether logged in or not </param>
         /// <returns> A response of type T</returns>
-        private Response<T> ConfirmAndApply<T>(string userEmail, Func<Response<T>> func)
+        private Response<T> ConfirmAndApplyT<T>(string userEmail, Func<Response<T>> func)
         {
             return TryAndApplyT<T>(() =>
             {
@@ -1066,5 +751,18 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             });
         }
 
+        private Response ConfirmAndApply(string userEmail, Func<Response> func)
+        {
+            return TryAndApplyT<Object>(() =>
+            {
+                Response r = IsLoggedIn(userEmail);
+                if (r.ErrorOccured)
+                    return Response<Object>.FromError(r.ErrorMessage);
+                r = func();
+                if (r.ErrorOccured)
+                    return Response<Object>.FromError(r.ErrorMessage);
+                return Response<Object>.FromValue(null);
+            });
+        }
     }
 }
