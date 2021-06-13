@@ -180,7 +180,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
         public Response<Task> AddTask(string userEmail,string creatorEmail, string boardName, string title, string description, DateTime dueDate)
         {
-            throw new NotImplementedException();
+            log.Info($"User {userEmail} is trying to AddTask to: {creatorEmail}, {boardName}");
+            return ConfirmAndApplyT<Task>(userEmail, () =>
+            {
+                MFResponse<BusinessLayer.Task> BLTask = boardController.AddTask(userEmail, creatorEmail, boardName, title, description, dueDate);
+                if (BLTask.ErrorOccured)
+                    return Response<Task>.FromError(BLTask.ErrorMessage);
+                Task SLTask = new Task(BLTask.Value);
+                log.Info("Task added successfully");
+                return Response<Task>.FromValue(SLTask);
+            });
         }
         /// <summary>
         /// Update the due date of a task
@@ -259,6 +268,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AddBoard(string userEmail, string boardName)
         {
+
             throw new NotImplementedException();
         }
 
