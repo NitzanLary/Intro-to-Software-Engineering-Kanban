@@ -301,103 +301,152 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the board, instead the response should contain a error message in case of an error</returns>
         public Response<IList<String>> GetBoardNames(string userEmail)
         {
-            try
+            return ConfirmAndApplyT<IList<String>>(userEmail, () =>
             {
-                Response r = IsLoggedIn(userEmail);
-                if (r.ErrorOccured)
-                    return Response<IList<String>>.FromError(r.ErrorMessage);
                 Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetBoardNames(userEmail));
                 if (r2.ErrorOccured)
                     return Response<IList<String>>.FromError(r2.ErrorMessage);
                 WriteToLog(r2, "GetBoardNames finished successfully");
                 return r2;
-            }
-            catch (Exception e)
-            {
-                return Response<IList<String>>.FromError(e.Message);
-            }
+            });
+
+
+            //try
+            //{
+            //    Response r = IsLoggedIn(userEmail);
+            //    if (r.ErrorOccured)
+            //        return Response<IList<String>>.FromError(r.ErrorMessage);
+            //    Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetBoardNames(userEmail));
+            //    if (r2.ErrorOccured)
+            //        return Response<IList<String>>.FromError(r2.ErrorMessage);
+            //    WriteToLog(r2, "GetBoardNames finished successfully");
+            //    return r2;
+            //}
+            //catch (Exception e)
+            //{
+            //    return Response<IList<String>>.FromError(e.Message);
+            //}
         }
 
         public Response<IList<String>> GetMyBoardNames(string userEmail)
         {
-            try
+            return ConfirmAndApplyT<IList<String>>(userEmail, () =>
             {
-                Response r = IsLoggedIn(userEmail);
-                if (r.ErrorOccured)
-                    return Response<IList<String>>.FromError(r.ErrorMessage);
                 Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetMyBoardNames(userEmail));
                 if (r2.ErrorOccured)
                     return Response<IList<String>>.FromError(r2.ErrorMessage);
-                WriteToLog(r2, "GetNyBoardNames finished successfully");
+                WriteToLog(r2, "GetMyBoardNames finished successfully");
                 return r2;
-            }
-            catch (Exception e)
-            {
-                return Response<IList<String>>.FromError(e.Message);
-            }
+            });
+
+            //try
+            //{
+            //    Response r = IsLoggedIn(userEmail);
+            //    if (r.ErrorOccured)
+            //        return Response<IList<String>>.FromError(r.ErrorMessage);
+            //    Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetMyBoardNames(userEmail));
+            //    if (r2.ErrorOccured)
+            //        return Response<IList<String>>.FromError(r2.ErrorMessage);
+            //    WriteToLog(r2, "GetMyBoardNames finished successfully");
+            //    return r2;
+            //}
+            //catch (Exception e)
+            //{
+            //    return Response<IList<String>>.FromError(e.Message);
+            //}
         }
 
         public Response<IList<String>> GetBoardIMemberOfNames(string userEmail)
         {
-            try
+            return ConfirmAndApplyT<IList<String>>(userEmail, () =>
             {
-                Response r = IsLoggedIn(userEmail);
-                if (r.ErrorOccured)
-                    return Response<IList<String>>.FromError(r.ErrorMessage);
                 Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetBoardIMemberOfNames(userEmail));
                 if (r2.ErrorOccured)
                     return Response<IList<String>>.FromError(r2.ErrorMessage);
                 WriteToLog(r2, "GetBoardIMemberOfNames finished successfully");
                 return r2;
-            }
-            catch (Exception e)
-            {
-                return Response<IList<String>>.FromError(e.Message);
-            }
+            });
+
+            //try
+            //{
+            //    Response r = IsLoggedIn(userEmail);
+            //    if (r.ErrorOccured)
+            //        return Response<IList<String>>.FromError(r.ErrorMessage);
+            //    Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetBoardIMemberOfNames(userEmail));
+            //    if (r2.ErrorOccured)
+            //        return Response<IList<String>>.FromError(r2.ErrorMessage);
+            //    WriteToLog(r2, "GetBoardIMemberOfNames finished successfully");
+            //    return r2;
+            //}
+            //catch (Exception e)
+            //{
+            //    return Response<IList<String>>.FromError(e.Message);
+            //}
         }
 
         public Response<Objects.Board> GetBoard(string userEmail, string creatorEmail, string boardName)
         {
-            try
+            return ConfirmAndApplyT<Objects.Board>(userEmail, () =>
             {
-                Response r = IsLoggedIn(userEmail);
-                if (r.ErrorOccured)
-                    return Response<Objects.Board>.FromError(r.ErrorMessage);
                 Response<Board> r2 = Response<Board>.FromBLResponse(boardController.GetBoard(userEmail, creatorEmail, boardName));
                 if (r2.ErrorOccured)
                     return Response<Objects.Board>.FromError(r2.ErrorMessage);
                 WriteToLog(r2, "GetBoard finished successfully");
                 Objects.Board board = new Objects.Board(r2.Value);
                 return Response<Objects.Board>.FromValue(board);
-            }
-            catch (Exception e)
-            {
-                return Response<Objects.Board>.FromError(e.Message);
-            }
+            });
+
+            //try
+            //{
+            //    Response r = IsLoggedIn(userEmail);
+            //    if (r.ErrorOccured)
+            //        return Response<Objects.Board>.FromError(r.ErrorMessage);
+            //    Response<Board> r2 = Response<Board>.FromBLResponse(boardController.GetBoard(userEmail, creatorEmail, boardName));
+            //    if (r2.ErrorOccured)
+            //        return Response<Objects.Board>.FromError(r2.ErrorMessage);
+            //    WriteToLog(r2, "GetBoard finished successfully");
+            //    Objects.Board board = new Objects.Board(r2.Value);
+            //    return Response<Objects.Board>.FromValue(board);
+            //}
+            //catch (Exception e)
+            //{
+            //    return Response<Objects.Board>.FromError(e.Message);
+            //}
         }
 
       
 
         public Response<IList<Objects.Column>> GetColumns(string userEmail, string creatorEmail, string boardName)
         {
-            try
+            return ConfirmAndApplyT<IList<Objects.Column>>(userEmail, () =>
             {
-                log.Info($"{userEmail} is Trying to get all columns from board {boardName}");
-                Response r = IsLoggedIn(userEmail);
-                if (r.ErrorOccured)
-                    return Response<IList<Objects.Column>>.FromError(r.ErrorMessage);
                 Response<IList<BusinessLayer.Column>> returned = Response<IList<BusinessLayer.Column>>.FromBLResponse(boardController.getColumns(userEmail, creatorEmail, boardName));
                 if (returned.ErrorOccured)
                 {
                     return Response<IList<Objects.Column>>.FromError(returned.ErrorMessage);
                 }
-                WriteToLog(r, $"getColumns finished successfully");
+                WriteToLog(returned, $"getColumns finished successfully");
                 return Response<IList<Objects.Column>>.FromValue(returned.Value.Select(c => new Objects.Column(c)).ToList());
-            }
-            catch (Exception e)
-            {
-                return Response<IList<Objects.Column>>.FromError(e.Message);
-            }
+            });
+
+            //try
+            //{
+            //    log.Info($"{userEmail} is Trying to get all columns from board {boardName}");
+            //    Response r = IsLoggedIn(userEmail);
+            //    if (r.ErrorOccured)
+            //        return Response<IList<Objects.Column>>.FromError(r.ErrorMessage);
+            //    Response<IList<BusinessLayer.Column>> returned = Response<IList<BusinessLayer.Column>>.FromBLResponse(boardController.getColumns(userEmail, creatorEmail, boardName));
+            //    if (returned.ErrorOccured)
+            //    {
+            //        return Response<IList<Objects.Column>>.FromError(returned.ErrorMessage);
+            //    }
+            //    WriteToLog(returned, $"getColumns finished successfully");
+            //    return Response<IList<Objects.Column>>.FromValue(returned.Value.Select(c => new Objects.Column(c)).ToList());
+            //}
+            //catch (Exception e)
+            //{
+            //    return Response<IList<Objects.Column>>.FromError(e.Message);
+            //}
         }
 
 
@@ -421,7 +470,25 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AddColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, string columnName)
         {
-            throw new NotImplementedException();
+            return ConfirmAndApply(userEmail, () =>
+            {
+                log.Info($"{userEmail} is Trying to add new column to board {boardName}");
+                return new Response(boardController.AddColumn(userEmail, creatorEmail, boardName, columnOrdinal, columnName));
+            });
+
+            //try
+            //{
+            //    log.Info($"{userEmail} is Trying to add new column to board {boardName}");
+            //    Response r = IsLoggedIn(userEmail);
+            //    if (r.ErrorOccured)
+            //        return new Response(r.ErrorMessage);
+            //    boardController.addColumn()
+            //}
+            //catch (Exception e)
+            //{
+            //    return Response<IList<Objects.Column>>.FromError(e.Message);
+            //}
+            //throw new NotImplementedException();
         }
 
 
@@ -436,7 +503,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response RemoveColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            return ConfirmAndApply(userEmail, () =>
+            {
+                log.Info($"{userEmail} is Trying to remove column in board {boardName}");
+                return new Response(boardController.RemoveColumn(userEmail, creatorEmail, boardName, columnOrdinal));
+            });
         }
 
 
@@ -451,7 +522,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response RenameColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, string newColumnName)
         {
-            throw new NotImplementedException();
+            return ConfirmAndApply(userEmail, () =>
+            {
+                log.Info($"{userEmail} is Trying to rename column in board {boardName}");
+                return new Response(boardController.RenameColumn(userEmail, creatorEmail, boardName, columnOrdinal, newColumnName));
+            });
         }
 
         /// <summary>
@@ -563,7 +638,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="func"> The function to apply which accepts no argiments and return Response<T>. </param>
         /// <param name="userEmail"> The user to confirm whether logged in or not </param>
         /// <returns> A response of type T</returns>
-        private Response<T> ConfirmAndApply<T>(string userEmail, Func<Response<T>> func)
+        private Response<T> ConfirmAndApplyT<T>(string userEmail, Func<Response<T>> func)
         {
             return TryAndApplyT<T>(() =>
             {
@@ -571,6 +646,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 if (r.ErrorOccured)
                     return Response<T>.FromError(r.ErrorMessage);
                 return func();
+            });
+        }
+
+        private Response ConfirmAndApply(string userEmail, Func<Response> func)
+        {
+            return TryAndApplyT<Object>(() =>
+            {
+                Response r = IsLoggedIn(userEmail);
+                if (r.ErrorOccured)
+                    return Response<Object>.FromError(r.ErrorMessage);
+                r = func();
+                if (r.ErrorOccured)
+                    return Response<Object>.FromError(r.ErrorMessage);
+                return Response<Object>.FromValue(null);
             });
         }
     }

@@ -130,6 +130,32 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return MFResponse<IList<Column>>.FromValue(Columns);
         }
 
+        internal MFResponse AddColumn(int columnOrdinal, string columnName)
+        {
+            if (columnOrdinal > Columns.Count && columnOrdinal >= 0)
+                return new MFResponse($"Can not insert to index {columnOrdinal}, max {Columns.Count}");
+            Columns.Insert(columnOrdinal, new Column(columnName));
+            return new MFResponse();
+        }
+
+        internal MFResponse RemoveColumn(int columnOrdinal)
+        {
+            if (columnOrdinal >= Columns.Count && columnOrdinal >= 0)
+                return new MFResponse($"Can not remove column in index {columnOrdinal}, max {Columns.Count}");
+            if (Columns.Count < 2)
+                return new MFResponse($"Can not remove any columns, the minimum that is possible is {Columns.Count}");
+            Columns.RemoveAt(columnOrdinal);
+            return new MFResponse();
+        }
+
+        internal MFResponse RenameColumn(int columnOrdinal, string newColumnName)
+        {
+            if (columnOrdinal >= Columns.Count && columnOrdinal >= 0)
+                return new MFResponse($"Can not rename column in index {columnOrdinal}, max {Columns.Count}");
+            Columns[columnOrdinal].Name = newColumnName;
+            return new MFResponse();
+        }
+
         //public Response advanceTask(int taskId, int columnOrd)
         //{
         //    if (!containsTask(taskId))

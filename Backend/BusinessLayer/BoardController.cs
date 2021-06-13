@@ -490,6 +490,25 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return new MFResponse();
         }
 
+        internal MFResponse AddColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, string columnName)
+        {
+            MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return r;
+            Board board = boards[creatorEmail][boardName];
+            return board.AddColumn(columnOrdinal, columnName);
+        }
+
+        internal MFResponse RemoveColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
+        {
+            MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return r;
+            Board board = boards[creatorEmail][boardName];
+            return board.RemoveColumn(columnOrdinal);
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Assigns a task to a user
         /// Asumption: only task's assignee can assign other board member to the task
@@ -504,6 +523,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public MFResponse AssignTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string emailAssignee)
         {
             return UpdateTask<string>(userEmail, creatorEmail, boardName, columnOrdinal, taskId, (task) => task.Assignee = emailAssignee);
+        }
+
+        internal MFResponse RenameColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, string newColumnName)
+        {
+            MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return r;
+            Board board = boards[creatorEmail][boardName];
+            return board.RenameColumn(columnOrdinal, newColumnName);
         }
 
         /// <summary>
