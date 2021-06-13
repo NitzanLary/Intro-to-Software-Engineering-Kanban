@@ -11,6 +11,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.Objects
         public readonly List<Task> tasks;
         public readonly int maxTasks;
         public readonly string name;
+        public readonly string boardName;
+        public readonly string creator;
         public readonly int columnOrdinal;
 
         internal Column(List<Task> tasks, int maxTasks, string name)
@@ -19,6 +21,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.Objects
             this.maxTasks = maxTasks;
             this.name = name;
             columnOrdinal = -1;
+            creator = null;
+            boardName = null;
         }
 
         internal Column(BusinessLayer.Column column)
@@ -27,6 +31,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.Objects
             this.maxTasks = column.MaxTasks;
             this.name = column.Name;
             columnOrdinal = column.DTO.ColumnOrdinal;
+            creator = column.DTO.Creator;
+            boardName = column.DTO.Boardname;
         }
     }
 }
