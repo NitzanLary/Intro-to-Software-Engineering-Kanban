@@ -10,6 +10,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         public readonly string Description;
         public readonly DateTime DueDate;
         public readonly string emailAssignee;
+        public readonly string boardName;
+        public readonly string creator;
+
         internal Task(int id, DateTime creationTime, string title, string description, DateTime DueDate, string emailAssignee)
         {
             this.Id = id;
@@ -18,6 +21,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.Description = description;
             this.DueDate = DueDate;
             this.emailAssignee = emailAssignee;
+            boardName = null;
+            creator = null;
         }
 
         internal Task(BusinessLayer.Task task)
@@ -28,6 +33,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             this.Description = task.Description;
             this.DueDate = task.DueDate;
             this.emailAssignee = task.Assignee;
+            boardName = task.DTO.Boardname;
+            creator = task.DTO.Creator;
         }
     }
 }
