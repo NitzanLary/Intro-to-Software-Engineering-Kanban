@@ -203,7 +203,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDueDate(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
         {
-            throw new NotImplementedException();
+            log.Info($"User {userEmail} is trying to UpdateTaskDueDate in: {creatorEmail}, {boardName}");
+            return ConfirmAndApply(userEmail, () =>
+            {
+                Response r = new(boardController.UpdateTaskDueDate(userEmail, creatorEmail, boardName, columnOrdinal, taskId, dueDate));
+                WriteToLog(r, "Task updated successfully");
+                return r;
+            });
         }
         /// <summary>
         /// Update task title
@@ -217,7 +223,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskTitle(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string title)
         {
-            throw new NotImplementedException();
+            log.Info($"User {userEmail} is trying to UpdateTaskTitle in: {creatorEmail}, {boardName}");
+            return ConfirmAndApply(userEmail, () =>
+            {
+                Response r = new(boardController.UpdateTaskTitle(userEmail, creatorEmail, boardName, columnOrdinal, taskId, title));
+                WriteToLog(r, "Task updated successfully");
+                return r;
+            });
         }
         /// <summary>
         /// Update the description of a task
@@ -231,7 +243,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response UpdateTaskDescription(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string description)
         {
-            throw new NotImplementedException();
+            log.Info($"User {userEmail} is trying to UpdateTaskDescription in: {creatorEmail}, {boardName}");
+            return ConfirmAndApply(userEmail, () =>
+            {
+                Response r = new(boardController.UpdateTaskDescription(userEmail, creatorEmail, boardName, columnOrdinal, taskId, description));
+                WriteToLog(r, "Task updated successfully");
+                return r;
+            });
         }
         /// <summary>
         /// Advance a task to the next column
@@ -244,7 +262,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response AdvanceTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId)
         {
-            throw new NotImplementedException();
+            log.Info($"User {userEmail} is trying to AdvanceTask in: {creatorEmail}, {boardName}");
+            return ConfirmAndApply(userEmail, () =>
+            {
+                Response r = new(boardController.AdvanceTask(userEmail, creatorEmail, boardName, columnOrdinal, taskId));
+                WriteToLog(r, "Task updated successfully");
+                return r;
+            });
         }
         /// <summary>
         /// Returns a column given it's name
@@ -256,7 +280,16 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object with a value set to the Column, The response should contain a error message in case of an error</returns>
         public Response<IList<Task>> GetColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            log.Info($"User {userEmail} is trying to GetColumn in: {creatorEmail}, {boardName}");
+            return ConfirmAndApplyT<IList<Task>>(userEmail, () =>
+            {
+                MFResponse<IList<BusinessLayer.Task>> BLTasks = (boardController.GetColumn(userEmail, creatorEmail, boardName, columnOrdinal));
+                if (BLTasks.ErrorOccured)
+                    return Response<IList<Task>>.FromError(BLTasks.ErrorMessage);
+                List<Task> SLTasks = BLTasks.Value.Select(BLTask => new Task(BLTask)).ToList();
+                log.Info("GetColumn finished successfully");
+                return Response<IList<Task>>.FromValue(SLTasks);
+            });
         }
 
 
