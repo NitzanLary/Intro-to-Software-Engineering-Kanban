@@ -27,6 +27,7 @@ namespace Presentation.Model
         }
 
         private readonly List<ColumnModel> columns; // backlogs , inProgress, done (generic updatable)
+        //need to be observable probably
         public List<ColumnModel> Columns
         {
             get => columns;

@@ -14,7 +14,7 @@
         <Border BorderThickness="1" CornerRadius="10" BorderBrush="Black" Margin="10,10,889,10" Background="SkyBlue">
             <Grid>
                 <Button Content="Search" HorizontalAlignment="Left" Margin="4,125,0,0" VerticalAlignment="Top" Width="62"/>
-                <Button Content="Back" HorizontalAlignment="Left" Margin="83,125,0,0" VerticalAlignment="Top" Width="62"/>
+                <Button Content="Back" HorizontalAlignment="Left" Margin="83,125,0,0" VerticalAlignment="Top" Width="62" Click="Back_Button_Click"/>
                 <Button Content="sort by due date" HorizontalAlignment="Center" Margin="0,159,0,0" VerticalAlignment="Top" Width="142"/>
                 <Button Content="Logout" HorizontalAlignment="Center" Margin="0,21,0,0" VerticalAlignment="Top" Width="118" />
             </Grid>
@@ -27,7 +27,7 @@
                 <TextBlock HorizontalAlignment="Left" Margin="92,306,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="155" Background="WhiteSmoke"/>
                 <TextBlock HorizontalAlignment="Left" Margin="92,345,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="156" Background="WhiteSmoke"/>
                 <TextBlock HorizontalAlignment="Left" Margin="91,384,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="156" Background="WhiteSmoke"/>
-                <TextBlock HorizontalAlignment="Left" Margin="-772,73,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="123" Background="WhiteSmoke"/>
+                <TextBox HorizontalAlignment="Left" Margin="-772,73,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="123" Background="WhiteSmoke"/>
 
             </Grid>
         </Border>
@@ -70,7 +70,7 @@
 
                             <Separator></Separator>
                             <!--tasks-->
-                            <ListBox  Width="210"  Height="330" Margin="5,5,5,5" Padding="0" >
+                            <ListBox ItemsSource="{Binding Path=Tasks}" x:Name="listTasks" SelectionChanged="ListBox_SelectionChanged"  SelectedItem="{Binding Path=SelectedTask , Mode=TwoWay}"  Width="210"  Height="330" Margin="5,5,5,5" Padding="0" >
 
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate >

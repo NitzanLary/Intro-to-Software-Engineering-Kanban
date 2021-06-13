@@ -33,5 +33,19 @@ namespace Presentation.View
             this.user = user;
             this.Board = selctedBoard; //maybe no need
         }
+
+        private void Back_Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+            UserView userView = new UserView(user);
+            userView.Show();
+            this.Close();
+        }
+
+        private void ListBox_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            var t = (ListBox)sender;
+            viewModel.SelectedItem((TaskModel)t.SelectedItem);
+        }
     }
 }

@@ -69,5 +69,7 @@ namespace Presentation.View
             allInProgressTasksView.Show();
             this.Close();
         }
+
+        
     }
 }
