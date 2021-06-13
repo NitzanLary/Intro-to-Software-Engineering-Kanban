@@ -10,7 +10,7 @@ namespace Presentation.ViewModel
     class BoardViewModel
     {
         private BoardModel _selectedBoard;
-        public BoardModel SelectedBoard { get; set; }
+        public BoardModel Board { get; set; }
 
         UserModel user;
 
@@ -18,7 +18,7 @@ namespace Presentation.ViewModel
         public BoardViewModel(UserModel user, BoardModel board)
         {
             this.user = user;
-            this.SelectedBoard = board;
+            this.Board = board;
         }
     }
 }

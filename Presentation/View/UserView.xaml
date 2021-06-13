@@ -27,7 +27,7 @@
                         <Button Content="Delete Board" HorizontalAlignment="Left" Margin="35,211,0,0" VerticalAlignment="Top" Width="133" Click="Remove_Board_Button_Click" IsEnabled="{Binding Path=EnableForward,Mode=OneWay}"></Button>
                         <Button Content="All In-Progress Tasks" HorizontalAlignment="Left" Margin="35,100,0,0" VerticalAlignment="Top" Width="133" Click="All_In_Progress_Tasks_Button_Click"/>
                         <Button Content="Join Board" HorizontalAlignment="Left" Margin="35,174,0,0" VerticalAlignment="Top" Width="133"/>
-                        <Button Content="Select Board" HorizontalAlignment="Left" Margin="408,267,0,0" VerticalAlignment="Top" Width="252" IsEnabled="{Binding Path=EnableForward,Mode=OneWay}" ></Button>
+                        <Button Content="Select Board" HorizontalAlignment="Left" Margin="408,267,0,0" VerticalAlignment="Top" Width="252" Click="Select_Board_Button_Click" IsEnabled="{Binding Path=EnableForward,Mode=OneWay}" ></Button>
 
                     </Grid>
 

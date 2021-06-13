@@ -93,7 +93,7 @@ namespace Presentation.ViewModel
 
         public BoardModel SelectBoard()
         {
-            return SelectBoard();
+            return controller.GetBoard(User.Email, _selectedBoard);
         }
 
 
