@@ -91,9 +91,9 @@ namespace Presentation.ViewModel
             }
         }
 
-        public void SelectBoard()
+        public BoardModel SelectBoard()
         {
-
+            return SelectBoard();
         }
 
 

@@ -1,9 +1,11 @@
 ﻿using IntroSE.Kanban.Backend.ServiceLayer;
+using IntroSE.Kanban.Backend.ServiceLayer.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Task = IntroSE.Kanban.Backend.ServiceLayer.Task;
 
 namespace Presentation.Model
 {
@@ -256,6 +258,29 @@ namespace Presentation.Model
         //    return res.Value;
         //}
 
+
+        //changed creator to same parameter as userEmail, maybe need to change it back
+        //NOT SURE IF I DID IT RIGHT.
+        internal BoardModel GetBoard(string userEmail, string boardName)
+        {
+            Response<Board> res = Service.GetBoard(userEmail, userEmail, boardName);
+            if (res.ErrorOccured)
+            {
+                throw new Exception(res.ErrorMessage);
+            }
+            List<ColumnModel> columns = new List<ColumnModel>();
+            foreach(Column c in res.Value.columns)
+            {
+                List<TaskModel> tasks = new List<TaskModel>();
+                foreach(Task t in c.tasks)
+                {
+                    tasks.Add(new TaskModel(this, t.Title, t.Description, t.DueDate, userEmail));
+                }
+                //TODO!!!!!!!! NEED TO CHANGE TO REAL NAME!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@ <--------
+                columns.Add(new ColumnModel("MockName", tasks)); 
+            }
+            return new BoardModel(this, res.Value.name, res.Value.creator, columns);
+        }
     }
 }
 

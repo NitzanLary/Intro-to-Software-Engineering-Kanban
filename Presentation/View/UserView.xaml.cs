@@ -57,7 +57,10 @@ namespace Presentation.View
 
         private void Select_Board_Button_Click(object sender, RoutedEventArgs e)
         {
-            //viewModel.
+            BoardModel board = viewModel.SelectBoard();
+            BoardWindow boardView = new BoardWindow(user, board);
+            boardView.Show();
+            this.Close();
         }
 
         private void All_In_Progress_Tasks_Button_Click(object sender, RoutedEventArgs e)
