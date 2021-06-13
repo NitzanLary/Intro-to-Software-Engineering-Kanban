@@ -24,7 +24,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 if (value == null)
                     throw new ArgumentException("Column name can not be null");
                 if (persisted)
-                    //dto.Name = value;
+                    dto.ColumnName = value;
                 name = value;
             }
         }
@@ -62,7 +62,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public Column(ColumnDTO columnDTO)
         {
-            //Name = columnDTO.Name;
+            Name = columnDTO.ColumnName;
             tasks = new Dictionary<int, Task>();
             MaxTasks = columnDTO.MaxTasksNumber;
             foreach (TaskDTO taskDTO in columnDTO.Tasks)
@@ -73,7 +73,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public void AttachDto(string creator, string boardName, int columnOrdinal)
         {
-            dto = new ColumnDTO(creator, boardName, columnOrdinal, MaxTasks, new List<TaskDTO>()); // TODO add name
+            dto = new ColumnDTO(creator, boardName, columnOrdinal, MaxTasks, Name, new List<TaskDTO>()); // TODO add name
             dto.Insert();
             persisted = true;
         }
