@@ -17,6 +17,8 @@ namespace Presentation.Model
         }
 
 
+
+
         private string name;
         public string Name
         {

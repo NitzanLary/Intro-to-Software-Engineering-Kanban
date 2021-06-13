@@ -9,10 +9,10 @@ namespace Presentation.ViewModel
 {
     class BoardViewModel : NotifiableObject
     {
-        //should be string or BoardModel????
+        //should be string or TaskModel????
 
-        private String _selectedTask;
-        public String SelectedTask
+        private TaskModel _selectedTask;
+        public TaskModel SelectedTask
         {
             get
             {

@@ -25,7 +25,7 @@
                                 <DataTemplate>
                                     <Border BorderThickness="2">
                                         <StackPanel Orientation="Vertical" >
-                                            <TextBox FontSize="16" IsReadOnly="True" Text="{Binding Path=Title, Mode=TwoWay}" BorderBrush="{x:Null}"/>
+                                            <TextBox FontSize="16" Text="{Binding Path=Title, Mode=TwoWay}" BorderBrush="{x:Null}"/>
                                         </StackPanel>
                                     </Border>
                                 </DataTemplate>

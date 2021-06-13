@@ -42,10 +42,10 @@ namespace Presentation.View
             this.Close();
         }
 
-        private void ListBox_SelectionChanged(object sender, RoutedEventArgs e)
-        {
-            var t = (ListBox)sender;
-            viewModel.SelectedItem((TaskModel)t.SelectedItem);
-        }
+        //private void ListBox_SelectionChanged(object sender, RoutedEventArgs e)
+        //{
+        //    var t = (ListBox)sender;
+        //    viewModel.SelectedItem((TaskModel)t.SelectedItem);
+        //}
     }
 }
