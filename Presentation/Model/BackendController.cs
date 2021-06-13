@@ -90,14 +90,14 @@ namespace Presentation.Model
             return res.Value;
         }
 
-        internal TaskModel AddTask(string userEmail, string creatorEmail, string boardName, string title, string description, DateTime dueDate)
+        internal TaskModel AddTask(string userEmail, string creatorEmail, string boardName, string title, string description, DateTime dueDate, DateTime creationTime, string emailAssignee)
         {
             Response<IntroSE.Kanban.Backend.ServiceLayer.Task> res = Service.AddTask(userEmail, creatorEmail, boardName, title, description, dueDate);
             if (res.ErrorOccured)
             {
                 throw new Exception(res.ErrorMessage);
             }
-            return new TaskModel(this, title, description, dueDate, userEmail); // TODO: need to implement Taskmodel
+            return new TaskModel(this, title, description, dueDate, userEmail, creationTime, emailAssignee); // TODO: need to implement Taskmodel
         }
 
         internal void UpdateTaskDueDate(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
@@ -179,7 +179,7 @@ namespace Presentation.Model
             IList<TaskModel> lst = new List<TaskModel>();
             foreach (IntroSE.Kanban.Backend.ServiceLayer.Task task in res.Value)
             {
-                lst.Add(new TaskModel(this, task.Title, task.Description, task.DueDate, userEmail)); // TODO: implement Task model
+                lst.Add(new TaskModel(this, task.Title, task.Description, task.DueDate, userEmail, task.CreationTime, task.emailAssignee)); // TODO: implement Task model
             }
             return lst;
         }
@@ -274,7 +274,7 @@ namespace Presentation.Model
                 List<TaskModel> tasks = new List<TaskModel>();
                 foreach(Task t in c.tasks)
                 {
-                    tasks.Add(new TaskModel(this, t.Title, t.Description, t.DueDate, userEmail));
+                    tasks.Add(new TaskModel(this, t.Title, t.Description, t.DueDate, userEmail, t.CreationTime, t.emailAssignee));
                 }
                 //TODO!!!!!!!! NEED TO CHANGE TO REAL NAME!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@ <--------
                 columns.Add(new ColumnModel("MockName", tasks)); 
