@@ -121,7 +121,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response LimitColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int limit)
         {
-            throw new NotImplementedException();
+            log.Info($"User {userEmail} is trying to limit column: {creatorEmail}, {boardName}, {columnOrdinal}, {limit}");
+            return ConfirmAndApply(userEmail, () =>
+            {
+                Response response = new Response(boardController.LimitColumn(userEmail, creatorEmail, boardName, columnOrdinal, limit));
+                WriteToLog(response, "Column limited successfully");
+                return response;
+            });
         }
 
         /// <summary>
@@ -134,7 +140,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The limit of the column.</returns>
         public Response<int> GetColumnLimit(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            log.Info($"User {userEmail} is trying to get column's limit: {creatorEmail}, {boardName}, {columnOrdinal}");
+            return ConfirmAndApplyT<int>(userEmail, () =>
+            {
+                Response<int> response = Response<int>.FromBLResponse(boardController.GetColumnLimit(userEmail, creatorEmail, boardName, columnOrdinal));
+                WriteToLog(response, "GetColumnLimit finished successfully");
+                return response;
+            });
         }
 
         /// <summary>
@@ -147,7 +159,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>The name of the column.</returns>
         public Response<string> GetColumnName(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
         {
-            throw new NotImplementedException();
+            log.Info($"User {userEmail} is trying to get column's name: {creatorEmail}, {boardName}, {columnOrdinal}");
+            return ConfirmAndApplyT<string>(userEmail, () =>
+            {
+                Response<string> response = Response<string>.FromBLResponse(boardController.GetColumnName(userEmail, creatorEmail, boardName, columnOrdinal));
+                WriteToLog(response, "GetColumnName successfully finished");
+                return response;
+            });
         }
 
         /// <summary>
@@ -525,7 +543,9 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return ConfirmAndApply(userEmail, () =>
             {
                 log.Info($"{userEmail} is Trying to rename column in board {boardName}");
-                return new Response(boardController.RenameColumn(userEmail, creatorEmail, boardName, columnOrdinal, newColumnName));
+                Response response = new Response(boardController.RenameColumn(userEmail, creatorEmail, boardName, columnOrdinal, newColumnName));
+                WriteToLog(response, "Column Successfully Renamed");
+                return response;
             });
         }
 
@@ -540,7 +560,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response MoveColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int shiftSize)
         {
-            throw new NotImplementedException();
+            log.Info($"{userEmail} is Trying to move column {columnOrdinal} in board {boardName} to {columnOrdinal + shiftSize}");
+            return ConfirmAndApply(userEmail, () =>
+            {
+                Response response = new Response(boardController.MoveColumn(userEmail, creatorEmail, boardName, columnOrdinal, shiftSize));
+                WriteToLog(response, $"successfully moveed column {columnOrdinal} in board {boardName} to {columnOrdinal + shiftSize}");
+                return response;
+            });
         }
 
         /// <summary>
@@ -553,26 +579,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             if (r.ErrorOccured)
                 log.Error(r.ErrorMessage);
             else log.Info(msg);
-        }
-
-        /// <summary>
-        /// Converts a collection of BusinessLayer Tasks into collection of ServiceLayer Tasks
-        /// </summary>
-        /// <param name="lst">IList of BL Tasks</param>
-        /// <returns>A response object with a value set to the list of SL tasks</returns>
-        private Response<IList<Task>> ConvertBusinessToServiceTasksCollection(IList<BusinessLayer.Task> lst)
-        {
-            return TryAndApplyT<IList<Task>>(() =>
-        {
-            IList<Task> ret = new List<Task>();
-            foreach (BusinessLayer.Task t in lst)
-            {
-                Task toAdd = new Task(t.ID, t.CreationTime, t.Title, t.Description, t.DueDate, t.Assignee);
-                ret.Add(toAdd);
-            }
-            return Response<IList<Task>>.FromValue(ret);
-        });
-            
         }
 
         private Response IsLoggedIn(string email)

@@ -247,8 +247,8 @@ namespace Test
             //bb.Boardname = "YanaySunny";
             //Console.WriteLine(bb.Boardname);
 
-            s.DeleteData();
-            Register();
+            //s.DeleteData();
+            //Register();
             //Login();
             //AddBoard();
             //JoinBoard();
@@ -256,6 +256,12 @@ namespace Test
             //GetColumnLimit();
             //GetColumnName();
             //AddTask();
+
+            List<string> l = new List<string> { "a", "b", "c", "d", "e" };
+            var t = l[1];
+            l.RemoveAt(1);
+            l.Insert(3, t);
+            l.ForEach(Console.WriteLine);
 
         }
 

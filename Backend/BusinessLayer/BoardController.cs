@@ -173,14 +173,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
             if (r.ErrorOccured)
                 return MFResponse<string>.FromError(r.ErrorMessage);
-            if (!members[userEmail].Contains(boards[creatorEmail][boardName]))
-            {
-                log.Debug("The user is not a board member");
-                return MFResponse<string>.FromError("The user is not a board member");
-            }
             Board b = boards[userEmail][boardName];
-            if (columnOrdinal >= b.Columns.Count)
-                return MFResponse<string>.FromError("column ordinal dose not exist. max " + b.Columns.Count);
             return b.GetColumnName(columnOrdinal);
         }
 
@@ -553,6 +546,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             IList<String> myBoards = GetMyBoardNames(userEmail).Value;
             return MFResponse<IList<String>>.FromValue(members[userEmail].Select((b) => b.Name).ToList().Where(x => !myBoards.Contains(x)).ToList());
+        }
+
+        internal MFResponse MoveColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int shiftSize)
+        {
+            MFResponse response = CheckArgs(userEmail, creatorEmail, boardName);
+            if (response.ErrorOccured)
+                return response;
+            return boards[creatorEmail][boardName].MoveColumn(columnOrdinal, shiftSize);
         }
 
         /// <summary>

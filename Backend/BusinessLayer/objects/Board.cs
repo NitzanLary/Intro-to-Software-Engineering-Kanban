@@ -78,15 +78,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             if (columnOrdinal >= columns.Count || columnOrdinal < 0)
                 return new MFResponse("there is no such column number");
-            try
-            {
-                Columns[columnOrdinal].MaxTasks = limit;
-            }
-            catch (Exception e)
-            {
-                return new MFResponse(e.Message);
-            }
-
+            Columns[columnOrdinal].MaxTasks = limit;
             return new MFResponse();
     }
 
@@ -155,6 +147,21 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             if (columnOrdinal >= Columns.Count && columnOrdinal >= 0)
                 return new MFResponse($"Can not rename column in index {columnOrdinal}, max {Columns.Count}");
             Columns[columnOrdinal].Name = newColumnName;
+            return new MFResponse();
+        }
+
+        internal MFResponse MoveColumn(int columnOrdinal, int shiftSize)
+        {
+            if(columnOrdinal >= Columns.Count || columnOrdinal < 0)
+                return new MFResponse($"Can not move column column in index {columnOrdinal}, max {Columns.Count}");
+            int loc = columnOrdinal + shiftSize;
+            if(loc >= Columns.Count || loc < 0)
+                return new MFResponse($"Can not move column to index {columnOrdinal + shiftSize}");
+            Column col = Columns[columnOrdinal];
+            if (col.Tasks.Count > 0)
+                return new MFResponse($"Only empty columns can be moved");
+            Columns.RemoveAt(columnOrdinal);
+            Columns.Insert(loc, col);
             return new MFResponse();
         }
 
