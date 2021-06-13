@@ -43,9 +43,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             Name = name;
             Creator = creator;
-            columns = new List<Column> { new Column("backlog"), new Column("in progress"), new Column("done") };
-            for (int i = 0; i < 3; i++)
-                columns[i].AttachDto(creator, name, i);
+            columns = new List<Column> { new Column("backlog", creator, Name, 0), new Column("in progress", creator, Name, 1), new Column("done", creator, Name, 2) };
             dto = new BoardDTO(creator, name, new List<string>(), columns.Select(col => col.DTO).ToList());
             dto.Insert();
             dto.InsertNewBoardMember(creator);
@@ -134,7 +132,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             if (columnOrdinal > Columns.Count && columnOrdinal >= 0)
                 return new MFResponse($"Can not insert to index {columnOrdinal}, max {Columns.Count}");
-            Columns.Insert(columnOrdinal, new Column(columnName));
+            Columns.Insert(columnOrdinal, new Column(columnName, Creator, Name, columnOrdinal));
             return new MFResponse();
         }
 

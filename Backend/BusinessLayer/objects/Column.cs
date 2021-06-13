@@ -52,12 +52,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             }
         }
 
-        public Column(string name)
+        public Column(string name, string creator, string boardName, int columnOrdinal)
         {
             persisted = false;
             Name = name;
             tasks = new Dictionary<int, Task>();
             maxTasks = -1;
+            dto = new ColumnDTO(creator, boardName, columnOrdinal, MaxTasks, Name, new List<TaskDTO>()); // TODO add name
+            dto.Insert();
+            persisted = true;
         }
 
         public Column(ColumnDTO columnDTO)
@@ -71,12 +74,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             dto = columnDTO;
         }
 
-        public void AttachDto(string creator, string boardName, int columnOrdinal)
-        {
-            dto = new ColumnDTO(creator, boardName, columnOrdinal, MaxTasks, Name, new List<TaskDTO>()); // TODO add name
-            dto.Insert();
-            persisted = true;
-        }
 
         public Task AddTask(DateTime dueDate, string title, string description, string assignee)
         {
