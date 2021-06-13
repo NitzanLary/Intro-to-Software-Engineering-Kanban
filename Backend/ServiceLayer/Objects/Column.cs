@@ -11,11 +11,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.Objects
         public readonly List<Task> tasks;
         public readonly int maxTasks;
         public readonly string name;
+        public readonly int columnOrdinal;
+
         internal Column(List<Task> tasks, int maxTasks, string name)
         {
             this.tasks = tasks;
             this.maxTasks = maxTasks;
             this.name = name;
+            columnOrdinal = -1;
         }
 
         internal Column(BusinessLayer.Column column)
@@ -23,6 +26,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer.Objects
             this.tasks = column.Tasks.Select(t => new Task(t)).ToList();
             this.maxTasks = column.MaxTasks;
             this.name = column.Name;
+            columnOrdinal = column.DTO.ColumnOrdinal;
         }
     }
 }
