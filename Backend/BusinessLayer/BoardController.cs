@@ -516,6 +516,32 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return MFResponse<IList<String>>.FromValue(members[userEmail].Select((b) => b.Name).ToList());
         }
 
+        public MFResponse<IList<String>> GetMyBoardNames(string userEmail)
+        {
+            return MFResponse<IList<String>>.FromValue(boards[userEmail].Select((b) => b.Key).ToList());
+        }
+
+        public MFResponse<IList<String>> GetBoardIMemberOfNames(string userEmail)
+        {
+            MFResponse<IList<String>> myBoards = GetMyBoardNames(userEmail);
+            return MFResponse<IList<String>>.FromValue(members[userEmail].Select((b) => b.Name).ToList().Where(x => !myBoards.Value.Contains(x)).ToList());
+        }
+
+        /// <summary>
+        /// Returns the list of board of a user. The user must be logged-in. The function returns all the board names the user created or joined.
+        /// </summary>
+        /// <param name="userEmail">The email of the user. Must be logged-in.</param>
+        /// <returns>A response object with a value set to the board, instead the response should contain a error message in case of an error</returns>
+        public MFResponse<Board> GetBoard(string userEmail, string creatorEmail, string boardName)
+        {
+
+            MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
+            if (r.ErrorOccured)
+                return MFResponse<Board>.FromError(r.ErrorMessage);
+            return MFResponse<Board>.FromValue(boards[creatorEmail][boardName]);
+        }
+
+
         public MFResponse<IList<Column>> getColumns(string userEmail, string creatorEmail, string boardName)
         {
             MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
