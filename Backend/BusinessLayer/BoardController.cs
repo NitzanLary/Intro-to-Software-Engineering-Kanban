@@ -523,8 +523,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public MFResponse<IList<String>> GetBoardIMemberOfNames(string userEmail)
         {
-            MFResponse<IList<String>> myBoards = GetMyBoardNames(userEmail);
-            return MFResponse<IList<String>>.FromValue(members[userEmail].Select((b) => b.Name).ToList().Where(x => !myBoards.Value.Contains(x)).ToList());
+            IList<String> myBoards = GetMyBoardNames(userEmail).Value;
+            return MFResponse<IList<String>>.FromValue(members[userEmail].Select((b) => b.Name).ToList().Where(x => !myBoards.Contains(x)).ToList());
         }
 
         /// <summary>
