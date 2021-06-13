@@ -670,12 +670,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         /// <param name="r"> The given response </param>
         /// <param name="msg"> The message to write if there was no error in the response </param>
-        //private void WriteToLog(Response r, string msg)
-        //{
-        //    if (r.ErrorOccured)
-        //        log.Error(r.ErrorMessage);
-        //    else log.Info(msg);
-        //}
+        private void WriteToLog(Response r, string msg)
+        {
+            if (r.ErrorOccured)
+                log.Error(r.ErrorMessage);
+            else log.Info(msg);
+        }
 
         private Response IsLoggedIn(string email)
         {
@@ -688,20 +688,20 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                     return r;
                 }
 
-        //        if (!r.Value)
-        //        {
-        //            string msg = $"User {email} is not logged in";
-        //            log.Debug(msg);
-        //            return new Response(msg);
-        //        }
+                if (!r.Value)
+                {
+                    string msg = $"User {email} is not logged in";
+                    log.Debug(msg);
+                    return new Response(msg);
+                }
 
-        //        return new Response();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return Response<User>.FromError(e.Message);
-        //    }
-        //}
+                return new Response();
+            }
+            catch (Exception e)
+            {
+                return Response<User>.FromError(e.Message);
+            }
+        }
 
         /// <summary>
         /// Wrraping a given lambda with try catch and applying the function.
