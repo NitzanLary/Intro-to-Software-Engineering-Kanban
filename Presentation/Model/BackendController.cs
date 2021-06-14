@@ -2,6 +2,7 @@
 using IntroSE.Kanban.Backend.ServiceLayer.Objects;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -272,8 +273,8 @@ namespace Presentation.Model
             List<ColumnModel> columns = new List<ColumnModel>();
             foreach(Column c in res.Value.columns)
             {
-                List<TaskModel> tasks = new List<TaskModel>();
-                foreach(Task t in c.tasks)
+                ObservableCollection<TaskModel> tasks = new ObservableCollection<TaskModel>();
+                foreach (Task t in c.tasks)
                 {
                     tasks.Add(new TaskModel(this, t.Title, t.Description, t.DueDate, userEmail, t.CreationTime, t.emailAssignee, t.boardName, t.creator, t.columnOrdinal));
                 }

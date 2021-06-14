@@ -42,6 +42,23 @@ namespace Presentation.View
             this.Close();
         }
 
+        private void New_Task_Button_Click(object sender, RoutedEventArgs e)
+        {
+            NewTaskWindow newTaskWindow = new NewTaskWindow(user, Board);
+            newTaskWindow.Show();
+        }
+
+        private void New_Column_Button_Click(object sender, RoutedEventArgs e)
+        {
+            NewColumnWindow newColumnWindow = new NewColumnWindow(user, Board);
+            newColumnWindow.Show();
+        }
+
+        private void Remove_Column_Button_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.RemoveColumn();
+        }
+
         //private void ListBox_SelectionChanged(object sender, RoutedEventArgs e)
         //{
         //    var t = (ListBox)sender;

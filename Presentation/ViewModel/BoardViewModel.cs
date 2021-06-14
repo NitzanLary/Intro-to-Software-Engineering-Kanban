@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Presentation.ViewModel
 {
     class BoardViewModel : NotifiableObject
     {
         //should be string or TaskModel????
+
+        private BackendController controller;
+
 
         private TaskModel _selectedTask;
         public TaskModel SelectedTask
@@ -26,8 +30,8 @@ namespace Presentation.ViewModel
             }
         }
 
-        private String _selectedColumn;
-        public String SelectedColumn
+        private ColumnModel _selectedColumn;
+        public ColumnModel SelectedColumn
         {
             get
             {
@@ -63,12 +67,28 @@ namespace Presentation.ViewModel
         {
             this.user = user;
             this.Board = board;
+            this.controller = user.Controller;
         }
 
         public void SelectedItem(TaskModel task)
         {
             TaskModel SelectedTask = task;
             RaisePropertyChanged("SelectedTask");
+        }
+
+        public void RemoveColumn()
+        {
+            try
+            {
+                controller.RemoveColumn(user.Email, Board.Creator, Board.Name, SelectedColumn.ColumnOrdinal);
+                MessageBox.Show("Board Removed Column!");
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Cannot Remove this Column. " + e.Message);
+
+            }
         }
     }
 }
