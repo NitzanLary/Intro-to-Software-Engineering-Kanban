@@ -11,18 +11,27 @@ using IntroSE.Kanban.Backend.DataAccessLayer;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer
 {
+    /// <summary>
+    /// This class is a singleton
+    /// </summary>
     class UserController
     {
         private readonly PasswordController pc;
         private Dictionary<string, User> users;
-
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static UserController instance;
 
-
-        public UserController()
+        private UserController()
         {
             pc = new PasswordController();
             users = new Dictionary<string, User>();
+        }
+
+        public static UserController GetInstance()
+        {
+            if (instance == null)
+                instance = new UserController();
+            return instance;
         }
 
         public MFResponse<List<User>> LoadDate()
