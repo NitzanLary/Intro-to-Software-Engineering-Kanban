@@ -279,7 +279,7 @@ namespace Presentation.Model
                     tasks.Add(new TaskModel(this, t.Title, t.Description, t.DueDate, userEmail, t.CreationTime, t.emailAssignee, t.boardName, t.creator, t.columnOrdinal));
                 }
                 //TODO!!!!!!!! NEED TO CHANGE TO REAL NAME!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@ <--------
-                columns.Add(new ColumnModel(this, c.name, tasks, c.creator, c.boardName, c.columnOrdinal)); 
+                columns.Add(new ColumnModel(this, c.name, tasks, c.creator, c.boardName, c.columnOrdinal, c.maxTasks)); 
             }
             return new BoardModel(this, res.Value.name, res.Value.creator, columns);
         }
