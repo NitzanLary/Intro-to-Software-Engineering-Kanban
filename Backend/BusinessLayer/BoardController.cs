@@ -568,6 +568,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
             if (r.ErrorOccured)
                 return MFResponse<Board>.FromError(r.ErrorMessage);
+            if (creatorEmail == null)
+                return MFResponse<Board>.FromValue(members[userEmail].Where(b => b.Name == boardName).First());
             return MFResponse<Board>.FromValue(boards[creatorEmail][boardName]);
         }
 
