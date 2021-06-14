@@ -71,7 +71,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Name = name;
             tasks = new Dictionary<int, Task>();
             maxTasks = -1;
-            ColumnOrdinal = columnOrdinal;
+            this.columnOrdinal = columnOrdinal;
             dto = new ColumnDTO(creator, boardName, columnOrdinal, MaxTasks, Name, new List<TaskDTO>()); // TODO add name
             dto.Insert();
             persisted = true;
@@ -82,6 +82,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Name = columnDTO.ColumnName;
             tasks = new Dictionary<int, Task>();
             MaxTasks = columnDTO.MaxTasksNumber;
+            ColumnOrdinal = columnDTO.ColumnOrdinal;
             foreach (TaskDTO taskDTO in columnDTO.Tasks)
                 tasks.Add(taskDTO.TaskID, new Task(taskDTO));
             persisted = true;
