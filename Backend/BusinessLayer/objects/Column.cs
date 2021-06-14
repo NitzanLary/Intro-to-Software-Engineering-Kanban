@@ -82,7 +82,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Name = columnDTO.ColumnName;
             tasks = new Dictionary<int, Task>();
             MaxTasks = columnDTO.MaxTasksNumber;
-            ColumnOrdinal = columnDTO.ColumnOrdinal;
+            this.columnOrdinal = columnDTO.ColumnOrdinal;
             foreach (TaskDTO taskDTO in columnDTO.Tasks)
                 tasks.Add(taskDTO.TaskID, new Task(taskDTO));
             persisted = true;

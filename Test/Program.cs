@@ -249,21 +249,18 @@ namespace Test
 
             //s.DeleteData();
             //Register();
-            //Login();
+            Login();
             //AddBoard();
             //JoinBoard();
+            //JoinBoardPersistence();
             //LimitColumn();
             //GetColumnLimit();
             //GetColumnName();
             //AddTask();
-
-            List<string> l = new List<string> { "a", "b", "c", "d", "e" };
-            var t = l[1];
-            l.RemoveAt(1);
-            l.Insert(3, t);
-            l.ForEach(Console.WriteLine);
-
+            GetBoardNames();
         }
+
+        
 
         static void Print(Response res)
         {
@@ -277,9 +274,9 @@ namespace Test
 
         static void Register()
         {
-            Print(s.Register("Rafa@gmail.com", null));
-            Print(s.Register("Rafa@gmail.com", null));
-            //Print(s.Register("Nitzan@gmail.com", "Rf12345678"));
+            //Print(s.Register("Rafa@gmail.com", null));
+            Print(s.Register("Rafa@gmail.com", "Rf12345678"));
+            Print(s.Register("Nitzan@gmail.com", "Rf12345678"));
         }
 
         static void Login()
@@ -298,6 +295,11 @@ namespace Test
         static void JoinBoard()
         {
             Print(s.JoinBoard(rafaMail, nitzanMail, nitzanBoard));
+        }
+
+        private static void JoinBoardPersistence()
+        {
+            Print(s.JoinBoard(nitzanMail, rafaMail, rafaBoard));
         }
 
         static void LimitColumn()
@@ -332,6 +334,14 @@ namespace Test
             Print(s.AddTask(nitzanMail, nitzanMail, nitzanBoard, "nitzans task2", "desc", DateTime.Today.AddDays(1)));
             Print(s.AddTask(rafaMail, rafaMail, rafaBoard, "rafa task", "desc", DateTime.Today.AddDays(1)));
             Print(s.AddTask(rafaMail, nitzanMail, nitzanBoard, "rafa task in nitzans board", "desc", DateTime.Today.AddDays(1)));
+        }
+
+        private static void GetBoardNames()
+        {
+            Response <IList<string>> response = s.GetBoardNames(rafaMail);
+            Print(response);
+            foreach (string s in response.Value)
+                Console.WriteLine(s);
         }
 
 

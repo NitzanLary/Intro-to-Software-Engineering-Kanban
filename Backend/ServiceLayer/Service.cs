@@ -23,6 +23,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
             userController = new UserController();
             boardController = new BoardController();
+            LoadData();
         }
 
         ///<summary>This method loads the data from the persistance.
