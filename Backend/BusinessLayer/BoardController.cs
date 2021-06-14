@@ -54,7 +54,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             {
                 new BoardDALController().DeleteAllData();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return new MFResponse(e.Message);
             }
@@ -106,7 +106,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
             if (!boards[creatorEmail].ContainsKey(boardName))
                 return new MFResponse("There is no board that is named: " + boardName + " that is related to this email: " + creatorEmail);
-            
+
             return new MFResponse();
         }
 
@@ -128,7 +128,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <param name="limit">The new limit value. A value of -1 indicates no limit.</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-        public MFResponse LimitColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int limit) 
+        public MFResponse LimitColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int limit)
         {
             MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
             if (r.ErrorOccured)
@@ -168,7 +168,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <param name="boardName">The name of the board</param>
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <returns>The name of the column.</returns>
-        public MFResponse<string> GetColumnName(string userEmail, string creatorEmail, string boardName, int columnOrdinal) 
+        public MFResponse<string> GetColumnName(string userEmail, string creatorEmail, string boardName, int columnOrdinal)
         {
             MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
             if (r.ErrorOccured)
@@ -200,7 +200,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 {
                     task.Value.AttachDto(creatorEmail, boardName);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     return MFResponse<Task>.FromError(e.Message);
                 }
@@ -230,11 +230,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 Task t = b.Columns[columnOrdinal].GetTask(taskId);
                 return MFResponse<Task>.FromValue(t);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return MFResponse<Task>.FromError($"coldn't find task id {taskId} in email {userEmail} | board {boardName} | column {columnOrdinal}\n{e.Message}");
             }
-            
+
         }
 
         /// <summary>
@@ -247,7 +247,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <param name="updateFunc">A generic function, according to the argument it received updates what is relevant </param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-        public MFResponse UpdateTask<T>(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, Func<Task, T> updateFunc) 
+        public MFResponse UpdateTask<T>(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, Func<Task, T> updateFunc)
         {
             MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
             if (r.ErrorOccured)
@@ -267,7 +267,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             {
                 updateFunc(res.Value);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return new MFResponse(e.Message);
             }
@@ -298,7 +298,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <param name="title">New title for the task</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-        public MFResponse UpdateTaskTitle(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string title) 
+        public MFResponse UpdateTaskTitle(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string title)
         {
             return UpdateTask<string>(userEmail, creatorEmail, boardName, columnOrdinal, taskId, (task) => task.Title = title);
         }
@@ -313,7 +313,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <param name="description">New description for the task</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-        public MFResponse UpdateTaskDescription(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string description) 
+        public MFResponse UpdateTaskDescription(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, string description)
         {
             return UpdateTask<string>(userEmail, creatorEmail, boardName, columnOrdinal, taskId, (task) => task.Description = description);
         }
@@ -327,7 +327,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <param name="columnOrdinal">The column ID. The first column is identified by 0, the ID increases by 1 for each column</param>
         /// <param name="taskId">The task to be updated identified task ID</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-        public MFResponse AdvanceTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId) 
+        public MFResponse AdvanceTask(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId)
         {
             MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
             if (r.ErrorOccured)
@@ -361,7 +361,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <param name="email">Email of the user. Must be logged in</param>
         /// <param name="name">The name of the new board</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-        public MFResponse AddBoard(string email, string name) 
+        public MFResponse AddBoard(string email, string name)
         {
             if (name == null || email == null || name.Length == 0 || email.Length == 0)
                 return new MFResponse("null value given");
@@ -375,11 +375,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 boards[email].Add(name, board);
                 members[email].Add(board);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return new MFResponse(e.Message);
             }
-            
+
             return new MFResponse();
         }
 
@@ -418,13 +418,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             {
                 board.DTO.Delete();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return new MFResponse(e.Message);
             }
 
             boards[creatorEmail].Remove(boardName);
-            foreach(KeyValuePair<string, HashSet<Board>> entry in members)
+            foreach (KeyValuePair<string, HashSet<Board>> entry in members)
             {
                 if (entry.Value.Contains(board))
                     members[entry.Key].Remove(board);
@@ -438,19 +438,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// </summary>
         /// <param name="email">Email of the user. Must be logged in</param>
         /// <returns>A response object with a value set to the list of tasks, The response should contain a error message in case of an error</returns>
-        public MFResponse<IList<Task>> InProgressTask(string email) 
+        public MFResponse<IList<Task>> InProgressTask(string email)
         {
-           List<Task> tasks = new List<Task>();
-            foreach(Board board in members[email])
+            List<Task> tasks = new List<Task>();
+            foreach (Board board in members[email])
             {
-                for(int i = 1; i < board.Columns.Count - 1; i++)
+                for (int i = 1; i < board.Columns.Count - 1; i++)
                 {
                     MFResponse<IList<Task>> r = board.GetColumn(i);
                     if (r.ErrorOccured)
                         return MFResponse<IList<Task>>.FromError(r.ErrorMessage);
                     tasks.AddRange(r.Value.Where((task) => task.Assignee == email).ToList());
                 }
-                
+
             }
             return MFResponse<IList<Task>>.FromValue(tasks);
         }
@@ -477,7 +477,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             {
                 b.DTO.InsertNewBoardMember(userEmail);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return new MFResponse(e.Message);
             }
@@ -568,8 +568,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
             if (r.ErrorOccured)
                 return MFResponse<Board>.FromError(r.ErrorMessage);
-            if (creatorEmail == null)
-                return MFResponse<Board>.FromValue(members[userEmail].Where(b => b.Name == boardName).First());
             return MFResponse<Board>.FromValue(boards[creatorEmail][boardName]);
         }
 
