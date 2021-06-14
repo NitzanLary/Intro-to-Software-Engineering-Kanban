@@ -68,20 +68,56 @@ namespace Presentation.Model
             }
         }
 
+        private string _boardName;
+        public string BoardName
+        {
+            get => _boardName;
+            //set
+            //{
+            //    this._boardName = value;
+            //    RaisePropertyChanged("BoardName");
+            //}
+        }
+
+        private string _creator;
+        public string Creator
+        {
+            get => _creator;
+            //set
+            //{
+            //    this._creator = value;
+            //    RaisePropertyChanged("Creator");
+            //}
+        }
+
+        private int _columnOrdinal;
+        public int ColumnOrdinal
+        {
+            get => _columnOrdinal;
+            set
+            {
+                this._columnOrdinal = value;
+                RaisePropertyChanged("ColumnOrdinal");
+            }
+        }
+
         //private string boardName;
         //private int columnOrdinal;
         //private int taskID;
 
         private string UserEmail;
         
-        public TaskModel(BackendController controller, string title, string description, DateTime dueDate, string user_email, DateTime creationTime, string emailAssignee) : base(controller)
+        public TaskModel(BackendController controller, string title, string description, DateTime dueDate, string user_email, DateTime creationTime, string emailAssigneel, string boardName, string creator, int columnOrdinal) : base(controller)
         {
             this._title = title;
             this._description = description;
             this._dueDate = dueDate;
             this.UserEmail = user_email;
             this.CreationTime = creationTime;
-            this.EmailAssignee = emailAssignee;
+            this.EmailAssignee = _emailAssignee;
+            this._boardName = boardName;
+            this._creator = creator;
+            this._columnOrdinal = columnOrdinal;
         }
     }
 }

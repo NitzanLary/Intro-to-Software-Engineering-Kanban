@@ -97,7 +97,8 @@ namespace Presentation.Model
             {
                 throw new Exception(res.ErrorMessage);
             }
-            return new TaskModel(this, title, description, dueDate, userEmail, creationTime, emailAssignee); // TODO: need to implement Taskmodel
+            // NEED TO CHANGE AND ADD TASK TO SPECIFC COLUMN, NO COLUMN ORDINAL NEEDED FOR ADD TASK, WHAT COLUMN DOES THE TASK GO INTO?
+            return new TaskModel(this, title, description, dueDate, userEmail, creationTime, emailAssignee, boardName, creatorEmail, -1);  // TODO: need to implement Taskmodel
         }
 
         internal void UpdateTaskDueDate(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
@@ -179,7 +180,7 @@ namespace Presentation.Model
             IList<TaskModel> lst = new List<TaskModel>();
             foreach (IntroSE.Kanban.Backend.ServiceLayer.Task task in res.Value)
             {
-                lst.Add(new TaskModel(this, task.Title, task.Description, task.DueDate, userEmail, task.CreationTime, task.emailAssignee)); // TODO: implement Task model
+                lst.Add(new TaskModel(this, task.Title, task.Description, task.DueDate, userEmail, task.CreationTime, task.emailAssignee, task.boardName, task.creator, task.columnOrdinal)); // TODO: implement Task model
             }
             return lst;
         }
@@ -274,10 +275,10 @@ namespace Presentation.Model
                 List<TaskModel> tasks = new List<TaskModel>();
                 foreach(Task t in c.tasks)
                 {
-                    tasks.Add(new TaskModel(this, t.Title, t.Description, t.DueDate, userEmail, t.CreationTime, t.emailAssignee));
+                    tasks.Add(new TaskModel(this, t.Title, t.Description, t.DueDate, userEmail, t.CreationTime, t.emailAssignee, t.boardName, t.creator, t.columnOrdinal));
                 }
                 //TODO!!!!!!!! NEED TO CHANGE TO REAL NAME!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@ <--------
-                columns.Add(new ColumnModel("MockName", tasks)); 
+                columns.Add(new ColumnModel(this, c.name, tasks, c.creator, c.boardName, c.columnOrdinal)); 
             }
             return new BoardModel(this, res.Value.name, res.Value.creator, columns);
         }
