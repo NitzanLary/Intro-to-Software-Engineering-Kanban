@@ -410,34 +410,55 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// </summary>
         /// <param name="userEmail">The email of the user. Must be logged-in.</param>
         /// <returns>A response object with a value set to the board, instead the response should contain a error message in case of an error</returns>
+
+
         public Response<IList<String>> GetBoardNames(string userEmail)
         {
-            return ConfirmAndApplyT<IList<String>>(userEmail, () =>
+            try
             {
+                Response r = IsLoggedIn(userEmail);
+                if (r.ErrorOccured)
+                    return Response<IList<String>>.FromError(r.ErrorMessage);
                 Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetBoardNames(userEmail));
                 if (r2.ErrorOccured)
                     return Response<IList<String>>.FromError(r2.ErrorMessage);
                 WriteToLog(r2, "GetBoardNames finished successfully");
                 return r2;
-            });
-
-
-            //try
-            //{
-            //    Response r = IsLoggedIn(userEmail);
-            //    if (r.ErrorOccured)
-            //        return Response<IList<String>>.FromError(r.ErrorMessage);
-            //    Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetBoardNames(userEmail));
-            //    if (r2.ErrorOccured)
-            //        return Response<IList<String>>.FromError(r2.ErrorMessage);
-            //    WriteToLog(r2, "GetBoardNames finished successfully");
-            //    return r2;
-            //}
-            //catch (Exception e)
-            //{
-            //    return Response<IList<String>>.FromError(e.Message);
-            //}
+            }
+            catch (Exception e)
+            {
+                return Response<IList<String>>.FromError(e.Message);
+            }
         }
+
+        //public Response<IList<String>> GetBoardNames(string userEmail)
+        //{
+        //    return ConfirmAndApplyT<IList<String>>(userEmail, () =>
+        //    {
+        //        Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetBoardNames(userEmail));
+        //        if (r2.ErrorOccured)
+        //            return Response<IList<String>>.FromError(r2.ErrorMessage);
+        //        WriteToLog(r2, "GetBoardNames finished successfully");
+        //        return r2;
+        //    });
+
+
+        //try
+        //{
+        //    Response r = IsLoggedIn(userEmail);
+        //    if (r.ErrorOccured)
+        //        return Response<IList<String>>.FromError(r.ErrorMessage);
+        //    Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetBoardNames(userEmail));
+        //    if (r2.ErrorOccured)
+        //        return Response<IList<String>>.FromError(r2.ErrorMessage);
+        //    WriteToLog(r2, "GetBoardNames finished successfully");
+        //    return r2;
+        //}
+        //catch (Exception e)
+        //{
+        //    return Response<IList<String>>.FromError(e.Message);
+        //}
+        //}
 
         public Response<IList<String>> GetMyBoardNames(string userEmail)
         {
