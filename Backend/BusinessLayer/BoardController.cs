@@ -10,20 +10,32 @@ using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer
 {
+    /// <summary>
+    /// This class is a singleton.
+    /// </summary>
     class BoardController
     {
 
-        // email creator            boardName 
+        //                email creator      boardName 
         private Dictionary<string, Dictionary<string, Board>> boards;
-        //             email members,  board name
+        //             members's email,  board names
         private Dictionary<string, HashSet<Board>> members;
-
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static BoardController instance;
 
-        public BoardController()
+
+        private BoardController()
         {
             boards = new Dictionary<string, Dictionary<string, Board>>();
             members = new Dictionary<string, HashSet<Board>>();
+        }
+
+        /// <summary> returns the instance of the singleton </summary>
+        public static BoardController GetInstance()
+        {
+            if (instance == null)
+                instance = new BoardController();
+            return instance;
         }
 
         // pre condition: members were intiialized
@@ -568,6 +580,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
             if (r.ErrorOccured)
                 return MFResponse<Board>.FromError(r.ErrorMessage);
+            if (creatorEmail == null)
+                return MFResponse<Board>.FromValue(members[userEmail].Where(b => b.Name == boardName).First());
             return MFResponse<Board>.FromValue(boards[creatorEmail][boardName]);
         }
 

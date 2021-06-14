@@ -134,36 +134,61 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return new MFResponse($"Can not remove column in index {columnOrdinal}, max {Columns.Count}");
             if (Columns.Count < 2)
                 return new MFResponse($"Can not remove any columns, the minimum that is possible is {Columns.Count}");
-            //When a column is removed, its existing tasks are moved to the column on its
-            //left(unless it is the leftmost column — then its tasks are moved to the column
-            //on its right).The operation should fail if the tasks cannot be moved to the new
-            //column(since it will exceed the limit).
             Column srcCol = Columns[columnOrdinal];
-            IList<Task> tasks = srcCol.Tasks;
-            if (columnOrdinal == 0)
+            try
             {
-                Column destCol = Columns[1];
-                if (destCol.MaxTasks < (destCol.Tasks.Count + srcCol.Tasks.Count))
-                    return new MFResponse("tasks exceeded the limit");
-                Columns.RemoveAt(0);
-                foreach (Task task in tasks)
-                    Columns[1].AddTask(task);
-                for (int i = 0; i < Columns.Count; i++)
-                    Columns[i].ColumnOrdinal = i;
-            }
-            else
-            {
-                Column destCol = Columns[columnOrdinal - 1];
-                if (destCol.MaxTasks < (destCol.Tasks.Count + srcCol.Tasks.Count))
-                    return new MFResponse("tasks exceeded the limit");
+                Column destCol;
+                IList<Task> tasks = srcCol.Tasks;
+
+                if (columnOrdinal == 0)
+                    destCol = Columns[1];
+                else
+                    destCol = Columns[columnOrdinal - 1];
+
+                destCol.AddTasks(tasks);
                 Columns.RemoveAt(columnOrdinal);
-                foreach (Task task in tasks)
-                    Columns[columnOrdinal - 1].AddTask(task);
                 for (int i = columnOrdinal; i < Columns.Count; i++)
                     Columns[i].ColumnOrdinal = i;
             }
+            catch (Exception e)
+            {
+                return new MFResponse(e.Message);
+            }
             return new MFResponse();
         }
+
+        //internal MFResponse RemoveColumn(int columnOrdinal)
+        //{
+        //    if (columnOrdinal >= Columns.Count || columnOrdinal < 0)
+        //        return new MFResponse($"Can not remove column in index {columnOrdinal}, max {Columns.Count}");
+        //    if (Columns.Count < 2)
+        //        return new MFResponse($"Can not remove any columns, the minimum that is possible is {Columns.Count}");
+        //    Column srcCol = Columns[columnOrdinal];
+        //    IList<Task> tasks = srcCol.Tasks;
+        //    if (columnOrdinal == 0)
+        //    {
+        //        Column destCol = Columns[1];
+        //        if (destCol.MaxTasks < (destCol.Tasks.Count + srcCol.Tasks.Count))
+        //            return new MFResponse("tasks exceeded the limit");
+        //        Columns.RemoveAt(0);
+        //        foreach (Task task in tasks)
+        //            Columns[1].AddTask(task);
+        //        for (int i = 0; i < Columns.Count; i++)
+        //            Columns[i].ColumnOrdinal = i;
+        //    }
+        //    else
+        //    {
+        //        Column destCol = Columns[columnOrdinal - 1];
+        //        if (destCol.MaxTasks < (destCol.Tasks.Count + srcCol.Tasks.Count))
+        //            return new MFResponse("tasks exceeded the limit");
+        //        Columns.RemoveAt(columnOrdinal);
+        //        foreach (Task task in tasks)
+        //            Columns[columnOrdinal - 1].AddTask(task);
+        //        for (int i = columnOrdinal; i < Columns.Count; i++)
+        //            Columns[i].ColumnOrdinal = i;
+        //    }
+        //    return new MFResponse();
+        //}
 
         internal MFResponse RenameColumn(int columnOrdinal, string newColumnName)
         {

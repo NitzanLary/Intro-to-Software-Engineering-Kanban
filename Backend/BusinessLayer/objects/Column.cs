@@ -140,5 +140,13 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             tasks.Remove(task.ID);
         }
 
+        internal void AddTasks(IList<Task> tasks)
+        {
+            if (MaxTasks == -1 || (MaxTasks >= Tasks.Count + tasks.Count))
+                foreach (Task task in tasks)
+                    AddTask(task);
+            else throw new ArgumentOutOfRangeException("tasks exceeded the limit");
+        }
+
     }
 }
