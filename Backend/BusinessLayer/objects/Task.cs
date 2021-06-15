@@ -112,7 +112,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Assignee = taskDTO.Assignee;
             persisted = true;
             dto = taskDTO;
-            if (id > indexer)
+            if (id >= indexer)
                 indexer = id + 1;
         }
 

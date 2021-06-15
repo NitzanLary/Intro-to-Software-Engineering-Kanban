@@ -91,6 +91,7 @@ namespace Presentation.Model
             return res.Value;
         }
 
+        //cant put NULL in task id because TaskId IS NOT A PARAMETER
         internal TaskModel AddTask(string userEmail, string creatorEmail, string boardName, string title, string description, DateTime dueDate, DateTime creationTime, string emailAssignee)
         {
             Response<IntroSE.Kanban.Backend.ServiceLayer.Task> res = Service.AddTask(userEmail, creatorEmail, boardName, title, description, dueDate);
@@ -297,8 +298,9 @@ namespace Presentation.Model
                 foreach (Task t in c.tasks)
                 {
                     //NEED TO UNCOMMENT AFTER FIXING THE BUG!!!!!!!!!!!
-                    TaskModel temp_task = this.AddTask(userEmail, t.creator, t.boardName, t.Title, t.Description, t.DueDate, t.CreationTime, t.emailAssignee);
-                    tasks.Add(temp_task);
+                    //TaskModel temp_task = this.AddTask(userEmail, t.creator, t.boardName, t.Title, t.Description, t.DueDate, t.CreationTime, t.emailAssignee);
+                    TaskModel tempTask = new TaskModel(this, t.Title, t.Description, t.DueDate, userEmail, t.CreationTime, t.emailAssignee, t.boardName, t.creator, t.columnOrdinal);
+                    tasks.Add(tempTask);
                     //NEED TO DELETE THIS LINE 283
                     //tasks.Add(new TaskModel(this, t.Title, t.Description, t.DueDate, userEmail, t.CreationTime, t.emailAssignee, t.boardName, t.creator, t.columnOrdinal));
                 }
