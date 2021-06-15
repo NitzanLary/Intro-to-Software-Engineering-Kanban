@@ -70,6 +70,11 @@ namespace Presentation.View
             this.Close();
         }
 
-        
+        private void Join_Board_Button_Click(object sender, RoutedEventArgs e)
+        {
+            JoinBoardWindow joinBoardWindow = new JoinBoardWindow(user);
+            joinBoardWindow.Show();
+
+        }
     }
 }

@@ -80,7 +80,7 @@ namespace Presentation.ViewModel
         {
             try
             {
-                controller.RemoveColumn(user.Email, Board.Creator, Board.Name, SelectedColumn.ColumnOrdinal);
+                Board.RemoveColumn(SelectedColumn);
                 MessageBox.Show("Board Removed Column!");
 
             }

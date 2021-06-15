@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,22 +27,58 @@ namespace Presentation.Model
             private set => creator = value;
         }
 
-        private readonly List<ColumnModel> columns; // backlogs , inProgress, done (generic updatable)
+        //private readonly List<ColumnModel> columns; // backlogs , inProgress, done (generic updatable)
         //need to be observable probably
-        public List<ColumnModel> Columns
-        {
-            get => columns;
-        }
+        public ObservableCollection<ColumnModel> Columns { get; set; }
 
-        public BoardModel(BackendController controller, string boardName, string creator, List<ColumnModel> columns) : base(controller)
+        private string UserEmail; //storing this user here is an hack becuase static & singletone are not allowed.
+        //NOT GOOD. SHOULDNT GET USER EMAIL AS PARAMETER!
+        public BoardModel(BackendController controller, string boardName, string creator, ObservableCollection<ColumnModel> columns, string userEmail) : base(controller)
         {
 
             Name = boardName;
             Creator = creator;
-            this.columns = columns;
+            this.Columns = columns;
 
-            //this.user = user;
+            this.UserEmail = userEmail;
             //Columns = new ObservableCollection<ColumnModel>(controller.getColumns(user.email)).
+        }
+
+        private void HandleChangeColumns(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                foreach (ColumnModel c in e.NewItems)
+                {
+                    Controller.AddColumn(UserEmail, Creator, Name, c.ColumnOrdinal, c.Name);
+                }
+            }
+
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                foreach (ColumnModel c in e.OldItems)
+                {
+                    Controller.RemoveColumn(UserEmail, Creator, Name, c.ColumnOrdinal);
+                }
+            }
+
+            Columns.CollectionChanged += HandleChangeColumns;
+
+        }
+
+        public void AddColumn(string user, string creator, string boardName, int columnOrdinal, string ColumnNamem, int maxTasks)
+        {
+            Controller.AddColumn(user, Creator, boardName, columnOrdinal, ColumnNamem);
+            ColumnModel newColumn = new ColumnModel(Controller, ColumnNamem, new ObservableCollection<TaskModel>(), creator, boardName, columnOrdinal, maxTasks);
+            Columns.Add(newColumn);
+        }
+
+        public void RemoveColumn(ColumnModel column)
+        {
+            Controller.RemoveColumn(UserEmail, Creator, Name, column.ColumnOrdinal);
+            Columns.Remove(column);
+
+
         }
 
 

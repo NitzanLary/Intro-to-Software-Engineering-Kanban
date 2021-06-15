@@ -14,6 +14,8 @@ namespace Presentation.Model
         public string Email { get => _email; set { _email = value; RaisePropertyChanged("Email"); } }
 
         public ObservableCollection<String> BoardsNames { get; set; }
+        public ObservableCollection<String> AssignedBoards { get; set; }
+
 
         private ObservableCollection<TaskModel> _inProgressTasks;
         public ObservableCollection<TaskModel> InProgressTasks { get => _inProgressTasks; set { this._inProgressTasks = value; RaisePropertyChanged("InProgressTasks"); } }
@@ -30,9 +32,14 @@ namespace Presentation.Model
                 controller.GetBoardNames(Email).ToList().ForEach(BoardsNames.Add);
 
             }
+            //if (controller.GetBoardNames(Email) != null)
+            //{
+            //    controller.GetBoardNames(Email).ToList().ForEach(BoardsNames.Add);
+
+            //}
             BoardsNames.CollectionChanged += HandleChangeBoardNames;
 
-            this.InProgressTasks = new ObservableCollection<TaskModel>(controller.InProgressTasks(Email));
+            //this.InProgressTasks = new ObservableCollection<TaskModel>(controller.InProgressTasks(Email));
         }
 
         public void AddBoard(String BoardName)

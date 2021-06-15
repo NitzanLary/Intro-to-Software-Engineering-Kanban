@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Presentation.Model;
+using Presentation.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,18 @@ namespace Presentation.View
     /// </summary>
     public partial class JoinBoardWindow : Window
     {
-        public JoinBoardWindow()
+        private JoinBoardViewModel viewModel;
+        public JoinBoardWindow(UserModel user)
         {
             InitializeComponent();
+            this.viewModel = new JoinBoardViewModel(user);
+            this.DataContext = viewModel;
+        }
+
+        private void Join_Board_Button_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.joinBoard();
+            this.Close();
         }
     }
 }

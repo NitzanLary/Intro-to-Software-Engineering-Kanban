@@ -270,7 +270,7 @@ namespace Presentation.Model
             {
                 throw new Exception(res.ErrorMessage);
             }
-            List<ColumnModel> columns = new List<ColumnModel>();
+            ObservableCollection<ColumnModel> columns = new ObservableCollection<ColumnModel>();
             foreach(Column c in res.Value.columns)
             {
                 ObservableCollection<TaskModel> tasks = new ObservableCollection<TaskModel>();
@@ -281,7 +281,7 @@ namespace Presentation.Model
                 //TODO!!!!!!!! NEED TO CHANGE TO REAL NAME!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@ <--------
                 columns.Add(new ColumnModel(this, c.name, tasks, c.creator, c.boardName, c.columnOrdinal, c.maxTasks)); 
             }
-            return new BoardModel(this, res.Value.name, res.Value.creator, columns);
+            return new BoardModel(this, res.Value.name, res.Value.creator, columns, userEmail);
         }
     }
 }
