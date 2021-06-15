@@ -149,9 +149,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
                 destCol.AddTasks(tasks); // throws an exeption if tasks exceeded the max limit
                 Columns.RemoveAt(columnOrdinal);
+                srcCol.Remove();
                 for (int i = columnOrdinal; i < Columns.Count; i++)
                     Columns[i].ColumnOrdinal = i;
-                srcCol.Remove();
             }
             catch (Exception e)
             {
@@ -214,8 +214,12 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             col.ColumnOrdinal = Columns.Count; // so there will be no keys conflicts in the DB
             Columns.RemoveAt(columnOrdinal);
             Columns.Insert(loc, col);
-            for (int i = 0; i < Columns.Count; i++)
-                Columns[i].ColumnOrdinal = i;
+            if(shiftSize < 0)
+                for (int i = Columns.Count - 1; i >= 0 ; i--)
+                    Columns[i].ColumnOrdinal = i;
+            else
+                for(int i = 0; i < Columns.Count; i++)
+                    Columns[i].ColumnOrdinal = i;
             return new MFResponse();
         }
 
@@ -247,66 +251,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         //    return new Response();
         //}
 
-        //public Response<Dictionary<int, Task>> getColumn(int columnOrdinal)
-        //{
-        //    if (columnOrdinal > 2 || columnOrdinal < 0)
-        //        return Response<Dictionary<int, Task>>.FromError("there is no such column number");
-        //    return Response<Dictionary<int, Task>>.FromValue(Columns[columnOrdinal]);
-
-        //}
-
-
-        //private bool containsTask(int taskId)
-        //{
-        //    bool flag = false;
-        //    foreach(Dictionary<int, Task> dict in Columns)
-        //    {
-        //        if (dict.ContainsKey(taskId))
-        //            flag = true;
-        //    }
-        //    return flag;
-        //}
-
-        //public int getNumOfTasks()
-        //{
-        //    int backlogsTaskNum = Columns[0].Count;
-        //    int inProgressTaskNum = Columns[1].Count;
-        //    int doneTaskNum = Columns[2].Count;
-        //    return backlogsTaskNum + inProgressTaskNum + doneTaskNum;
-        //}
-
-        //public Response<Dictionary<int, Task>> getInProgess()
-        //{
-        //    return Response<Dictionary<int, Task>>.FromValue(Columns[1]);
-        //}
-
-        //public Response AddTask(Task task)
-        //{
-        //    if (Columns[0].Count == MaxBacklogs)
-        //        return new Response("Can not add Task, backlogs column got to its maximum limit");
-        //    Columns[0].Add(task.ID, task);
-        //    return new Response();
-        //}
-
-
-        //private int maxBacklogs;
-        //public int MaxBacklogs
-        //{
-        //    get => maxBacklogs;
-        //    set => maxBacklogs = value;
-        //}
-        //private int maxInProgress;
-        //public int MaxInProgress
-        //{
-        //    get => maxInProgress;
-        //    set => maxInProgress = value;
-        //}
-        //private int maxDone;
-        //public int MaxDone
-        //{
-        //    get => maxDone;
-        //    set => maxDone = value;
-        //}
     }
 }
 
