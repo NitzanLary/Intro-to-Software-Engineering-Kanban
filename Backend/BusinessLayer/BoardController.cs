@@ -576,15 +576,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// <returns>A response object with a value set to the board, instead the response should contain a error message in case of an error</returns>
         public MFResponse<Board> GetBoard(string userEmail, string creatorEmail, string boardName)
         {
-
-            MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
-            if (r.ErrorOccured)
-                return MFResponse<Board>.FromError(r.ErrorMessage);
+            if (creatorEmail != null)
+            {
+                MFResponse r = CheckArgs(userEmail, creatorEmail, boardName);
+                if (r.ErrorOccured)
+                    return MFResponse<Board>.FromError(r.ErrorMessage);
+            }
             if (creatorEmail == null)
+            {
+                if (!members.ContainsKey(userEmail))
+                    return MFResponse<Board>.FromError($"Could not find {userEmail}");
                 return MFResponse<Board>.FromValue(members[userEmail].Where(b => b.Name == boardName).First());
+            }
             return MFResponse<Board>.FromValue(boards[creatorEmail][boardName]);
         }
-
 
         public MFResponse<IList<Column>> getColumns(string userEmail, string creatorEmail, string boardName)
         {
