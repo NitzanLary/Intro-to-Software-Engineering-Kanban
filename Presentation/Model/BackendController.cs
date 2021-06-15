@@ -214,6 +214,26 @@ namespace Presentation.Model
             return res.Value;
         }
 
+        internal IList<String> GetMyBoardNames(string userEmail)
+        {
+            Response<IList<String>> res = Service.GetMyBoardNames(userEmail);
+            if (res.ErrorOccured)
+            {
+                throw new Exception(res.ErrorMessage);
+            }
+            return res.Value;
+        }
+
+        internal IList<String> GetBoardIMemberOfNames(string userEmail)
+        {
+            Response<IList<String>> res = Service.GetBoardIMemberOfNames(userEmail);
+            if (res.ErrorOccured)
+            {
+                throw new Exception(res.ErrorMessage);
+            }
+            return res.Value;
+        }
+
         internal void AddColumn(string userEmail, string creatorEmail, string boardName, int columnOrdinal, string columnName)
         {
             Response res = Service.AddColumn(userEmail, creatorEmail, boardName, columnOrdinal, columnName);
