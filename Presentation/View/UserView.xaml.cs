@@ -55,9 +55,9 @@ namespace Presentation.View
             viewModel.RemoveBoard();
         }
 
-        private void Select_Board_Button_Click(object sender, RoutedEventArgs e)
+        private void Select_MyBoard_Button_Click(object sender, RoutedEventArgs e)
         {
-            BoardModel board = viewModel.SelectBoard();
+            BoardModel board = viewModel.SelectMyBoard();
             BoardWindow boardView = new BoardWindow(user, board);
             boardView.Show();
             this.Close();
@@ -75,6 +75,14 @@ namespace Presentation.View
             JoinBoardWindow joinBoardWindow = new JoinBoardWindow(user);
             joinBoardWindow.Show();
 
+        }
+
+        private void Select_AssignedBoard_Button_Click(object sender, RoutedEventArgs e)
+        {
+            BoardModel board = viewModel.SelectAssignedBoard();
+            BoardWindow boardView = new BoardWindow(user, board);
+            boardView.Show();
+            this.Close();
         }
     }
 }

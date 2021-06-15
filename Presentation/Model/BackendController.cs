@@ -283,7 +283,7 @@ namespace Presentation.Model
 
         //changed creator to same parameter as userEmail, maybe need to change it back
         //NOT SURE IF I DID IT RIGHT.
-        internal BoardModel GetBoard(string userEmail, string boardName)
+        internal BoardModel GetMyBoard(string userEmail, string boardName)
         {
             Response<Board> res = Service.GetBoard(userEmail, userEmail, boardName);
             if (res.ErrorOccured)
@@ -304,6 +304,31 @@ namespace Presentation.Model
                 }
                 //TODO!!!!!!!! NEED TO CHANGE TO REAL NAME!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@ <--------
                 columns.Add(new ColumnModel(this, c.name, tasks, c.creator, c.boardName, c.columnOrdinal, c.maxTasks)); 
+            }
+            return new BoardModel(this, res.Value.name, res.Value.creator, columns, userEmail);
+        }
+
+        internal BoardModel GetAssignedBoard(string userEmail, string boardName)
+        {
+            Response<Board> res = Service.GetBoard(userEmail, null, boardName);
+            if (res.ErrorOccured)
+            {
+                throw new Exception(res.ErrorMessage);
+            }
+            ObservableCollection<ColumnModel> columns = new ObservableCollection<ColumnModel>();
+            foreach (Column c in res.Value.columns)
+            {
+                ObservableCollection<TaskModel> tasks = new ObservableCollection<TaskModel>();
+                foreach (Task t in c.tasks)
+                {
+                    //NEED TO UNCOMMENT AFTER FIXING THE BUG!!!!!!!!!!!
+                    //TaskModel temp_task = this.AddTask(userEmail, t.creator, t.boardName, t.Title, t.Description, t.DueDate, t.CreationTime, t.emailAssignee);
+                    //tasks.Add(temp_task);
+                    //NEED TO DELETE THIS LINE 283
+                    tasks.Add(new TaskModel(this, t.Title, t.Description, t.DueDate, userEmail, t.CreationTime, t.emailAssignee, t.boardName, t.creator, t.columnOrdinal));
+                }
+                //TODO!!!!!!!! NEED TO CHANGE TO REAL NAME!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@ <--------
+                columns.Add(new ColumnModel(this, c.name, tasks, c.creator, c.boardName, c.columnOrdinal, c.maxTasks));
             }
             return new BoardModel(this, res.Value.name, res.Value.creator, columns, userEmail);
         }

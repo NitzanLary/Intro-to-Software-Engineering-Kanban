@@ -13,8 +13,9 @@ namespace Presentation.Model
         private string _email;
         public string Email { get => _email; set { _email = value; RaisePropertyChanged("Email"); } }
 
-        public ObservableCollection<String> BoardsNames { get; set; }
-        public ObservableCollection<String> AssignedBoards { get; set; }
+        public ObservableCollection<String> MyBoardsNames { get; set; }
+
+        public ObservableCollection<String> AssignedBoardsNames { get; set; }
 
 
         private ObservableCollection<TaskModel> _inProgressTasks;
@@ -26,31 +27,32 @@ namespace Presentation.Model
         public UserModel(BackendController controller, string email) : base(controller)
         {
             this.Email = email;
-            this.BoardsNames = new ObservableCollection<String>();
-            if (controller.GetBoardNames(Email) != null)
+            this.MyBoardsNames = new ObservableCollection<String>();
+            this.AssignedBoardsNames = new ObservableCollection<String>();
+            if (controller.GetMyBoardNames(Email) != null)
             {
-                controller.GetBoardNames(Email).ToList().ForEach(BoardsNames.Add);
+                controller.GetMyBoardNames(Email).ToList().ForEach(MyBoardsNames.Add);
 
             }
-            //if (controller.GetBoardNames(Email) != null)
-            //{
-            //    controller.GetBoardNames(Email).ToList().ForEach(BoardsNames.Add);
+            if (controller.GetBoardIMemberOfNames(Email) != null)
+            {
+                controller.GetBoardIMemberOfNames(Email).ToList().ForEach(AssignedBoardsNames.Add);
 
-            //}
-            BoardsNames.CollectionChanged += HandleChangeBoardNames;
+            }
+            MyBoardsNames.CollectionChanged += HandleChangeBoardNames;
 
             //this.InProgressTasks = new ObservableCollection<TaskModel>(controller.InProgressTasks(Email));
         }
 
         public void AddBoard(String BoardName)
         {
-            BoardsNames.Add(BoardName);
+            MyBoardsNames.Add(BoardName);
 
         }
 
         public void RemoveBoard(String BoardName)
         {
-            BoardsNames.Remove(BoardName);
+            MyBoardsNames.Remove(BoardName);
 
         }
 

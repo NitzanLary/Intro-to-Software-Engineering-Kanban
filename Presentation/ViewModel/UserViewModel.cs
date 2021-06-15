@@ -20,18 +20,34 @@ namespace Presentation.ViewModel
         public string Message { get => _message; set { this._message = value;  } } //maybe no needed
 
         //should be string or BoardModel????
-        private String _selectedBoard;
-        public String SelectedBoard
+        private String _selectedMyBoard;
+        public String SelectedMyBoard
         {
             get
             {
-                return _selectedBoard;
+                return _selectedMyBoard;
             }
             set
             {
-                _selectedBoard = value;
+                _selectedMyBoard = value;
                 EnableForward = value != null;
-                RaisePropertyChanged("SelectedBoard");
+                RaisePropertyChanged("SelectedMyBoard");
+            }
+        }
+
+
+        private String _selectedAssignedBoard;
+        public String SelectedAssignedBoard
+        {
+            get
+            {
+                return _selectedAssignedBoard;
+            }
+            set
+            {
+                _selectedAssignedBoard = value;
+                EnableForward2 = value != null;
+                RaisePropertyChanged("SelectedAssignedBoard");
             }
         }
 
@@ -43,6 +59,17 @@ namespace Presentation.ViewModel
             {
                 _enableForward = value;
                 RaisePropertyChanged("EnableForward");
+            }
+        }
+
+        private bool _enableForward2 = false;
+        public bool EnableForward2
+        {
+            get => _enableForward2;
+            private set
+            {
+                _enableForward2 = value;
+                RaisePropertyChanged("EnableForward2");
             }
         }
 
@@ -80,7 +107,7 @@ namespace Presentation.ViewModel
         {
             try
             {
-                User.RemoveBoard(SelectedBoard);
+                User.RemoveBoard(SelectedMyBoard);
                 MessageBox.Show("Board Removed Successfully!");
 
             }
@@ -91,25 +118,30 @@ namespace Presentation.ViewModel
             }
         }
 
-        public BoardModel SelectBoard()
+        public BoardModel SelectMyBoard()
         {
-            return controller.GetBoard(User.Email, _selectedBoard);
+            return controller.GetMyBoard(User.Email, _selectedMyBoard);
+        }
+
+        public BoardModel SelectAssignedBoard()
+        {
+            return controller.GetAssignedBoard(User.Email, _selectedAssignedBoard);
         }
 
 
 
 
-            //private void HandleChange(object sender, NotifyCollectionChangedEventArgs e)
-            //{
-            //    if (e.Action == NotifyCollectionChangedAction.Add)
-            //    {
-            //        RaisePropertyChanged("BoardsNames");
-            //        CollectionViewSource.GetDefaultView(BoardsNames).Refresh();
+        //private void HandleChange(object sender, NotifyCollectionChangedEventArgs e)
+        //{
+        //    if (e.Action == NotifyCollectionChangedAction.Add)
+        //    {
+        //        RaisePropertyChanged("BoardsNames");
+        //        CollectionViewSource.GetDefaultView(BoardsNames).Refresh();
 
 
 
-            //    }
-            //}
+        //    }
+        //}
 
 
 
@@ -117,7 +149,7 @@ namespace Presentation.ViewModel
 
 
 
-        }
+    }
 
     
 }
