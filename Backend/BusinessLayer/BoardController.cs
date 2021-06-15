@@ -52,6 +52,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                         boards.Add(boardDTO.Creator, new Dictionary<string, Board>());
                     boards[boardDTO.Creator].Add(board.Name, board);
                 }
+                Task.LoadData(new TaskDALController());
             }
             catch (Exception e)
             {

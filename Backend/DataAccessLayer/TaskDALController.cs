@@ -92,6 +92,35 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 return res > 0;
             }
         }
+        /// <summary> returns the max id in Tasks table </summary>
+        internal int GetMaxTaskID()
+        {
+            using (var connection = new SQLiteConnection(_connectionString))
+            {
+                SQLiteCommand command = new SQLiteCommand(null, connection);
+                command.CommandText = $"SELECT MAX(taskID) FROM {TasksTableName}";
+                SQLiteDataReader dataReader = null;
+                try
+                {
+                    connection.Open();
+                    dataReader = command.ExecuteReader();
+                    if (!dataReader.Read())
+                        return 0;
+                    return dataReader.GetInt32(0);
+                }
+                catch (Exception e)
+                {
+                    log.Error(e.Message);
+                    throw;
+                }
+                finally
+                {
+                    command.Dispose();
+                    connection.Close();
+                }
+            }
+        }
+
         /// <summary>
         /// delete task from the dataBase
         /// </summary>

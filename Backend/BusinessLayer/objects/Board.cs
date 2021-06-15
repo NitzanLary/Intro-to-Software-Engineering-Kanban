@@ -124,7 +124,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             if (columnOrdinal > Columns.Count || columnOrdinal < 0)
                 return new MFResponse($"Can not insert to index {columnOrdinal}, max {Columns.Count}");
-            for (int i = columnOrdinal; i < Columns.Count; i++)
+            for (int i = Columns.Count - 1; i >= columnOrdinal; i--)
                 Columns[i].ColumnOrdinal++;
             Columns.Insert(columnOrdinal, new Column(columnName, Creator, Name, columnOrdinal));
             return new MFResponse();
@@ -151,6 +151,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 Columns.RemoveAt(columnOrdinal);
                 for (int i = columnOrdinal; i < Columns.Count; i++)
                     Columns[i].ColumnOrdinal = i;
+                srcCol.Remove();
             }
             catch (Exception e)
             {
@@ -214,6 +215,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Columns.Insert(loc, col);
             return new MFResponse();
         }
+
 
         //public Response advanceTask(int taskId, int columnOrd)
         //{
