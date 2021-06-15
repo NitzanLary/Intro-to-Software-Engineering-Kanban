@@ -124,6 +124,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             if (columnOrdinal > Columns.Count || columnOrdinal < 0)
                 return new MFResponse($"Can not insert to index {columnOrdinal}, max {Columns.Count}");
+            for (int i = columnOrdinal; i < Columns.Count; i++)
+                Columns[i].ColumnOrdinal++;
             Columns.Insert(columnOrdinal, new Column(columnName, Creator, Name, columnOrdinal));
             return new MFResponse();
         }
@@ -132,7 +134,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             if (columnOrdinal >= Columns.Count || columnOrdinal < 0)
                 return new MFResponse($"Can not remove column in index {columnOrdinal}, max {Columns.Count}");
-            if (Columns.Count < 2)
+            if (Columns.Count <= 2)
                 return new MFResponse($"Can not remove any columns, the minimum that is possible is {Columns.Count}");
             Column srcCol = Columns[columnOrdinal];
             try
@@ -145,7 +147,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 else
                     destCol = Columns[columnOrdinal - 1];
 
-                destCol.AddTasks(tasks);
+                destCol.AddTasks(tasks); // throws an exeption if tasks exceeded the max limit
                 Columns.RemoveAt(columnOrdinal);
                 for (int i = columnOrdinal; i < Columns.Count; i++)
                     Columns[i].ColumnOrdinal = i;
