@@ -106,7 +106,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                     dataReader = command.ExecuteReader();
                     if (!dataReader.Read())
                         return 0;
-                    return dataReader.GetInt32(0);
+                    return dataReader.GetInt32(0) + 1;
                 }
                 catch (Exception e)
                 {
