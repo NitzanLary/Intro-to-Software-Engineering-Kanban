@@ -68,11 +68,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             }
         }
 
-        internal static void LoadData(TaskDALController taskDALController)
-        {
-            indexer = taskDALController.GetMaxTaskID();
-        }
-
         private string assignee;
         public string Assignee
         {
@@ -117,6 +112,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Assignee = taskDTO.Assignee;
             persisted = true;
             dto = taskDTO;
+            if (id > indexer)
+                indexer = id + 1;
         }
 
         public void AttachDto(string creator, string boardName)

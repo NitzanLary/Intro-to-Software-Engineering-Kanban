@@ -203,16 +203,19 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         internal MFResponse MoveColumn(int columnOrdinal, int shiftSize)
         {
-            if(columnOrdinal >= Columns.Count || columnOrdinal < 0)
+            if (columnOrdinal >= Columns.Count || columnOrdinal < 0)
                 return new MFResponse($"Can not move column column in index {columnOrdinal}, max {Columns.Count}");
             int loc = columnOrdinal + shiftSize;
-            if(loc >= Columns.Count || loc < 0)
+            if (loc >= Columns.Count || loc < 0)
                 return new MFResponse($"Can not move column to index {columnOrdinal + shiftSize}");
             Column col = Columns[columnOrdinal];
             if (col.Tasks.Count > 0)
                 return new MFResponse($"Only empty columns can be moved");
+            col.ColumnOrdinal = Columns.Count; // so there will be no keys conflicts in the DB
             Columns.RemoveAt(columnOrdinal);
             Columns.Insert(loc, col);
+            for (int i = 0; i < Columns.Count; i++)
+                Columns[i].ColumnOrdinal = i;
             return new MFResponse();
         }
 
