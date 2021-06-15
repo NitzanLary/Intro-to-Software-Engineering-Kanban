@@ -90,5 +90,52 @@ namespace Presentation.ViewModel
 
             }
         }
+
+        public void AdvanceTask()
+        {
+            try
+            {
+                controller.AdvanceTask(user.Email, Board.Creator, Board.Name, SelectedColumn.ColumnOrdinal, SelectedTask.TaskID);
+                MessageBox.Show("Board Removed Column!");
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Cannot Remove this Column. " + e.Message);
+
+            }
+        }
+
+        public void MoveColumnLeft()
+        {
+            try
+            {
+                controller.MoveColumn(user.Email, Board.Creator, Board.Name, SelectedColumn.ColumnOrdinal, -1);
+                MessageBox.Show("Column moved left!");
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Cannot move left this column. " + e.Message);
+
+            }
+
+        }
+
+        public void MoveColumnRight()
+        {
+            try
+            {
+                controller.MoveColumn(user.Email, Board.Creator, Board.Name, SelectedColumn.ColumnOrdinal, 1);
+                MessageBox.Show("Column moved right!");
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Cannot move right this column. " + e.Message);
+
+            }
+
+        }
     }
 }

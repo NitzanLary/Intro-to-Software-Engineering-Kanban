@@ -59,6 +59,27 @@ namespace Presentation.View
             viewModel.RemoveColumn();
         }
 
+        private void Edit_Column_Button_Click(object sender, RoutedEventArgs e)
+        {
+            EditColumnWindow editColumnWindow = new EditColumnWindow(user, Board);
+            editColumnWindow.Show();
+        }
+
+        private void Advance_Task_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Move_Left_Button_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.MoveColumnLeft();
+        }
+
+        private void Move_Right_Button_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.MoveColumnRight();
+        }
+
         //private void ListBox_SelectionChanged(object sender, RoutedEventArgs e)
         //{
         //    var t = (ListBox)sender;

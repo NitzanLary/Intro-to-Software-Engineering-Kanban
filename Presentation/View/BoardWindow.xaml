@@ -38,9 +38,9 @@
                     <Button Content="New Column" HorizontalAlignment="Left" Margin="31,621,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="New_Column_Button_Click"/>
                     <Button Content="New Task" HorizontalAlignment="Left" Margin="31,572,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="New_Task_Button_Click"/>
                     <Button Content="Edit Column" HorizontalAlignment="Left" Margin="224,572,0,0" VerticalAlignment="Top" Width="171" Height="29"/>
-                    <Button Content="Move Right  -->" HorizontalAlignment="Left" Margin="427,572,0,0" VerticalAlignment="Top" Width="171" Height="29"/>
+                    <Button Content="Move Right  -->" HorizontalAlignment="Left" Margin="427,572,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="Move_Right_Button_Click"/>
                     <Button Content="Remove Column" HorizontalAlignment="Left" Margin="224,621,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="Remove_Column_Button_Click"/>
-                    <Button Content="&lt;--  Move Left" HorizontalAlignment="Left" Margin="427,621,0,0" VerticalAlignment="Top" Width="171" Height="29"/>
+                    <Button Content="&lt;--  Move Left" HorizontalAlignment="Left" Margin="427,621,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="Move_Left_Button_Click"/>
 
                 </Grid>
             </Grid>
@@ -64,7 +64,7 @@
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Limt: " Grid.Column="0"  HorizontalAlignment="Center"   />
-                                <TextBlock Text="{Binding Path=Limit, Mode=TwoWay}" Grid.Column="1"    HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding Path=MaxTasks, Mode=TwoWay}" Grid.Column="1"    HorizontalAlignment="Center"/>
                             </Grid>
 
 

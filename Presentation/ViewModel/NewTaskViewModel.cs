@@ -21,6 +21,8 @@ namespace Presentation.ViewModel
         private string _taskDueDate; 
         public  string TaskDueDate { get => _taskDueDate; set { this._taskDueDate = value; RaisePropertyChanged("TaskDueDate"); } }
 
+        //private string _emailAsignee;
+        //public string EmailAsignee { get => _emailAsignee; set { this._emailAsignee = value; RaisePropertyChanged("EmailAsignee"); } }
 
         public BoardModel Board { get; set; }
 

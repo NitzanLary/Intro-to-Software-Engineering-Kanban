@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace Presentation.ViewModel
 {
-    class NewColumnViewModel : NotifiableObject
+    class EditColumnViewModel : NotifiableObject
     {
         private BackendController controller;
         private UserModel user;
@@ -25,30 +25,36 @@ namespace Presentation.ViewModel
 
 
 
-        public NewColumnViewModel(UserModel user, BoardModel board)
+        public EditColumnViewModel(UserModel user, BoardModel board)
         {
             this.controller = user.Controller;
             this.user = user;
             this.board = board;
+
+            this._columnOrdinal = ColumnOrdinal;
+            this._maxTasks = MaxTasks;
+            this._columnName = ColumnName;
         }
 
-        public void AddColumn()
+        public void EditColumn()
         {
             try
             {
-                controller.AddColumn(user.Email, board.Creator, board.Name, int.Parse(ColumnOrdinal), ColumnName);
+                controller.RenameColumn(user.Email, board.Creator, board.Name, int.Parse(ColumnOrdinal), ColumnName);
                 //should it be defult maxtasks to unlimit?....
                 controller.LimitColumn(user.Email, board.Creator, board.Name, int.Parse(ColumnOrdinal), int.Parse(MaxTasks));
-                MessageBox.Show("Column Added Successfully!");
+
+
+                //What is Shift SIZE????
+                controller.MoveColumn(user.Email,board.Creator, board.Name, int.Parse(ColumnOrdinal),1);
+                MessageBox.Show("Column Edited Successfully!");
 
             }
             catch (Exception e)
             {
-                MessageBox.Show("Cannot add new Column. " + e.Message);
+                MessageBox.Show("Cannot Edit Column. " + e.Message);
 
             }
         }
-
-
     }
 }
