@@ -41,7 +41,9 @@ namespace Presentation.Model
             this.Columns = columns;
 
             this.UserEmail = userEmail;
-            //Columns = new ObservableCollection<ColumnModel>(controller.getColumns(user.email)).
+            Columns = columns;
+            Columns.CollectionChanged += HandleChangeColumns;
+
         }
 
         private void HandleChangeColumns(object sender, NotifyCollectionChangedEventArgs e)
@@ -62,20 +64,24 @@ namespace Presentation.Model
                 }
             }
 
-            Columns.CollectionChanged += HandleChangeColumns;
 
         }
 
-        public void AddColumn(string user, string creator, string boardName, int columnOrdinal, string ColumnNamem, int maxTasks)
+        public void AddColumn(string user, string creator, string boardName, int columnOrdinal, string ColumnName)
         {
-            Controller.AddColumn(user, Creator, boardName, columnOrdinal, ColumnNamem);
-            ColumnModel newColumn = new ColumnModel(Controller, ColumnNamem, new ObservableCollection<TaskModel>(), creator, boardName, columnOrdinal, maxTasks);
+            ColumnModel newColumn = new ColumnModel(Controller, ColumnName, new ObservableCollection<TaskModel>(), creator, boardName, columnOrdinal, -1, UserEmail);
             Columns.Add(newColumn);
         }
 
+        //public void AddColumn(string user, string creator, string boardName, int columnOrdinal, string ColumnName)
+        //{
+        //    Controller.AddColumn(user, Creator, boardName, columnOrdinal, ColumnName);
+        //    ColumnModel newColumn = new ColumnModel(Controller, ColumnName, new ObservableCollection<TaskModel>(), creator, boardName, columnOrdinal, -1);
+        //    Columns.Add(newColumn);
+        //}
+
         public void RemoveColumn(ColumnModel column)
         {
-            Controller.RemoveColumn(UserEmail, Creator, Name, column.ColumnOrdinal);
             Columns.Remove(column);
 
 

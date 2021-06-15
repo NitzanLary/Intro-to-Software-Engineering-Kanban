@@ -36,7 +36,7 @@ namespace Presentation.ViewModel
         {
             try
             {
-                board.AddColumn(user.Email, board.Creator, board.Name, int.Parse(ColumnOrdinal), ColumnName, int.Parse(MaxTasks));
+                board.AddColumn(user.Email, board.Creator, board.Name, int.Parse(ColumnOrdinal), ColumnName);
                 //should it be defult maxtasks to unlimit?....
                 //controller.LimitColumn(user.Email, board.Creator, board.Name, int.Parse(ColumnOrdinal), int.Parse(MaxTasks));
                 MessageBox.Show("Column Added Successfully!");

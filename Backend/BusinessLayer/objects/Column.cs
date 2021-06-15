@@ -152,9 +152,5 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             DTO.Delete();
         }
 
-        internal void Remove()
-        {
-            DTO.Delete();
-        }
     }
 }

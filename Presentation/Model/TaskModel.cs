@@ -94,11 +94,11 @@ namespace Presentation.Model
         public int TaskID
         {
             get => _taskID;
-            //set
-            //{
-            //    this._creator = value;
-            //    RaisePropertyChanged("Creator");
-            //}
+            set
+            {
+                this._taskID = value;
+                RaisePropertyChanged("TaskID");
+            }
         }
 
         private int _columnOrdinal;

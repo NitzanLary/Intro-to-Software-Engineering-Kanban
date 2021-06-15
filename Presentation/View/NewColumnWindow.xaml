@@ -13,8 +13,6 @@
         <Label Content="Enter Column Title:" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Center" Text="{Binding Path=ColumnOrdinal, Mode=OneWayToSource, StringFormat='yyyy-MM-dd'}" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="0,97,0,0"/>
         <Label Content="Enter Column Ordinal:" HorizontalAlignment="Left" Margin="10,93,0,0" VerticalAlignment="Top"/>
-        <Label Content="Enter Max Tasks:" HorizontalAlignment="Left" Margin="13,134,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Center" Text="{Binding Path=MaxTasks, Mode=OneWayToSource}" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="0,138,0,0"/>
 
     </Grid>
 </Window>

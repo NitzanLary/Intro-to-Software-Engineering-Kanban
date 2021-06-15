@@ -117,6 +117,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Assignee = taskDTO.Assignee;
             persisted = true;
             dto = taskDTO;
+            if (id > indexer)
+                indexer = id + 1;
         }
 
         public void AttachDto(string creator, string boardName)

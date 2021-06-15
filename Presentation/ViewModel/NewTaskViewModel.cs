@@ -38,7 +38,12 @@ namespace Presentation.ViewModel
         {
             try
             {
-                controller.AddTask(user.Email, Board.Creator, Board.Name, TaskTitle, TaskDescription, DateTime.Parse(TaskDueDate), DateTime.Now, user.Email);
+                //need to add task to tasks observerList
+                //controller.AddTask(user.Email, Board.Creator, Board.Name, TaskTitle, TaskDescription, DateTime.Parse(TaskDueDate), DateTime.Now, user.Email);
+                
+                TaskModel t = new TaskModel(controller, TaskTitle, TaskDescription, DateTime.Parse(TaskDueDate), user.Email, DateTime.Now, user.Email, Board.Name, Board.Creator, 0);
+                Board.Columns[0].AddTask(t);
+
                 MessageBox.Show("Task Added Successfully!");
 
             }

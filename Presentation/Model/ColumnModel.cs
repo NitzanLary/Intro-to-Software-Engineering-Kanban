@@ -11,12 +11,12 @@ namespace Presentation.Model
     public class ColumnModel : NotifiableModelObject
     {
         //explain please...
-        private ObservableCollection<TaskModel> tasks;
-        public IList<TaskModel> Tasks
-        {
-            get => tasks.ToList();
+        public ObservableCollection<TaskModel> Tasks { get; set; }
+        //public IList<TaskModel> Tasks
+        //{
+        //    get => tasks.ToList();
 
-        }
+        //}
 
         private string _name;
         public string Name
@@ -75,18 +75,43 @@ namespace Presentation.Model
         }
 
         //Not sure about the parameters.. I am tired.
-        public ColumnModel(BackendController controller, string name, ObservableCollection<TaskModel> tasks, string creator, string boardName, int columnOrdinal, int maxTasks) : base(controller)
+        public ColumnModel(BackendController controller, string name, ObservableCollection<TaskModel> tasks, string creator, string boardName, int columnOrdinal, int maxTasks, string userEmail) : base(controller)
         {
             this.Name = name;
-            this.tasks = tasks;
+            this.Tasks = tasks;
             this.BoardName = boardName;
             this.Creator = creator;
             this.ColumnOrdinal = columnOrdinal;
             this.MaxTasks = maxTasks;
+            this.UserEmail = userEmail;
+            Tasks.CollectionChanged += HandleChangeTasks;
+
+
+        }
+
+        private string UserEmail; //storing this user here is an hack becuase static & singletone are not allowed.
+        //NOT GOOD. SHOULDNT GET USER EMAIL AS PARAMETER!
+        private void HandleChangeTasks(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                foreach (TaskModel t in e.NewItems)
+                {
+                    //to put in ifErrorOccurd => RoolBack
+                    TaskModel tempTask = Controller.AddTask(UserEmail, Creator, BoardName, t.Title, t.Description, t.DueDate, t.CreationTime, t.EmailAssignee);
+                    t.TaskID = tempTask.TaskID;
+                }
+            }
+
             
         }
 
-        
+        public void AddTask(TaskModel task)
+        {
+            Tasks.Add(task);
+        }
+
+
 
     }
 
