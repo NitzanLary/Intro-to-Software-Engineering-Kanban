@@ -40,7 +40,7 @@
 
             </StackPanel>
             <Label Content="Welcome " HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontWeight="DemiBold" FontSize="30" Foreground="Orange" />
-            <Button Content="Logout" HorizontalAlignment="Left" Margin="731,6,0,0" VerticalAlignment="Top" Width="49" Click="Button_Click" Background="Red"/>
+            <Button Content="Logout" HorizontalAlignment="Left" Margin="731,6,0,0" VerticalAlignment="Top" Width="49" Click="LogOut_Button_Click" Background="Red"/>
 
 
 

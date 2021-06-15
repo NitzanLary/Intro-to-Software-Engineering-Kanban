@@ -137,5 +137,19 @@ namespace Presentation.ViewModel
             }
 
         }
+
+        internal void Logout()
+        {
+            try
+            {
+                controller.Logout(user.Email);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Cannot Logout. " + e.Message);
+            }
+        }
+
+
     }
 }

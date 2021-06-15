@@ -80,6 +80,15 @@ namespace Presentation.View
             viewModel.MoveColumnRight();
         }
 
+        private void LogOut_Button_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.Logout();
+            this.Hide();
+            MainWindow mainView = new MainWindow();
+            mainView.Show();
+            this.Close();
+        }
+
         //private void ListBox_SelectionChanged(object sender, RoutedEventArgs e)
         //{
         //    var t = (ListBox)sender;

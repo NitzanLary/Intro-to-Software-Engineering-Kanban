@@ -276,6 +276,10 @@ namespace Presentation.Model
                 ObservableCollection<TaskModel> tasks = new ObservableCollection<TaskModel>();
                 foreach (Task t in c.tasks)
                 {
+                    //NEED TO UNCOMMENT AFTER FIXING THE BUG!!!!!!!!!!!
+                    //TaskModel temp_task = this.AddTask(userEmail, t.creator, t.boardName, t.Title, t.Description, t.DueDate, t.CreationTime, t.emailAssignee);
+                    //tasks.Add(temp_task);
+                    //NEED TO DELETE THIS LINE 283
                     tasks.Add(new TaskModel(this, t.Title, t.Description, t.DueDate, userEmail, t.CreationTime, t.emailAssignee, t.boardName, t.creator, t.columnOrdinal));
                 }
                 //TODO!!!!!!!! NEED TO CHANGE TO REAL NAME!!!!!!!!!!!!!!!!!@@@@@@@@@@@@@@@ <--------

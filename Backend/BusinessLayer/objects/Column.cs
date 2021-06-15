@@ -147,6 +147,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                     AddTask(task);
             else throw new ArgumentOutOfRangeException("tasks exceeded the limit");
         }
+        internal void Remove()
+        {
+            DTO.Delete();
+        }
 
     }
 }

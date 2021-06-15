@@ -33,7 +33,7 @@ namespace Presentation.View
         }
 
         //Change function name and dependencies to Logout_Click
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void LogOut_Button_Click(object sender, RoutedEventArgs e)
         {
             viewModel.Logout();
             this.Hide();

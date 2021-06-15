@@ -16,7 +16,7 @@
                 <Button Content="Search" HorizontalAlignment="Left" Margin="4,125,0,0" VerticalAlignment="Top" Width="62"/>
                 <Button Content="Back" HorizontalAlignment="Left" Margin="83,125,0,0" VerticalAlignment="Top" Width="62" Click="Back_Button_Click"/>
                 <Button Content="sort by due date" HorizontalAlignment="Center" Margin="0,159,0,0" VerticalAlignment="Top" Width="142"/>
-                <Button Content="Logout" HorizontalAlignment="Center" Margin="0,21,0,0" VerticalAlignment="Top" Width="118" />
+                <Button Content="Logout" HorizontalAlignment="Center" Margin="0,21,0,0" VerticalAlignment="Top" Width="118" Click="LogOut_Button_Click" />
             </Grid>
         </Border>
         <Border BorderThickness="1" CornerRadius="10" BorderBrush="Black" Margin="795,10,10,10" Background="SkyBlue">
@@ -37,10 +37,10 @@
                     <Label Content="Column Settings" FontSize="22" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="222,528,0,0" VerticalAlignment="Top"/>
                     <Button Content="New Column" HorizontalAlignment="Left" Margin="31,621,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="New_Column_Button_Click"/>
                     <Button Content="New Task" HorizontalAlignment="Left" Margin="31,572,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="New_Task_Button_Click"/>
-                    <Button Content="Edit Column" HorizontalAlignment="Left" Margin="224,572,0,0" VerticalAlignment="Top" Width="171" Height="29"/>
-                    <Button Content="Move Right  -->" HorizontalAlignment="Left" Margin="427,572,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="Move_Right_Button_Click"/>
-                    <Button Content="Remove Column" HorizontalAlignment="Left" Margin="224,621,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="Remove_Column_Button_Click"/>
-                    <Button Content="&lt;--  Move Left" HorizontalAlignment="Left" Margin="427,621,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="Move_Left_Button_Click"/>
+                    <Button Content="Edit Column" HorizontalAlignment="Left" Margin="224,572,0,0" VerticalAlignment="Top" Width="171" Height="29" IsEnabled="{Binding EnableForward, Mode=OneWay}"/>
+                    <Button Content="Move Right  -->" HorizontalAlignment="Left" Margin="427,572,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="Move_Right_Button_Click" IsEnabled="{Binding EnableForward, Mode=OneWay}"/>
+                    <Button Content="Remove Column" HorizontalAlignment="Left" Margin="224,621,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="Remove_Column_Button_Click" IsEnabled="{Binding EnableForward, Mode=OneWay}" />
+                    <Button Content="&lt;--  Move Left" HorizontalAlignment="Left" Margin="427,621,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="Move_Left_Button_Click" IsEnabled="{Binding EnableForward, Mode=OneWay}"/>
 
                 </Grid>
             </Grid>
