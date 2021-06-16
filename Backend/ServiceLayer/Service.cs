@@ -403,23 +403,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 WriteToLog(r2, "GetBoardNames finished successfully");
                 return r2;
             });
-
-
-            //try
-            //{
-            //    Response r = IsLoggedIn(userEmail);
-            //    if (r.ErrorOccured)
-            //        return Response<IList<String>>.FromError(r.ErrorMessage);
-            //    Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetBoardNames(userEmail));
-            //    if (r2.ErrorOccured)
-            //        return Response<IList<String>>.FromError(r2.ErrorMessage);
-            //    WriteToLog(r2, "GetBoardNames finished successfully");
-            //    return r2;
-            //}
-            //catch (Exception e)
-            //{
-            //    return Response<IList<String>>.FromError(e.Message);
-            //}
         }
 
         public Response<IList<String>> GetMyBoardNames(string userEmail)
@@ -432,22 +415,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 WriteToLog(r2, "GetMyBoardNames finished successfully");
                 return r2;
             });
-
-            //try
-            //{
-            //    Response r = IsLoggedIn(userEmail);
-            //    if (r.ErrorOccured)
-            //        return Response<IList<String>>.FromError(r.ErrorMessage);
-            //    Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetMyBoardNames(userEmail));
-            //    if (r2.ErrorOccured)
-            //        return Response<IList<String>>.FromError(r2.ErrorMessage);
-            //    WriteToLog(r2, "GetMyBoardNames finished successfully");
-            //    return r2;
-            //}
-            //catch (Exception e)
-            //{
-            //    return Response<IList<String>>.FromError(e.Message);
-            //}
         }
 
         public Response<IList<String>> GetBoardIMemberOfNames(string userEmail)
@@ -460,22 +427,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 WriteToLog(r2, "GetBoardIMemberOfNames finished successfully");
                 return r2;
             });
-
-            //try
-            //{
-            //    Response r = IsLoggedIn(userEmail);
-            //    if (r.ErrorOccured)
-            //        return Response<IList<String>>.FromError(r.ErrorMessage);
-            //    Response<IList<String>> r2 = Response<IList<String>>.FromBLResponse(boardController.GetBoardIMemberOfNames(userEmail));
-            //    if (r2.ErrorOccured)
-            //        return Response<IList<String>>.FromError(r2.ErrorMessage);
-            //    WriteToLog(r2, "GetBoardIMemberOfNames finished successfully");
-            //    return r2;
-            //}
-            //catch (Exception e)
-            //{
-            //    return Response<IList<String>>.FromError(e.Message);
-            //}
         }
 
         public Response<Objects.Board> GetBoard(string userEmail, string creatorEmail, string boardName)
@@ -489,23 +440,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 Objects.Board board = new Objects.Board(r2.Value);
                 return Response<Objects.Board>.FromValue(board);
             });
-
-            //try
-            //{
-            //    Response r = IsLoggedIn(userEmail);
-            //    if (r.ErrorOccured)
-            //        return Response<Objects.Board>.FromError(r.ErrorMessage);
-            //    Response<Board> r2 = Response<Board>.FromBLResponse(boardController.GetBoard(userEmail, creatorEmail, boardName));
-            //    if (r2.ErrorOccured)
-            //        return Response<Objects.Board>.FromError(r2.ErrorMessage);
-            //    WriteToLog(r2, "GetBoard finished successfully");
-            //    Objects.Board board = new Objects.Board(r2.Value);
-            //    return Response<Objects.Board>.FromValue(board);
-            //}
-            //catch (Exception e)
-            //{
-            //    return Response<Objects.Board>.FromError(e.Message);
-            //}
         }
 
 
@@ -522,34 +456,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 WriteToLog(returned, $"getColumns finished successfully");
                 return Response<IList<Objects.Column>>.FromValue(returned.Value.Select(c => new Objects.Column(c)).ToList());
             });
-
-            //try
-            //{
-            //    log.Info($"{userEmail} is Trying to get all columns from board {boardName}");
-            //    Response r = IsLoggedIn(userEmail);
-            //    if (r.ErrorOccured)
-            //        return Response<IList<Objects.Column>>.FromError(r.ErrorMessage);
-            //    Response<IList<BusinessLayer.Column>> returned = Response<IList<BusinessLayer.Column>>.FromBLResponse(boardController.getColumns(userEmail, creatorEmail, boardName));
-            //    if (returned.ErrorOccured)
-            //    {
-            //        return Response<IList<Objects.Column>>.FromError(returned.ErrorMessage);
-            //    }
-            //    WriteToLog(returned, $"getColumns finished successfully");
-            //    return Response<IList<Objects.Column>>.FromValue(returned.Value.Select(c => new Objects.Column(c)).ToList());
-            //}
-            //catch (Exception e)
-            //{
-            //    return Response<IList<Objects.Column>>.FromError(e.Message);
-            //}
         }
 
 
 
-
-
         // ************ New code starts here ***************
-
-
 
 
 
@@ -569,20 +480,6 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 log.Info($"{userEmail} is Trying to add new column to board {boardName}");
                 return new Response(boardController.AddColumn(userEmail, creatorEmail, boardName, columnOrdinal, columnName));
             });
-
-            //try
-            //{
-            //    log.Info($"{userEmail} is Trying to add new column to board {boardName}");
-            //    Response r = IsLoggedIn(userEmail);
-            //    if (r.ErrorOccured)
-            //        return new Response(r.ErrorMessage);
-            //    boardController.addColumn()
-            //}
-            //catch (Exception e)
-            //{
-            //    return Response<IList<Objects.Column>>.FromError(e.Message);
-            //}
-            //throw new NotImplementedException();
         }
 
 
@@ -659,7 +556,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
         private Response IsLoggedIn(string email)
         {
-            try
+            return TryAndApply(() =>
             {
                 Response<bool> r = Response<bool>.FromBLResponse(userController.isLoggedIn(email));
                 if (r.ErrorOccured)
@@ -676,11 +573,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 }
 
                 return new Response();
-            }
-            catch (Exception e)
-            {
-                return Response<User>.FromError(e.Message);
-            }
+            });
         }
 
         public Response IsCreator(string userEmail, string boardName)
@@ -702,11 +595,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns> A response of type T </returns>
         private Response<T> TryAndApplyT<T>(Func<Response<T>> func)
         {
+            return func();
             //try
             //{
-                return func();
+            //    return func();
             //}
-            //catch (Exception e)
+            //catch(Exception e)
             //{
             //    return Response<T>.FromError(e.Message);
             //}

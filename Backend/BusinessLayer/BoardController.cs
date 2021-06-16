@@ -41,23 +41,32 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         // pre condition: members were intiialized
         internal MFResponse LoadData()
         {
-            try
+            List<BoardDTO> dtos = new BoardDALController().SelectAllBoards();
+            foreach (BoardDTO boardDTO in dtos)
             {
-                List<BoardDTO> dtos = new BoardDALController().SelectAllBoards();
-                foreach (BoardDTO boardDTO in dtos)
-                {
-                    Board board = new Board(boardDTO);
-                    boardDTO.BoardMembers.ForEach((user) => members[user].Add(board));
-                    if (!boards.ContainsKey(boardDTO.Creator))
-                        boards.Add(boardDTO.Creator, new Dictionary<string, Board>());
-                    boards[boardDTO.Creator].Add(board.Name, board);
-                }
-                
+                Board board = new Board(boardDTO);
+                boardDTO.BoardMembers.ForEach((user) => members[user].Add(board));
+                if (!boards.ContainsKey(boardDTO.Creator))
+                    boards.Add(boardDTO.Creator, new Dictionary<string, Board>());
+                boards[boardDTO.Creator].Add(board.Name, board);
             }
-            catch (Exception e)
-            {
-                return new MFResponse(e.Message);
-            }
+            //try
+            //{
+            //    List<BoardDTO> dtos = new BoardDALController().SelectAllBoards();
+            //    foreach (BoardDTO boardDTO in dtos)
+            //    {
+            //        Board board = new Board(boardDTO);
+            //        boardDTO.BoardMembers.ForEach((user) => members[user].Add(board));
+            //        if (!boards.ContainsKey(boardDTO.Creator))
+            //            boards.Add(boardDTO.Creator, new Dictionary<string, Board>());
+            //        boards[boardDTO.Creator].Add(board.Name, board);
+            //    }
+
+            //}
+            //catch (Exception e)
+            //{
+            //    return new MFResponse(e.Message);
+            //}
             return new MFResponse();
         }
 
@@ -209,14 +218,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             MFResponse<Task> task = b.AddTask(dueDate, title, description, userEmail);
             if (!task.ErrorOccured)
             {
-                try
-                {
-                    task.Value.AttachDto(creatorEmail, boardName);
-                }
-                catch (Exception e)
-                {
-                    return MFResponse<Task>.FromError(e.Message);
-                }
+                task.Value.AttachDto(creatorEmail, boardName);
+                //try
+                //{
+                //    task.Value.AttachDto(creatorEmail, boardName);
+                //}
+                //catch(Exception e)
+                //{
+                //    return MFResponse<Task>.FromError(e.Message);
+                //}
             }
             return task;
         }
@@ -238,15 +248,17 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Board b = boards[creatorEmail][boardName];
             if (columnOrdinal >= b.Columns.Count || columnOrdinal < 0)
                 return MFResponse<Task>.FromError("there is no such column number");
-            try
-            {
-                Task t = b.Columns[columnOrdinal].GetTask(taskId);
-                return MFResponse<Task>.FromValue(t);
-            }
-            catch (Exception e)
-            {
-                return MFResponse<Task>.FromError($"coldn't find task id {taskId} in email {userEmail} | board {boardName} | column {columnOrdinal}\n{e.Message}");
-            }
+            Task t = b.Columns[columnOrdinal].GetTask(taskId);
+            return MFResponse<Task>.FromValue(t);
+            //try
+            //{
+            //    Task t = b.Columns[columnOrdinal].GetTask(taskId);
+            //    return MFResponse<Task>.FromValue(t);
+            //}
+            //catch(Exception e)
+            //{
+            //    return MFResponse<Task>.FromError($"coldn't find task id {taskId} in email {userEmail} | board {boardName} | column {columnOrdinal}\n{e.Message}");
+            //}
 
         }
 
@@ -276,14 +288,15 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Board b = boards[creatorEmail][boardName];
             if (columnOrdinal == b.Columns.Count - 1)
                 return new MFResponse("task that is done, cannot be change");
-            try
-            {
-                updateFunc(res.Value);
-            }
-            catch (Exception e)
-            {
-                return new MFResponse(e.Message);
-            }
+            updateFunc(res.Value);
+            //try
+            //{
+            //    updateFunc(res.Value);
+            //}
+            //catch(Exception e)
+            //{
+            //    return new MFResponse(e.Message);
+            //}
             return new MFResponse();
         }
         /// <summary>
@@ -382,17 +395,21 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 boards.Add(email, new Dictionary<string, Board>());
             if (boards[email].ContainsKey(name))
                 return new MFResponse($"user {email} already has board named {name}");
-            try
-            {
-                Board board = new Board(name, email);
-                boards[email].Add(name, board);
-                members[email].Add(board);
-            }
-            catch (Exception e)
-            {
-                return new MFResponse(e.Message);
-            }
 
+            Board board = new Board(name, email);
+            boards[email].Add(name, board);
+            members[email].Add(board);
+            //try
+            //{
+            //    Board board = new Board(name, email);
+            //    boards[email].Add(name, board);
+            //    members[email].Add(board);
+            //}
+            //catch(Exception e)
+            //{
+            //    return new MFResponse(e.Message);
+            //}
+            
             return new MFResponse();
         }
 
@@ -427,14 +444,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         private MFResponse RemoveBoardHelper(string creatorEmail, string boardName)
         {
             Board board = boards[creatorEmail][boardName];
-            try
-            {
-                board.DTO.Delete();
-            }
-            catch (Exception e)
-            {
-                return new MFResponse(e.Message);
-            }
+            
+            board.DTO.Delete();
+            //try
+            //{
+            //    board.DTO.Delete();
+            //}
+            //catch(Exception e)
+            //{
+            //    return new MFResponse(e.Message);
+            //}
 
             boards[creatorEmail].Remove(boardName);
             foreach (KeyValuePair<string, HashSet<Board>> entry in members)
@@ -486,14 +505,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return new MFResponse("The user is already joined to this board");
             }
             Board b = boards[creatorEmail][boardName];
-            try
-            {
-                b.DTO.InsertNewBoardMember(userEmail);
-            }
-            catch (Exception e)
-            {
-                return new MFResponse(e.Message);
-            }
+            
+            b.DTO.InsertNewBoardMember(userEmail);
+            //try
+            //{
+            //    b.DTO.InsertNewBoardMember(userEmail);
+            //}
+            //catch(Exception e)
+            //{
+            //    return new MFResponse(e.Message);
+            //}
             members[userEmail].Add(b);
             return new MFResponse();
         }
@@ -600,44 +621,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Board b = boards[creatorEmail][boardName];
             return b.getColumns();
         }
-
-
-        //private Response<Task> TaskGetter(string email, string creatorEmail, string boardName, int columnOrdinal, int taskId) // todo - update in the diagram
-        //{
-        //    Response validArguments = AllBoardsContainsBoardByEmail(email, boardName);
-        //    if (validArguments.ErrorOccured)
-        //        return Response<Task>.FromError(validArguments.ErrorMessage);
-        //    Board b = boards[email][boardName];
-        //    Response<Dictionary<int, Task>> res = b.getColumn(columnOrdinal);
-        //    if (res.ErrorOccured)
-        //        return Response<Task>.FromError(res.ErrorMessage);
-        //    Dictionary<int, Task> col = res.Value;
-        //    if (!col.ContainsKey(taskId))
-        //        return Response<Task>.FromError($"coldn't find task id {taskId} in email {email} | board {boardName} | column {columnOrdinal}");
-        //    return Response<Task>.FromValue(col[taskId]);
-        //}
-
-
-        /// <summary>
-        /// Check if user has a board in a given name, also inserting a new email address to all boards collections in case its missing
-        /// </summary>
-        /// <param name="userEmail">The email address of the user, must be logged in</param>
-        /// <param name="creatorEmail">The email address of the board's creator user</param>
-        /// <param name="boardName">The name of the board</param>
-        /// <returns>A response object. The response should contain a error message in case of missing board for user or invalid argments</returns
-        // TODO: check if creatorEmail is valid too
-        //private Response AllBoardsContainsBoardByEmail(string userEmail, string creatorEmail, string boardName) 
-        //{
-        //    if (userEmail == null || creatorEmail == null || boardName == null || userEmail.Length == 0 || creatorEmail.Length == 0 || boardName.Length == 0)
-        //        return new Response("null value given");
-        //    if (!boards.ContainsKey(userEmail)) // TODO: ask Asaf why this is neccessary 
-        //        boards.Add(userEmail, new Dictionary<string, Board>());
-        //    if (!boards[userEmail].ContainsKey(boardName))
-        //        //return Response<bool>.FromError($"user {email} doesn't possess board name {boardName}");
-        //        return new Response($"user {email} doesn't possess board name {boardName}");
-        //    return new Response();
-        //}
-
 
     }
 }
