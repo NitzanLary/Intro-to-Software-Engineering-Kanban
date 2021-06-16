@@ -28,7 +28,11 @@ namespace Presentation.ViewModel
             {
                 _selectedTask = value;
                 //SelectedColumn = Board.Columns[_selectedTask.ColumnOrdinal];
-                EnableForward = value != null;
+                //EnableForward = value != null;
+                if (value != null && controller.IsCreator(user.Email, Board.Name))
+                    EnableForward = true;
+                EnableForward2 = value != null;
+
                 RaisePropertyChanged("SelectedTask");
             }
         }
@@ -43,7 +47,11 @@ namespace Presentation.ViewModel
             set
             {
                 _selectedColumn = value;
-                EnableForward = value != null/* && controller.IsCreator(user.Email, Board.Name)*/;
+
+                if (value != null && controller.IsCreator(user.Email, Board.Name))
+                    EnableForward = true;
+                
+                //EnableForward = value != null && controller.IsCreator(user.Email, Board.Name);
                 RaisePropertyChanged("SelectedColumn");
             }
         }
@@ -62,6 +70,17 @@ namespace Presentation.ViewModel
             {
                 _enableForward = value;
                 RaisePropertyChanged("EnableForward");
+            }
+        }
+
+        private bool _enableForward2 = false;
+        public bool EnableForward2
+        {
+            get => _enableForward2;
+            private set
+            {
+                _enableForward2 = value;
+                RaisePropertyChanged("EnableForward2");
             }
         }
 
@@ -111,27 +130,35 @@ namespace Presentation.ViewModel
 
         public void AdvanceTask()
         {
-            try
-            {
+            //try
+            //{
                 //controller.AdvanceTask(user.Email, Board.Creator, Board.Name, SelectedColumn.ColumnOrdinal, SelectedTask.TaskID);
                 if (SelectedTask.ColumnOrdinal == 0)
                     user.InProgressTasks.Add(SelectedTask);
-                //if (SelectedTask.ColumnOrdinal == Board.Columns.Count - 1)
-                //    user.InProgressTasks.Remove(SelectedTask);
+            //if (SelectedTask.ColumnOrdinal == Board.Columns.Count - 1)
+            //    user.InProgressTasks.Remove(SelectedTask);
+            if (SelectedColumn.ColumnOrdinal != Board.Columns.Count - 1)
+            {
                 Board.Columns[SelectedColumn.ColumnOrdinal + 1].Tasks.Add(SelectedTask);
                 SelectedTask.ColumnOrdinal = SelectedTask.ColumnOrdinal + 1;
                 SelectedColumn.Tasks.Remove(SelectedTask);
-                
-                
-
                 MessageBox.Show("Task Advanced!");
-
             }
-            catch (Exception e)
+            else
             {
-                MessageBox.Show("Cannot Advance This Task. " + e.Message);
-
+                MessageBox.Show("Cannot Advance Done Task");
             }
+                
+                
+
+                
+
+            //}
+            //catch (Exception e)
+            //{
+            //    MessageBox.Show("Cannot Advance This Task. " + e.Message);
+
+            //}
         }
 
         public void MoveColumnLeft()

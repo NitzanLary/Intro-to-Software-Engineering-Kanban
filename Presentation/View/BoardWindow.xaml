@@ -35,7 +35,7 @@
             <Grid>
                 <Grid>
                     <Label Content="Column Settings" FontSize="22" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="222,528,0,0" VerticalAlignment="Top"/>
-                    <Button Content="New Column" HorizontalAlignment="Left" Margin="23,621,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="New_Column_Button_Click"  IsEnabled="{Binding EnableForward, Mode=OneWay}"/>
+                    <Button Content="New Column" HorizontalAlignment="Left" Margin="23,621,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="New_Column_Button_Click" />
                     <Button Content="New Task" HorizontalAlignment="Left" Margin="23,572,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="New_Task_Button_Click"/>
                     <Button Content="Edit Column" HorizontalAlignment="Left" Margin="206,572,0,0" VerticalAlignment="Top" Width="170" Height="29" Click="Edit_Column_Button_Click" IsEnabled="{Binding EnableForward, Mode=OneWay}"/>
                     <Button Content="Move Right  -->" HorizontalAlignment="Left" Margin="389,572,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="Move_Right_Button_Click" IsEnabled="{Binding EnableForward, Mode=OneWay}"/>
@@ -109,16 +109,16 @@
                 <TextBlock HorizontalAlignment="Left" Margin="92,306,0,0" Text="{Binding SelectedTask.EmailAssignee}" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="155" Background="WhiteSmoke"/>
                 <TextBlock HorizontalAlignment="Left" Margin="92,345,0,0" Text="{Binding SelectedTask.CreationTime}" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="156" Background="WhiteSmoke"/>
                 <TextBlock HorizontalAlignment="Left" Margin="91,384,0,0" Text="{Binding SelectedTask.DueDate}" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="156" Background="WhiteSmoke"/>
-                <Button Content="Assign Task To User" HorizontalAlignment="Center" Margin="0,577,0,0" VerticalAlignment="Top" Width="236" Height="28" Click="Assign_Task_Button_Click" IsEnabled="{Binding EnableForward, Mode=OneWay}"/>
+                <Button Content="Assign Task To User" HorizontalAlignment="Center" Margin="0,577,0,0" VerticalAlignment="Top" Width="236" Height="28" Click="Assign_Task_Button_Click" IsEnabled="{Binding EnableForward2, Mode=OneWay}"/>
 
                 <Label Content="Assignee Email:" HorizontalAlignment="Left" Margin="0,303,0,0" VerticalAlignment="Top"/>
                 <Label Content="Creation Date:" HorizontalAlignment="Left" Margin="0,342,0,0" VerticalAlignment="Top"/>
                 <Label Content="Due Date:" HorizontalAlignment="Left" Margin="1,379,0,0" VerticalAlignment="Top"/>
                 <Label Content="Task Settings" HorizontalAlignment="Left" Margin="69,471,0,0" VerticalAlignment="Top" FontSize="19" FontWeight="SemiBold"/>
-                <Button Content="Advance" HorizontalAlignment="Center" Margin="0,511,0,0" VerticalAlignment="Top" Width="237" Height="28" Click="Advance_Task_Button_Click" IsEnabled="{Binding EnableForward, Mode=OneWay}" />
+                <Button Content="Advance" HorizontalAlignment="Center" Margin="0,511,0,0" VerticalAlignment="Top" Width="237" Height="28" Click="Advance_Task_Button_Click" IsEnabled="{Binding EnableForward2, Mode=OneWay}" />
 
 
-                <Button Content="Change Task DueDate" HorizontalAlignment="Center" Margin="0,544,0,0" VerticalAlignment="Top" Width="236" Height="28" Click="Edit_Task_DueDate_Button_Click" IsEnabled="{Binding EnableForward, Mode=OneWay}"/>
+                <Button Content="Change Task DueDate" HorizontalAlignment="Center" Margin="0,544,0,0" VerticalAlignment="Top" Width="236" Height="28" Click="Edit_Task_DueDate_Button_Click" IsEnabled="{Binding EnableForward2, Mode=OneWay}"/>
                 <TextBlock HorizontalAlignment="Left" Margin="92,423,0,0" Text="{Binding SelectedTask.Creator}" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="156" Background="WhiteSmoke"/>
                 <Label Content="Creator Email:" HorizontalAlignment="Left" Margin="1,418,0,0" VerticalAlignment="Top"/>
 
