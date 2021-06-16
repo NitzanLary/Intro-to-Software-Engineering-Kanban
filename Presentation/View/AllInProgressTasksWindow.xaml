@@ -33,8 +33,8 @@
                         </ListBox>
                         <Button Content="Back" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="63" Click="Back_Button_Click"/>
                         <TextBlock HorizontalAlignment="Left" Background="WhiteSmoke" Margin="501,49,0,0" Text="{Binding Path=SelectedTask.DueDate}" FontWeight="SemiBold" TextWrapping="Wrap" FontSize="18" VerticalAlignment="Top" Height="32" Width="197"/>
-                        <TextBlock HorizontalAlignment="Left" Background="WhiteSmoke" Margin="501,144,0,0" Text="{Binding Path=SelectedTask.Description}" TextWrapping="Wrap" VerticalAlignment="Top" Height="181" Width="197"/>
-                        <TextBlock HorizontalAlignment="Left" Background="WhiteSmoke" Margin="501,96,0,0" Text="{Binding SelectedTask.Title}" TextWrapping="Wrap" FontWeight="SemiBold" FontSize="16" VerticalAlignment="Top" Height="32" Width="197"/>
+                        <TextBox HorizontalAlignment="Left" Background="WhiteSmoke" Margin="501,144,0,0" Text="{Binding Path=SelectedTask.Description}" TextWrapping="Wrap" VerticalAlignment="Top" Height="181" Width="197"/>
+                        <TextBox HorizontalAlignment="Left" Background="WhiteSmoke" Margin="501,96,0,0" Text="{Binding SelectedTask.Title}" TextWrapping="Wrap" FontWeight="SemiBold" FontSize="16" VerticalAlignment="Top" Height="32" Width="197"/>
                         <Label Content="Due Date"  FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="561,18,0,0" VerticalAlignment="Top"/>
                         <Border BorderThickness="0.5" CornerRadius="1" Background="WhiteSmoke" BorderBrush="Black" Margin="10,49,577,0" Height="276" VerticalAlignment="Top"/>
                         <Grid/>

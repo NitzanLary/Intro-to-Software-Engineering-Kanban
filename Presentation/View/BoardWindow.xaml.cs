@@ -105,7 +105,12 @@ namespace Presentation.View
             assignTaskWindow.Show();
         }
 
-        
+        private void Sort_By_DueDate_Button_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.SortTasksByDueDate();
+        }
+
+
 
         //private void ListBox_SelectionChanged(object sender, RoutedEventArgs e)
         //{

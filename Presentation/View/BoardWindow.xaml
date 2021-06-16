@@ -15,7 +15,7 @@
             <Grid>
                 <Button Content="Search" HorizontalAlignment="Left" Margin="4,125,0,0" VerticalAlignment="Top" Width="62"/>
                 <Button Content="Back" HorizontalAlignment="Left" Margin="83,125,0,0" VerticalAlignment="Top" Width="62" Click="Back_Button_Click"/>
-                <Button Content="sort by due date" HorizontalAlignment="Center" Margin="0,159,0,0" VerticalAlignment="Top" Width="142"/>
+                <Button Content="sort by due date" HorizontalAlignment="Center" Margin="0,159,0,0" VerticalAlignment="Top" Width="142" Click="Sort_By_DueDate_Button_Click" IsEnabled="{Binding EnableForward, Mode=OneWay}" />
                 <Button Content="Logout" HorizontalAlignment="Center" Margin="0,21,0,0" VerticalAlignment="Top" Width="118" Click="LogOut_Button_Click" />
             </Grid>
         </Border>

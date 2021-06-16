@@ -1,6 +1,7 @@
 ﻿using Presentation.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -152,6 +153,12 @@ namespace Presentation.ViewModel
             {
                 MessageBox.Show("Cannot Logout. " + e.Message);
             }
+        }
+
+        internal void SortTasksByDueDate()
+        {
+            //Not Ideal, need to find a way to sort this list IN PLACE.
+            SelectedColumn.Tasks = new ObservableCollection<TaskModel>(SelectedColumn.Tasks.OrderBy(d => d.DueDate).ToList());
         }
 
 
