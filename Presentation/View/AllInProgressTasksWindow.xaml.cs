@@ -53,5 +53,18 @@ namespace Presentation.View
         {
             viewModel.SortTasksByDueDate();
         }
+
+        private void Search_Button_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.FilterTasks();
+        }
+
+        private void Edit_Task_DueDate_Button_Click(object sender, RoutedEventArgs e)
+        {
+            TaskModel task = viewModel.SelectedTask;
+            ChangeTaskDueDateWindow changeTaskDueDateWindow = new ChangeTaskDueDateWindow(user, task);
+            changeTaskDueDateWindow.Show();
+
+        }
     }
 }

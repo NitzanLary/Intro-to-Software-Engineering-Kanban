@@ -31,6 +31,7 @@ namespace Presentation.ViewModel
             {
                 _selectedMyBoard = value;
                 EnableForward = value != null;
+                //SelectedAssignedBoard = null;
                 RaisePropertyChanged("SelectedMyBoard");
             }
         }
@@ -47,6 +48,7 @@ namespace Presentation.ViewModel
             {
                 _selectedAssignedBoard = value;
                 EnableForward2 = value != null;
+                //SelectedMyBoard = null;
                 RaisePropertyChanged("SelectedAssignedBoard");
             }
         }

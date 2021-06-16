@@ -93,7 +93,7 @@ namespace Presentation.View
         private void Edit_Task_DueDate_Button_Click(object sender, RoutedEventArgs e)
         {
             TaskModel task = viewModel.SelectedTask;
-            ChangeTaskDueDateWindow changeTaskDueDateWindow = new ChangeTaskDueDateWindow(user, Board, task);
+            ChangeTaskDueDateWindow changeTaskDueDateWindow = new ChangeTaskDueDateWindow(user, task);
             changeTaskDueDateWindow.Show();
 
         }

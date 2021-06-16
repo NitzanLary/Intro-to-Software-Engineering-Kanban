@@ -141,5 +141,26 @@ namespace Presentation.Model
                 return new SolidColorBrush(EmailAssignee == UserEmail ? Colors.Blue : Colors.Transparent);
             }
         }
+
+        public SolidColorBrush BackgroundColor
+        {
+            get
+            {
+                if(DateTime.Now > DueDate)
+                {
+                    return new SolidColorBrush(Colors.Red);
+                }
+                else
+                {
+                    double res = ((DateTime.Now.Subtract(CreationTime)).Days / (DueDate.Subtract(CreationTime).Days));
+                    Boolean timeElapsedOver75Per = res > 0.75;
+                    if(timeElapsedOver75Per){
+                        return new SolidColorBrush(Colors.Orange);
+                    }
+                    return new SolidColorBrush(Colors.Transparent);
+                }
+               
+            }
+        }
     }
 }

@@ -22,10 +22,10 @@ namespace Presentation.View
     public partial class ChangeTaskDueDateWindow : Window
     {
         private ChangeTaskDueDateViewModel viewModel;
-        public ChangeTaskDueDateWindow(UserModel user, BoardModel board, TaskModel task)
+        public ChangeTaskDueDateWindow(UserModel user, TaskModel task)
         {
             InitializeComponent();
-            this.viewModel = new ChangeTaskDueDateViewModel(user, board, task);
+            this.viewModel = new ChangeTaskDueDateViewModel(user, task);
             this.DataContext = viewModel;
         }
 
