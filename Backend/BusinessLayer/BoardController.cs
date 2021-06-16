@@ -10,7 +10,7 @@ using IntroSE.Kanban.Backend.DataAccessLayer.DTOs;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer
 {
-    class BoardController
+    class BoardController : IUserController
     {
 
         // email creator            boardName 

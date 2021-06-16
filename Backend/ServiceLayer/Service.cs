@@ -6,7 +6,9 @@ using log4net;
 using System.Reflection;
 using log4net.Config;
 using System.IO;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("KanbanTests")]
 namespace IntroSE.Kanban.Backend.ServiceLayer
 {
     public class Service

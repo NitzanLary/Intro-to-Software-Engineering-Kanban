@@ -68,6 +68,11 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return Regex.IsMatch(emailaddress, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
         }
 
+        public MFResponse<Password> createPassword(string password)
+        {
+            return pc.createPassword(password);
+        }
+
         ///<summary>This method registers a new user to the system.</summary>
         ///<param name="email">the user e-mail address, used as the username for logging the system.</param>
         ///<param name="password">the user password.</param>
@@ -89,7 +94,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return new MFResponse(s);
             }
                  
-            MFResponse<Password> rPass = pc.createPassword(password);
+            MFResponse<Password> rPass = createPassword(password);
             if (rPass.ErrorOccured)
                 return rPass;
             try
