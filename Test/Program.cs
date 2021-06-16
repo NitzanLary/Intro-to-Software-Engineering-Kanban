@@ -21,7 +21,7 @@ namespace Test
             s.LoadData();
             //s.DeleteData();
             //Register();
-            Login();
+            //Login();
             //AddBoard();
             //JoinBoard();
             //JoinBoardPersistence();
