@@ -1,23 +1,31 @@
 using NUnit.Framework;
 using IntroSE.Kanban.Backend;
 using IntroSE.Kanban.Backend.ServiceLayer;
-using IntroSE.Kanban.Backend.ServiceLayer.Objects;
 using Moq;
 using IntroSE.Kanban.Backend.BusinessLayer;
+using IntroSE.Kanban.Backend.BusinessLayer.objects;
 
 namespace KanbanTests
 {
     public class Tests
     {
         Service service;
-        Mock<UserController> userCtrl;
-        Mock<IntroSE.Kanban.Backend.BusinessLayer.User> user;
+        UserController userCtrl;
+        Mock<IUser> user;
+        string email;
+        string password;
+
 
         [SetUp]
         public void Setup()
         {
             service = new Service();
-            userCtrl = new Mock<UserController>();
+            userCtrl = UserController.GetInstance();
+            email = "example@gmail.com";
+            password = "Aa12345";
+            user = new Mock<IUser>();
+            user.Setup(m => m.Email).Returns(email);
+            userCtrl.InsertExistingUser(user.Object);
         }
 
         [TearDown]
@@ -27,80 +35,57 @@ namespace KanbanTests
         }
 
         [Test]
-        public void Test1()
-        {
-            Assert.Pass();
-        }
-        public void AddTask_AddingNewTask_Success()
-        {
-            //
-            TearDown();
-            string u1 = "user1@gmail.com";
-            string p1 = "Aa1234";
-            string b1 = "board1";
-            string c1 = "column1";
-            string t1 = "task1";
-            service.Register(u1,p1);
-            service.AddBoard(u1, b1);
-            service.AddColumn(u1,u1,b1,2, c1);
-            service.AddTask(u1, u1, b1, t1, t1 + " desc", System.DateTime.Parse("05/20/2024"));
-            //
-            service = new Service();
-            service.LoadData();
-            //
-            Assert.AreEqual(b1, service.GetBoard(u1, u1, b1).Value.name);
-            Assert.AreEqual(c1, service.GetColumn(u1,u1,b1,0).Value.)
-        }
-        public void AddTask_AddingNewTaskToFullColumn_Fail()
-        {
-
-        }
-        public void RemoveTaskTest_RemoveExistingTask_Success()
-        {
-
-        }
-        public void RemoveTaskTest_RemoveInexistingTask_Fail()
-        {
-
-        }
-        public void UpdateTaskTest_UpdateTask()
-        {
-
-        }
         public void Login_LoginValidUser_Success()
         {
-            
-        }
-        public void Login_LoginInvalidUser_Fail()
-        {
+            //arrange
+            user.Setup(m => m.Login(password)).Returns(MFResponse<IUser>.FromValue(user.Object));
 
+            //act
+            MFResponse<IUser> res = userCtrl.Login(email, password);
+
+            //assert
+            Assert.IsFalse(res.ErrorOccured, "error occured while login legitimate user");
         }
+
+        [TestCase("xampl@gmail.com", "Aa12345")]
+        [TestCase(null, "Aa12345")]
+        [TestCase("example@gmail.com", null)]
+        public void Login_LoginInvalidUser_Fail(string givenEmail, string givenPassword)
+        {
+            //arrange
+            user.Setup(m => m.Login(password)).Returns(MFResponse<IUser>.FromValue(user.Object));
+
+            //act
+            MFResponse<IUser> res = userCtrl.Login(givenEmail, givenPassword);
+
+            //assert
+            Assert.IsTrue(res.ErrorOccured, "error did not occured while login invalid user");
+        }
+
         public void Logout_LogoutLoggedInUser_Success()
         {
             //arrange
-            string emailAdd = "example@gmail.com";
-            Password password = new Password("Aa12345");
-            userCtrl.Setup(m => m.IsValidEmail(emailAdd)).Returns(true);
-            userCtrl.Setup(m => m.createPassword(password.Password_)).Returns(MFResponse<Password>.FromValue(password));
-            userCtrl.Object.Register(emailAdd, password.Password_);
+            userCtrl.Register(email, password);
+
             //act
-            userCtrl.Object.Login(emailAdd, password.Password_);
+            userCtrl.Login(email, password);
+
             //assert
-            Assert.IsTrue(userCtrl.Object.Login(emailAdd, password.Password_).ErrorOccured);
+            Assert.IsFalse(userCtrl.Logout(email).ErrorOccured, "error occured while logout legitimate user");
         }
         public void Logout_LogoutLoggedOutUser_Fail()
         {
             //arrange
-            string emailAdd = "example@gmail.com";
-            Password password = new Password("Aa12345");
-            userCtrl.Setup(m => m.IsValidEmail(emailAdd)).Returns(true);
-            userCtrl.Setup(m => m.createPassword(password.Password_)).Returns(MFResponse<Password>.FromValue(password));
-            userCtrl.Object.Register(emailAdd, password.Password_);
+            string emailAdd = email;
+            Password pass = new Password(password);
+            userCtrl.Register(emailAdd, password);
+
             //act
-            userCtrl.Object.Login(emailAdd, password.Password_);
-            userCtrl.Object.Logout(emailAdd);
+            userCtrl.Login(emailAdd, password);
+            userCtrl.Logout(emailAdd);
+
             //assert
-            Assert.IsTrue(userCtrl.Object.Login(emailAdd, password.Password_).ErrorOccured);
+            Assert.IsTrue(userCtrl.Logout(emailAdd).ErrorOccured, "error did no occured while logouting logouted user");
 
         }
         [Test]
@@ -109,30 +94,26 @@ namespace KanbanTests
             // arrange
             string emailAdd = "example@gmail.com";
             Password password = new Password("Aa12345");
-            userCtrl.Setup(m => m.IsValidEmail(emailAdd)).Returns(true);
-            userCtrl.Setup(m => m.createPassword(password.Password_)).Returns(MFResponse<Password>.FromValue(password));
 
             //act
-            userCtrl.Object.Register(emailAdd, password.Password_);
+            userCtrl.Register(emailAdd, password.Password_);
 
             //assert
-            Assert.IsTrue(userCtrl.Object.Register(emailAdd, password.Password_).ErrorOccured);
+            Assert.IsTrue(userCtrl.Register(emailAdd, password.Password_).ErrorOccured, "Error didnt occured while register existing user");
         }
 
         [Test]
-        public void Resgister_RegisterIvalidInput_Fail()
+        public void Resgister_RegisterRegisteredUser_Fail()
         {
             // arrange
-            string emailAdd = "example@gmail.com";
-            Password password = new Password("Aa12345");
-            userCtrl.Setup(m => m.IsValidEmail(emailAdd)).Returns(true);
-            userCtrl.Setup(m => m.createPassword(password.Password_)).Returns(MFResponse<Password>.FromValue(password));
+            string emailAdd = "ample@gmail.com";
+            string pass = "Aa123456";
 
             //act
-            userCtrl.Object.Register(emailAdd, password.Password_);
+            userCtrl.Register(emailAdd, pass);
 
             //assert
-            Assert.IsTrue(userCtrl.Object.Register(emailAdd, password.Password_).ErrorOccured);
+            Assert.IsTrue(userCtrl.Register(emailAdd, pass).ErrorOccured, "shouldnt register registered user");
         }
 
         [Test]
@@ -141,14 +122,12 @@ namespace KanbanTests
             // arrange
             string emailAdd = "example@gmail.com";
             Password password = new Password("Aa12345");
-            userCtrl.Setup(m => m.IsValidEmail(emailAdd)).Returns(true);
-            userCtrl.Setup(m => m.createPassword(password.Password_)).Returns(MFResponse<Password>.FromValue(password));
 
             //act
-            userCtrl.Object.Register(emailAdd, password.Password_);
+            userCtrl.Register(emailAdd, password.Password_);
 
             //assert
-            Assert.IsFalse(userCtrl.Object.containsEmail(emailAdd).ErrorOccured);
+            Assert.IsFalse(userCtrl.containsEmail(emailAdd).ErrorOccured, "couldnt register a legit user");
         }
     }
 }

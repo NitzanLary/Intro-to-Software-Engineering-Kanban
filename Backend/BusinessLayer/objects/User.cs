@@ -1,4 +1,5 @@
-﻿using IntroSE.Kanban.Backend.DataAccessLayer;
+﻿using IntroSE.Kanban.Backend.BusinessLayer.objects;
+using IntroSE.Kanban.Backend.DataAccessLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IntroSE.Kanban.Backend.BusinessLayer
 {
-    class User
+    class User : IUser
     {
         
         private string email;
@@ -49,14 +50,14 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// </summary>
         /// <param name="password">The password of the user to log in</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-        public MFResponse<User> Login(string password)
+        public MFResponse<IUser> Login(string password)
         {
             if (!IsPasswordCorrect(password))
-                return MFResponse<User>.FromError("Incorrect Password");
+                return MFResponse<IUser>.FromError("Incorrect Password");
             if (isLoggedIn)
-                return MFResponse<User>.FromError("User is already loogged in");
+                return MFResponse<IUser>.FromError("User is already loogged in");
             IsLoggedIn = true;
-            return MFResponse<User>.FromValue(this);
+            return MFResponse<IUser>.FromValue(this);
         }
         
         public MFResponse addBoard(string boardName)
@@ -76,7 +77,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public MFResponse logout()
         {
             if (!isLoggedIn)
-                return MFResponse<User>.FromError("User is not loogged in");
+                return MFResponse<User>.FromError("User is not logged in");
             IsLoggedIn = false;
             return new MFResponse();
         }
