@@ -278,7 +278,8 @@ namespace Presentation.Model
             Response res = Service.IsCreator(userEmail, boardName);
             if (res.ErrorOccured)
             {
-                throw new Exception(res.ErrorMessage);
+                //throw new Exception(res.ErrorMessage);
+                return false;
             }
             return true;
         }
