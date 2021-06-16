@@ -61,16 +61,20 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         public MFResponse AdvanceTask(Task task, int columnOrdinal)
         {
             int taskId = task.ID;
-            try
-            {
-                Columns[columnOrdinal + 1].AddTask(task);
-                Columns[columnOrdinal].RemoveTask(task);
-                task.DTO.ColumnOrdinal++;
-            }
-            catch(Exception e)
-            {
-                return new MFResponse(e.Message);
-            }
+
+            Columns[columnOrdinal + 1].AddTask(task);
+            Columns[columnOrdinal].RemoveTask(task);
+            task.DTO.ColumnOrdinal++;
+            //try
+            //{
+            //    Columns[columnOrdinal + 1].AddTask(task);
+            //    Columns[columnOrdinal].RemoveTask(task);
+            //    task.DTO.ColumnOrdinal++;
+            //}
+            //catch(Exception e)
+            //{
+            //    return new MFResponse(e.Message);
+            //}
             return new MFResponse();
         }
 
@@ -99,14 +103,16 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         internal MFResponse<Task> AddTask(DateTime dueDate, string title, string description, string userEmail)
         {
             Task task;
-            try
-            {
-                task = Columns[0].AddTask(dueDate, title, description, userEmail);
-            }
-            catch(Exception a)
-            {
-                return MFResponse<Task>.FromError(a.Message);
-            }
+
+            task = Columns[0].AddTask(dueDate, title, description, userEmail);
+            //try
+            //{
+            //    task = Columns[0].AddTask(dueDate, title, description, userEmail);
+            //}
+            //catch(Exception a)
+            //{
+            //    return MFResponse<Task>.FromError(a.Message);
+            //}
             return MFResponse<Task>.FromValue(task);
         }
 
@@ -137,26 +143,40 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             if (Columns.Count <= 2)
                 return new MFResponse($"Can not remove any columns, the minimum that is possible is {Columns.Count}");
             Column srcCol = Columns[columnOrdinal];
-            try
-            {
-                Column destCol;
-                IList<Task> tasks = srcCol.Tasks;
 
-                if (columnOrdinal == 0)
-                    destCol = Columns[1];
-                else
-                    destCol = Columns[columnOrdinal - 1];
+            Column destCol;
+            IList<Task> tasks = srcCol.Tasks;
 
-                destCol.AddTasks(tasks); // throws an exeption if tasks exceeded the max limit
-                Columns.RemoveAt(columnOrdinal);
-                srcCol.Remove();
-                for (int i = columnOrdinal; i < Columns.Count; i++)
-                    Columns[i].ColumnOrdinal = i;
-            }
-            catch (Exception e)
-            {
-                return new MFResponse(e.Message);
-            }
+            if (columnOrdinal == 0)
+                destCol = Columns[1];
+            else
+                destCol = Columns[columnOrdinal - 1];
+
+            destCol.AddTasks(tasks); // throws an exeption if tasks exceeded the max limit
+            Columns.RemoveAt(columnOrdinal);
+            srcCol.Remove();
+            for (int i = columnOrdinal; i < Columns.Count; i++)
+                Columns[i].ColumnOrdinal = i;
+            //try
+            //{
+            //    Column destCol;
+            //    IList<Task> tasks = srcCol.Tasks;
+
+            //    if (columnOrdinal == 0)
+            //        destCol = Columns[1];
+            //    else
+            //        destCol = Columns[columnOrdinal - 1];
+
+            //    destCol.AddTasks(tasks); // throws an exeption if tasks exceeded the max limit
+            //    Columns.RemoveAt(columnOrdinal);
+            //    srcCol.Remove();
+            //    for (int i = columnOrdinal; i < Columns.Count; i++)
+            //        Columns[i].ColumnOrdinal = i;
+            //}
+            //catch (Exception e)
+            //{
+            //    return new MFResponse(e.Message);
+            //}
             return new MFResponse();
         }
 
@@ -222,34 +242,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                     Columns[i].ColumnOrdinal = i;
             return new MFResponse();
         }
-
-
-        //public Response advanceTask(int taskId, int columnOrd)
-        //{
-        //    if (!containsTask(taskId))
-        //        return new Response("Task dose not exist");
-        //    if (Columns[2].ContainsKey(taskId))
-        //        return new Response("Task is already done");
-        //    if (!Columns[columnOrd].ContainsKey(taskId))
-        //        return new Response("Task do not exist in this column");
-        //    if (Columns[0].ContainsKey(taskId))
-        //    {
-        //        if (Columns[1].Keys.Count == maxInProgress)
-        //            return new Response("Can not advance Task, 'In Progress' column got to its maximum limit");
-        //        Task task = Columns[0][taskId];
-        //        Columns[0].Remove(taskId);
-        //        Columns[1].Add(taskId, task);
-        //    }
-        //    else if (Columns[1].ContainsKey(taskId))
-        //    {
-        //        if (Columns[2].Keys.Count == MaxDone)
-        //            return new Response("Can not advance Task, 'done' column got to its maximum limit");
-        //        Task task = Columns[1][taskId];
-        //        Columns[1].Remove(taskId);
-        //        Columns[2].Add(taskId, task);
-        //    }
-        //    return new Response();
-        //}
 
     }
 }
