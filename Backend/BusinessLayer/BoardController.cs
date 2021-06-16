@@ -574,6 +574,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public MFResponse<IList<String>> GetMyBoardNames(string userEmail)
         {
+            if (!boards.ContainsKey(userEmail))
+                return MFResponse<IList<string>>.FromValue(new List<string>());
             return MFResponse<IList<String>>.FromValue(boards[userEmail].Select((b) => b.Key).ToList());
         }
 

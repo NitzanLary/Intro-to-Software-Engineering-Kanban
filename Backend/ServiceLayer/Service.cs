@@ -595,15 +595,14 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <returns> A response of type T </returns>
         private Response<T> TryAndApplyT<T>(Func<Response<T>> func)
         {
-            return func();
-            //try
-            //{
-            //    return func();
-            //}
-            //catch(Exception e)
-            //{
-            //    return Response<T>.FromError(e.Message);
-            //}
+            try
+            {
+                return func();
+            }
+            catch (Exception e)
+            {
+                return Response<T>.FromError(e.Message);
+            }
         }
 
         /// <summary> Same as TryAndApplyT method, but gets no generic type T in the Response. </summary>
