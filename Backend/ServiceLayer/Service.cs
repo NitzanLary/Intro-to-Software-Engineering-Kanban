@@ -683,6 +683,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             }
         }
 
+        public Response IsCreator(string userEmail, string boardName)
+        {
+            return ConfirmAndApply(userEmail, () =>
+            {
+                //log.Info($"{userEmail} is Trying to rename column in board {boardName}");
+                Response response = new Response(boardController.isCreator(userEmail, boardName));
+                WriteToLog(response, $"{userEmail} is the creator of board {boardName}");
+                return response;
+            });
+        }
+
         /// <summary>
         /// Wrraping a given lambda with try catch and applying the function.
         /// </summary>
