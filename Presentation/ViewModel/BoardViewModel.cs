@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Presentation.ViewModel
 {
@@ -159,6 +160,14 @@ namespace Presentation.ViewModel
         {
             //Not Ideal, need to find a way to sort this list IN PLACE.
             SelectedColumn.Tasks = new ObservableCollection<TaskModel>(SelectedColumn.Tasks.OrderBy(d => d.DueDate).ToList());
+        }
+
+        public SolidColorBrush BorderColor
+        {
+            get
+            {
+                return new SolidColorBrush(SelectedTask.EmailAssignee == user.Email ? Colors.Blue : Colors.Transparent);
+            }
         }
 
 
