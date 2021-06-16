@@ -17,8 +17,8 @@ namespace Presentation.Model
 
         public ObservableCollection<String> AssignedBoardsNames { get; set; }
 
-
-        public ObservableCollection<TaskModel> InProgressTasks { get; set; }
+        private ObservableCollection<TaskModel> _inProgressTasks;
+        public ObservableCollection<TaskModel> InProgressTasks { get => _inProgressTasks; set { _inProgressTasks = value; RaisePropertyChanged("InProgressTasks"); } }
 
 
 
@@ -84,18 +84,18 @@ namespace Presentation.Model
             }
         }
 
-        private void HandleChangeInProgressTasks(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                foreach (TaskModel t in e.NewItems)
-                {
-                    Controller.AddTask(Email, t.Creator, t.BoardName, t.Title, t.Description, t.DueDate, t.CreationTime, t.EmailAssignee);
-                }
-            }
+        //private void HandleChangeInProgressTasks(object sender, NotifyCollectionChangedEventArgs e)
+        //{
+        //    if (e.Action == NotifyCollectionChangedAction.Add)
+        //    {
+        //        foreach (TaskModel t in e.NewItems)
+        //        {
+        //            Controller.AddTask(Email, t.Creator, t.BoardName, t.Title, t.Description, t.DueDate, t.CreationTime, t.EmailAssignee);
+        //        }
+        //    }
 
             
-        }
+        //}
 
         //    private void HandleChangeTasks(object sender, NotifyCollectionChangedEventArgs e)
         //    {

@@ -43,7 +43,7 @@ namespace Presentation.ViewModel
             set
             {
                 _selectedColumn = value;
-                EnableForward = value != null && controller.IsCreator(user.Email, Board.Name);
+                EnableForward = value != null/* && controller.IsCreator(user.Email, Board.Name)*/;
                 RaisePropertyChanged("SelectedColumn");
             }
         }
@@ -110,9 +110,16 @@ namespace Presentation.ViewModel
             try
             {
                 //controller.AdvanceTask(user.Email, Board.Creator, Board.Name, SelectedColumn.ColumnOrdinal, SelectedTask.TaskID);
+                if (SelectedTask.ColumnOrdinal == 0)
+                    user.InProgressTasks.Add(SelectedTask);
+                //if (SelectedTask.ColumnOrdinal == Board.Columns.Count - 1)
+                //    user.InProgressTasks.Remove(SelectedTask);
                 Board.Columns[SelectedColumn.ColumnOrdinal + 1].Tasks.Add(SelectedTask);
+                SelectedTask.ColumnOrdinal = SelectedTask.ColumnOrdinal + 1;
                 SelectedColumn.Tasks.Remove(SelectedTask);
                 
+                
+
                 MessageBox.Show("Task Advanced!");
 
             }

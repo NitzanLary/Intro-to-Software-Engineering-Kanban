@@ -109,6 +109,8 @@
                 <TextBlock HorizontalAlignment="Left" Margin="92,306,0,0" Text="{Binding SelectedTask.EmailAssignee}" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="155" Background="WhiteSmoke"/>
                 <TextBlock HorizontalAlignment="Left" Margin="92,345,0,0" Text="{Binding SelectedTask.CreationTime}" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="156" Background="WhiteSmoke"/>
                 <TextBlock HorizontalAlignment="Left" Margin="91,384,0,0" Text="{Binding SelectedTask.DueDate}" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="156" Background="WhiteSmoke"/>
+                <Button Content="Assign Task To User" HorizontalAlignment="Center" Margin="0,610,0,0" VerticalAlignment="Top" Width="236" Height="28" Click="Assign_Task_Button_Click"/>
+
                 <Label Content="Assignee Email:" HorizontalAlignment="Left" Margin="0,303,0,0" VerticalAlignment="Top"/>
                 <Label Content="Creation Date:" HorizontalAlignment="Left" Margin="0,342,0,0" VerticalAlignment="Top"/>
                 <Label Content="Due Date:" HorizontalAlignment="Left" Margin="1,379,0,0" VerticalAlignment="Top"/>
@@ -117,7 +119,6 @@
                 <Button Content="Task Info" HorizontalAlignment="Center" Margin="0,544,0,0" VerticalAlignment="Top" Width="236" Height="28"/>
 
 
-                <Button Content="Assign Task To User" HorizontalAlignment="Left" Margin="12,610,0,0" VerticalAlignment="Top" Width="236" Height="28" Click="Assign_Task_Button_Click"/>
                 <Button Content="Change Task DueDate" HorizontalAlignment="Center" Margin="0,577,0,0" VerticalAlignment="Top" Width="236" Height="28" Click="Edit_Task_DueDate_Button_Click"/>
                 <TextBlock HorizontalAlignment="Left" Margin="92,423,0,0" Text="{Binding SelectedTask.Creator}" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="156" Background="WhiteSmoke"/>
                 <Label Content="Creator Email:" HorizontalAlignment="Left" Margin="1,418,0,0" VerticalAlignment="Top"/>

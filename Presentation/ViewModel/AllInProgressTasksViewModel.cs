@@ -96,8 +96,9 @@ namespace Presentation.ViewModel
                 {
                     NewInProgressTasks.Add(t);
                 }
-                User.InProgressTasks = NewInProgressTasks;
+                
             }
+            User.InProgressTasks = NewInProgressTasks;
         }
 
         public void EditTaskDueDate()
