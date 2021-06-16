@@ -27,7 +27,7 @@ namespace Presentation.ViewModel
             set
             {
                 _selectedTask = value;
-                SelectedColumn = Board.Columns[_selectedTask.ColumnOrdinal];
+                //SelectedColumn = Board.Columns[_selectedTask.ColumnOrdinal];
                 EnableForward = value != null;
                 RaisePropertyChanged("SelectedTask");
             }
