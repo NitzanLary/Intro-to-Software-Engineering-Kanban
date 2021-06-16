@@ -273,13 +273,14 @@ namespace Presentation.Model
             }
         }
 
-        internal void IsCreator(string userEmail, string boardName)
+        internal bool IsCreator(string userEmail, string boardName)
         {
             Response res = Service.IsCreator(userEmail, boardName);
             if (res.ErrorOccured)
             {
                 throw new Exception(res.ErrorMessage);
             }
+            return true;
         }
 
         //internal IList<ColumnModel> GetColumns(string userEmail, string creatorEmail, string boardName)
