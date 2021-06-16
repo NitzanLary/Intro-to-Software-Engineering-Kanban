@@ -96,12 +96,12 @@ namespace Presentation.ViewModel
             try
             {
                 controller.AdvanceTask(user.Email, Board.Creator, Board.Name, SelectedColumn.ColumnOrdinal, SelectedTask.TaskID);
-                MessageBox.Show("Board Removed Column!");
+                MessageBox.Show("Task Advanced!");
 
             }
             catch (Exception e)
             {
-                MessageBox.Show("Cannot Remove this Column. " + e.Message);
+                MessageBox.Show("Cannot Advance This Task. " + e.Message);
 
             }
         }

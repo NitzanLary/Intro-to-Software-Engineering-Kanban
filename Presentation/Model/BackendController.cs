@@ -100,7 +100,9 @@ namespace Presentation.Model
                 throw new Exception(res.ErrorMessage);
             }
             // NEED TO CHANGE AND ADD TASK TO SPECIFC COLUMN, NO COLUMN ORDINAL NEEDED FOR ADD TASK, WHAT COLUMN DOES THE TASK GO INTO?
-            return new TaskModel(this, title, description, dueDate, userEmail, creationTime, emailAssignee, boardName, creatorEmail, -1);  // TODO: need to implement Taskmodel
+            TaskModel task = new TaskModel(this, res.Value.Title, res.Value.Description, res.Value.DueDate, userEmail, res.Value.CreationTime, res.Value.emailAssignee, res.Value.boardName, res.Value.creator, res.Value.columnOrdinal);
+            task.TaskID = res.Value.Id;
+            return task;  // TODO: need to implement Taskmodel
         }
 
         internal void UpdateTaskDueDate(string userEmail, string creatorEmail, string boardName, int columnOrdinal, int taskId, DateTime dueDate)
@@ -300,6 +302,7 @@ namespace Presentation.Model
                     //NEED TO UNCOMMENT AFTER FIXING THE BUG!!!!!!!!!!!
                     //TaskModel temp_task = this.AddTask(userEmail, t.creator, t.boardName, t.Title, t.Description, t.DueDate, t.CreationTime, t.emailAssignee);
                     TaskModel tempTask = new TaskModel(this, t.Title, t.Description, t.DueDate, userEmail, t.CreationTime, t.emailAssignee, t.boardName, t.creator, t.columnOrdinal);
+                    tempTask.TaskID = t.Id;
                     tasks.Add(tempTask);
                     //NEED TO DELETE THIS LINE 283
                     //tasks.Add(new TaskModel(this, t.Title, t.Description, t.DueDate, userEmail, t.CreationTime, t.emailAssignee, t.boardName, t.creator, t.columnOrdinal));
@@ -310,6 +313,8 @@ namespace Presentation.Model
             return new BoardModel(this, res.Value.name, res.Value.creator, columns, userEmail);
         }
 
+
+        //TO CHANGE LIKE THE ABOVE!
         internal BoardModel GetAssignedBoard(string userEmail, string boardName)
         {
             Response<Board> res = Service.GetBoard(userEmail, null, boardName);

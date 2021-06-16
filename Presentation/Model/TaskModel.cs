@@ -18,7 +18,7 @@ namespace Presentation.Model
                 RaisePropertyChanged("Title");
                 //need to figure out how to pass those params
 
-                //Controller.UpdateTaskTitle(UserEmail, )
+                Controller.UpdateTaskTitle(UserEmail, Creator, BoardName, ColumnOrdinal, TaskID, Title);
             }
         }
         private string _description;
@@ -31,7 +31,7 @@ namespace Presentation.Model
                 RaisePropertyChanged("Description");
                 //need to figure out how to pass those params
 
-                //Controller.UpdateTaskDescription(UserEmail, UserEmail, boardName, columnOrdinal, taskID, Description);
+                Controller.UpdateTaskDescription(UserEmail, Creator, BoardName, ColumnOrdinal, TaskID, Description);
             }
         }
 
@@ -43,6 +43,7 @@ namespace Presentation.Model
             {
                 this._dueDate = value;
                 RaisePropertyChanged("DueDate");
+                Controller.UpdateTaskDueDate(UserEmail, Creator, BoardName, ColumnOrdinal, TaskID, DueDate);
             }
         }
 

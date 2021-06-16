@@ -67,7 +67,7 @@ namespace Presentation.View
 
         private void Advance_Task_Button_Click(object sender, RoutedEventArgs e)
         {
-
+            viewModel.AdvanceTask();
         }
 
         private void Move_Left_Button_Click(object sender, RoutedEventArgs e)
@@ -88,6 +88,23 @@ namespace Presentation.View
             mainView.Show();
             this.Close();
         }
+
+        private void Edit_Task_DueDate_Button_Click(object sender, RoutedEventArgs e)
+        {
+            TaskModel task = viewModel.SelectedTask;
+            ChangeTaskDueDateWindow changeTaskDueDateWindow = new ChangeTaskDueDateWindow(user, Board, task);
+            changeTaskDueDateWindow.Show();
+
+        }
+
+        private void Assign_Task_Button_Click(object sender, RoutedEventArgs e)
+        {
+            TaskModel task = viewModel.SelectedTask;
+            AssignTaskWindow assignTaskWindow = new AssignTaskWindow(user, Board, task);
+            assignTaskWindow.Show();
+        }
+
+        
 
         //private void ListBox_SelectionChanged(object sender, RoutedEventArgs e)
         //{

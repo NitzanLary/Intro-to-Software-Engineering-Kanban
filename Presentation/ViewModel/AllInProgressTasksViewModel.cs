@@ -11,7 +11,7 @@ namespace Presentation.ViewModel
 {
 
 
-    class AllInProgressTasksViewModel : NotifiableObject
+    public class AllInProgressTasksViewModel : NotifiableObject
     {
         private BackendController controller;
 
@@ -76,6 +76,8 @@ namespace Presentation.ViewModel
             //Not Ideal, need to find a way to sort this list IN PLACE.
              User.InProgressTasks = new ObservableCollection<TaskModel>(User.InProgressTasks.OrderBy(d => d.DueDate).ToList());
         }
+
+        
 
         
 

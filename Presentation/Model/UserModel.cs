@@ -18,8 +18,7 @@ namespace Presentation.Model
         public ObservableCollection<String> AssignedBoardsNames { get; set; }
 
 
-        private ObservableCollection<TaskModel> _inProgressTasks;
-        public ObservableCollection<TaskModel> InProgressTasks { get => _inProgressTasks; set { this._inProgressTasks = value; RaisePropertyChanged("InProgressTasks"); } }
+        public ObservableCollection<TaskModel> InProgressTasks { get; set; }
 
 
 
@@ -29,6 +28,7 @@ namespace Presentation.Model
             this.Email = email;
             this.MyBoardsNames = new ObservableCollection<String>();
             this.AssignedBoardsNames = new ObservableCollection<String>();
+            this.InProgressTasks = new ObservableCollection<TaskModel>();
             if (controller.GetMyBoardNames(Email) != null)
             {
                 controller.GetMyBoardNames(Email).ToList().ForEach(MyBoardsNames.Add);
@@ -39,6 +39,13 @@ namespace Presentation.Model
                 controller.GetBoardIMemberOfNames(Email).ToList().ForEach(AssignedBoardsNames.Add);
 
             }
+            if (controller.InProgressTasks(Email) != null)
+            {
+                controller.InProgressTasks(Email).ToList().ForEach(InProgressTasks.Add);
+
+            }
+            //need to had handle change of AssignedBoards
+
             MyBoardsNames.CollectionChanged += HandleChangeBoardNames;
 
             //this.InProgressTasks = new ObservableCollection<TaskModel>(controller.InProgressTasks(Email));
@@ -75,6 +82,19 @@ namespace Presentation.Model
                     Controller.RemoveBoard(Email, Email, s);
                 }
             }
+        }
+
+        private void HandleChangeInProgressTasks(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                foreach (TaskModel t in e.NewItems)
+                {
+                    Controller.AddTask(Email, t.Creator, t.BoardName, t.Title, t.Description, t.DueDate, t.CreationTime, t.EmailAssignee);
+                }
+            }
+
+            
         }
 
         //    private void HandleChangeTasks(object sender, NotifyCollectionChangedEventArgs e)
