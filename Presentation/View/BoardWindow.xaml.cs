@@ -110,6 +110,11 @@ namespace Presentation.View
             viewModel.SortTasksByDueDate();
         }
 
+        private void Search_Button_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.FilterTasks();
+        }
+
 
 
         //private void ListBox_SelectionChanged(object sender, RoutedEventArgs e)

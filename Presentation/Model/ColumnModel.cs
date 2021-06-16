@@ -10,8 +10,8 @@ namespace Presentation.Model
 {
     public class ColumnModel : NotifiableModelObject
     {
-        //explain please...
-        public ObservableCollection<TaskModel> Tasks { get; set; }
+        private ObservableCollection<TaskModel> _tasks;
+        public ObservableCollection<TaskModel> Tasks { get => _tasks; set { _tasks = value; RaisePropertyChanged("Tasks"); } }
         //public IList<TaskModel> Tasks
         //{
         //    get => tasks.ToList();

@@ -29,7 +29,10 @@ namespace Presentation.Model
 
         //private readonly List<ColumnModel> columns; // backlogs , inProgress, done (generic updatable)
         //need to be observable probably
-        public ObservableCollection<ColumnModel> Columns { get; set; }
+        private ObservableCollection<ColumnModel> _columns;
+
+        public ObservableCollection<ColumnModel> Columns { get => _columns; set { _columns = value; RaisePropertyChanged("Columns"); } }
+
 
         private string UserEmail; //storing this user here is an hack becuase static & singletone are not allowed.
         //NOT GOOD. SHOULDNT GET USER EMAIL AS PARAMETER!

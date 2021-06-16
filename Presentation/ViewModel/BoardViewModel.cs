@@ -48,7 +48,11 @@ namespace Presentation.ViewModel
             }
         }
 
-        
+        private string _filterText;
+        public string FilterText { get => _filterText; set { this._filterText = value; RaisePropertyChanged("FilterText"); } }
+
+
+
 
         private bool _enableForward = false;
         public bool EnableForward
@@ -180,7 +184,25 @@ namespace Presentation.ViewModel
             SelectedColumn.Tasks = new ObservableCollection<TaskModel>(SelectedColumn.Tasks.OrderBy(d => d.DueDate).ToList());
         }
 
-        
+        internal void FilterTasks()
+        {
+            if (FilterText != null)
+            {
+                //Not Ideal, need to find a way to sort this list IN PLACE.
+                ObservableCollection<TaskModel> NewColumnsTask = new ObservableCollection<TaskModel>();
+                foreach (TaskModel t in SelectedColumn.Tasks)
+                {
+
+                    if (t.Title.Contains(FilterText) || t.Description.Contains(FilterText))
+                    {
+                        NewColumnsTask.Add(t);
+                    }
+
+                }
+                SelectedColumn.Tasks = NewColumnsTask;
+            }
+        }
+
 
 
     }
