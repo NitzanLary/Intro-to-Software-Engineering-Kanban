@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace Presentation.Model
 {
@@ -131,6 +132,14 @@ namespace Presentation.Model
             this._creator = creator;
             this._columnOrdinal = columnOrdinal;
             this._taskID = TaskID;
+        }
+
+        public SolidColorBrush BorderColor
+        {
+            get
+            {
+                return new SolidColorBrush(EmailAssignee == UserEmail ? Colors.Blue : Colors.Transparent);
+            }
         }
     }
 }

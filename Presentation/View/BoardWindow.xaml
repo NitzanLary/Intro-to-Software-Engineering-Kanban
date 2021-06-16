@@ -35,7 +35,7 @@
             <Grid>
                 <Grid>
                     <Label Content="Column Settings" FontSize="22" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="222,528,0,0" VerticalAlignment="Top"/>
-                    <Button Content="New Column" HorizontalAlignment="Left" Margin="23,621,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="New_Column_Button_Click"/>
+                    <Button Content="New Column" HorizontalAlignment="Left" Margin="23,621,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="New_Column_Button_Click"  IsEnabled="{Binding EnableForward, Mode=OneWay}"/>
                     <Button Content="New Task" HorizontalAlignment="Left" Margin="23,572,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="New_Task_Button_Click"/>
                     <Button Content="Edit Column" HorizontalAlignment="Left" Margin="206,572,0,0" VerticalAlignment="Top" Width="170" Height="29" Click="Edit_Column_Button_Click" IsEnabled="{Binding EnableForward, Mode=OneWay}"/>
                     <Button Content="Move Right  -->" HorizontalAlignment="Left" Margin="389,572,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="Move_Right_Button_Click" IsEnabled="{Binding EnableForward, Mode=OneWay}"/>

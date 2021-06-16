@@ -43,7 +43,7 @@ namespace Presentation.ViewModel
             set
             {
                 _selectedColumn = value;
-                EnableForward = value != null;
+                EnableForward = value != null && controller.IsCreator(user.Email, Board.Name);
                 RaisePropertyChanged("SelectedColumn");
             }
         }
@@ -60,6 +60,17 @@ namespace Presentation.ViewModel
                 RaisePropertyChanged("EnableForward");
             }
         }
+
+        //private bool _enableForward2 = false;
+        //public bool EnableForward2
+        //{
+        //    get => _enableForward2;
+        //    private set
+        //    {
+        //        _enableForward2 = value;
+        //        RaisePropertyChanged("EnableForward2");
+        //    }
+        //}
         public BoardModel Board { get; set; }
 
         UserModel user;
@@ -162,13 +173,7 @@ namespace Presentation.ViewModel
             SelectedColumn.Tasks = new ObservableCollection<TaskModel>(SelectedColumn.Tasks.OrderBy(d => d.DueDate).ToList());
         }
 
-        public SolidColorBrush BorderColor
-        {
-            get
-            {
-                return new SolidColorBrush(SelectedTask.EmailAssignee == user.Email ? Colors.Blue : Colors.Transparent);
-            }
-        }
+        
 
 
     }
