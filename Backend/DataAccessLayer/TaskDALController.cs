@@ -92,6 +92,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 return res > 0;
             }
         }
+
+        
         /// <summary>
         /// delete task from the dataBase
         /// </summary>

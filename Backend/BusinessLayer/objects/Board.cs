@@ -124,6 +124,8 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             if (columnOrdinal > Columns.Count || columnOrdinal < 0)
                 return new MFResponse($"Can not insert to index {columnOrdinal}, max {Columns.Count}");
+            for (int i = Columns.Count - 1; i >= columnOrdinal; i--)
+                Columns[i].ColumnOrdinal++;
             Columns.Insert(columnOrdinal, new Column(columnName, Creator, Name, columnOrdinal));
             return new MFResponse();
         }
@@ -132,38 +134,64 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         {
             if (columnOrdinal >= Columns.Count || columnOrdinal < 0)
                 return new MFResponse($"Can not remove column in index {columnOrdinal}, max {Columns.Count}");
-            if (Columns.Count < 2)
+            if (Columns.Count <= 2)
                 return new MFResponse($"Can not remove any columns, the minimum that is possible is {Columns.Count}");
-            //When a column is removed, its existing tasks are moved to the column on its
-            //left(unless it is the leftmost column — then its tasks are moved to the column
-            //on its right).The operation should fail if the tasks cannot be moved to the new
-            //column(since it will exceed the limit).
             Column srcCol = Columns[columnOrdinal];
-            IList<Task> tasks = srcCol.Tasks;
-            if (columnOrdinal == 0)
+            try
             {
-                Column destCol = Columns[1];
-                if (destCol.MaxTasks < (destCol.Tasks.Count + srcCol.Tasks.Count))
-                    return new MFResponse("tasks exceeded the limit");
-                Columns.RemoveAt(0);
-                foreach (Task task in tasks)
-                    Columns[1].AddTask(task);
-                for (int i = 0; i < Columns.Count; i++)
-                    Columns[i].ColumnOrdinal = i;
-            }
-            else
-            {
-                Column destCol = Columns[columnOrdinal - 1];
-                if (destCol.MaxTasks < (destCol.Tasks.Count + srcCol.Tasks.Count))
-                    return new MFResponse("tasks exceeded the limit");
+                Column destCol;
+                IList<Task> tasks = srcCol.Tasks;
+
+                if (columnOrdinal == 0)
+                    destCol = Columns[1];
+                else
+                    destCol = Columns[columnOrdinal - 1];
+
+                destCol.AddTasks(tasks); // throws an exeption if tasks exceeded the max limit
                 Columns.RemoveAt(columnOrdinal);
-                foreach (Task task in tasks)
-                    Columns[columnOrdinal - 1].AddTask(task);
+                srcCol.Remove();
                 for (int i = columnOrdinal; i < Columns.Count; i++)
                     Columns[i].ColumnOrdinal = i;
             }
+            catch (Exception e)
+            {
+                return new MFResponse(e.Message);
+            }
             return new MFResponse();
         }
+
+        //internal MFResponse RemoveColumn(int columnOrdinal)
+        //{
+        //    if (columnOrdinal >= Columns.Count || columnOrdinal < 0)
+        //        return new MFResponse($"Can not remove column in index {columnOrdinal}, max {Columns.Count}");
+        //    if (Columns.Count < 2)
+        //        return new MFResponse($"Can not remove any columns, the minimum that is possible is {Columns.Count}");
+        //    Column srcCol = Columns[columnOrdinal];
+        //    IList<Task> tasks = srcCol.Tasks;
+        //    if (columnOrdinal == 0)
+        //    {
+        //        Column destCol = Columns[1];
+        //        if (destCol.MaxTasks < (destCol.Tasks.Count + srcCol.Tasks.Count))
+        //            return new MFResponse("tasks exceeded the limit");
+        //        Columns.RemoveAt(0);
+        //        foreach (Task task in tasks)
+        //            Columns[1].AddTask(task);
+        //        for (int i = 0; i < Columns.Count; i++)
+        //            Columns[i].ColumnOrdinal = i;
+        //    }
+        //    else
+        //    {
+        //        Column destCol = Columns[columnOrdinal - 1];
+        //        if (destCol.MaxTasks < (destCol.Tasks.Count + srcCol.Tasks.Count))
+        //            return new MFResponse("tasks exceeded the limit");
+        //        Columns.RemoveAt(columnOrdinal);
+        //        foreach (Task task in tasks)
+        //            Columns[columnOrdinal - 1].AddTask(task);
+        //        for (int i = columnOrdinal; i < Columns.Count; i++)
+        //            Columns[i].ColumnOrdinal = i;
+        //    }
+        //    return new MFResponse();
+        //}
 
         internal MFResponse RenameColumn(int columnOrdinal, string newColumnName)
         {
@@ -175,18 +203,26 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         internal MFResponse MoveColumn(int columnOrdinal, int shiftSize)
         {
-            if(columnOrdinal >= Columns.Count || columnOrdinal < 0)
+            if (columnOrdinal >= Columns.Count || columnOrdinal < 0)
                 return new MFResponse($"Can not move column column in index {columnOrdinal}, max {Columns.Count}");
             int loc = columnOrdinal + shiftSize;
-            if(loc >= Columns.Count || loc < 0)
+            if (loc >= Columns.Count || loc < 0)
                 return new MFResponse($"Can not move column to index {columnOrdinal + shiftSize}");
             Column col = Columns[columnOrdinal];
             if (col.Tasks.Count > 0)
                 return new MFResponse($"Only empty columns can be moved");
+            col.ColumnOrdinal = Columns.Count; // so there will be no keys conflicts in the DB
             Columns.RemoveAt(columnOrdinal);
             Columns.Insert(loc, col);
+            if(shiftSize < 0)
+                for (int i = Columns.Count - 1; i >= 0 ; i--)
+                    Columns[i].ColumnOrdinal = i;
+            else
+                for(int i = 0; i < Columns.Count; i++)
+                    Columns[i].ColumnOrdinal = i;
             return new MFResponse();
         }
+
 
         //public Response advanceTask(int taskId, int columnOrd)
         //{
@@ -215,66 +251,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         //    return new Response();
         //}
 
-        //public Response<Dictionary<int, Task>> getColumn(int columnOrdinal)
-        //{
-        //    if (columnOrdinal > 2 || columnOrdinal < 0)
-        //        return Response<Dictionary<int, Task>>.FromError("there is no such column number");
-        //    return Response<Dictionary<int, Task>>.FromValue(Columns[columnOrdinal]);
-
-        //}
-
-
-        //private bool containsTask(int taskId)
-        //{
-        //    bool flag = false;
-        //    foreach(Dictionary<int, Task> dict in Columns)
-        //    {
-        //        if (dict.ContainsKey(taskId))
-        //            flag = true;
-        //    }
-        //    return flag;
-        //}
-
-        //public int getNumOfTasks()
-        //{
-        //    int backlogsTaskNum = Columns[0].Count;
-        //    int inProgressTaskNum = Columns[1].Count;
-        //    int doneTaskNum = Columns[2].Count;
-        //    return backlogsTaskNum + inProgressTaskNum + doneTaskNum;
-        //}
-
-        //public Response<Dictionary<int, Task>> getInProgess()
-        //{
-        //    return Response<Dictionary<int, Task>>.FromValue(Columns[1]);
-        //}
-
-        //public Response AddTask(Task task)
-        //{
-        //    if (Columns[0].Count == MaxBacklogs)
-        //        return new Response("Can not add Task, backlogs column got to its maximum limit");
-        //    Columns[0].Add(task.ID, task);
-        //    return new Response();
-        //}
-
-
-        //private int maxBacklogs;
-        //public int MaxBacklogs
-        //{
-        //    get => maxBacklogs;
-        //    set => maxBacklogs = value;
-        //}
-        //private int maxInProgress;
-        //public int MaxInProgress
-        //{
-        //    get => maxInProgress;
-        //    set => maxInProgress = value;
-        //}
-        //private int maxDone;
-        //public int MaxDone
-        //{
-        //    get => maxDone;
-        //    set => maxDone = value;
-        //}
     }
 }
 

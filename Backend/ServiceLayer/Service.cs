@@ -23,9 +23,8 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
 
             log.Info("Starting up!");
 
-            userController = new UserController();
-            boardController = new BoardController();
-            LoadData();
+            userController = UserController.GetInstance();
+            boardController = BoardController.GetInstance();
         }
 
         ///<summary>This method loads the data from the persistance.
