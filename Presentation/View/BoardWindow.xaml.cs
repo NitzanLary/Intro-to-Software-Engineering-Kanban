@@ -61,7 +61,8 @@ namespace Presentation.View
 
         private void Edit_Column_Button_Click(object sender, RoutedEventArgs e)
         {
-            EditColumnWindow editColumnWindow = new EditColumnWindow(user, Board);
+            ColumnModel column = viewModel.SelectedColumn;
+            EditColumnWindow editColumnWindow = new EditColumnWindow(user, Board, column);
             editColumnWindow.Show();
         }
 

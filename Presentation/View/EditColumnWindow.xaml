@@ -5,17 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Presentation.View"
         mc:Ignorable="d"
-        Title="EditColumnWindow" Height="235" Width="400">
+        Title="EditColumnWindow" Height="200" Width="400">
     <Grid>
         <Label Content="Edit Column" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="16"/>
         <TextBox HorizontalAlignment="Center" Text="{Binding Path=ColumnName, Mode=OneWayToSource}" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="0,56,0,0"/>
-        <Button Content="Edit Column" HorizontalAlignment="Center" Margin="0,169,0,0" VerticalAlignment="Top" Width="120" Click="Edit_Column_Button_Click" />
+        <Button Content="Edit Column" HorizontalAlignment="Center" Margin="0,137,0,0" VerticalAlignment="Top" Width="120" Click="Edit_Column_Button_Click" />
         <Label Content="Enter Column Title:" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Center" Text="{Binding Path=ColumnOrdinal, Mode=OneWayToSource, StringFormat='yyyy-MM-dd'}" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="0,97,0,0"/>
-        <Label Content="Enter Column Ordinal:" HorizontalAlignment="Left" Margin="10,93,0,0" VerticalAlignment="Top"/>
-        <Label Content="Enter Max Tasks:" HorizontalAlignment="Left" Margin="13,134,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Center" Text="{Binding Path=MaxTasks, Mode=OneWayToSource}" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="0,138,0,0"/>
-        <Label Content="yyyy-MM-dd" HorizontalAlignment="Left" Margin="265,92,0,0" VerticalAlignment="Top"/>
+        <Label Content="Enter Max Tasks:" HorizontalAlignment="Left" Margin="10,83,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Center" Text="{Binding Path=MaxTasks, Mode=OneWayToSource}" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="0,87,0,0"/>
 
     </Grid>
 </Window>

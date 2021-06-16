@@ -22,10 +22,10 @@ namespace Presentation.View
     public partial class EditColumnWindow : Window
     {
         private EditColumnViewModel viewModel;
-        public EditColumnWindow(UserModel user, BoardModel board)
+        public EditColumnWindow(UserModel user, BoardModel board, ColumnModel column)
         {
             InitializeComponent();
-            this.viewModel = new EditColumnViewModel(user, board);
+            this.viewModel = new EditColumnViewModel(user, board, column);
             this.DataContext = viewModel;
         }
 

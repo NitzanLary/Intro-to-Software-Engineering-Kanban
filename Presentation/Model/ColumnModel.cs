@@ -95,11 +95,20 @@ namespace Presentation.Model
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
-                foreach (TaskModel t in e.NewItems)
+                if(ColumnOrdinal == 0){
+                    foreach (TaskModel t in e.NewItems)
+                    {
+                        //to put in ifErrorOccurd => RoolBack
+                        TaskModel tempTask = Controller.AddTask(UserEmail, Creator, BoardName, t.Title, t.Description, t.DueDate, t.CreationTime, t.EmailAssignee);
+                        t.TaskID = tempTask.TaskID;
+                    }
+                }
+                else
                 {
-                    //to put in ifErrorOccurd => RoolBack
-                    TaskModel tempTask = Controller.AddTask(UserEmail, Creator, BoardName, t.Title, t.Description, t.DueDate, t.CreationTime, t.EmailAssignee);
-                    t.TaskID = tempTask.TaskID;
+                    foreach(TaskModel t in e.NewItems)
+                    {
+                        Controller.AdvanceTask(UserEmail, Creator, BoardName, ColumnOrdinal-1, t.TaskID);
+                    }
                 }
             }
 

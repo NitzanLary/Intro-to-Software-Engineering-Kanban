@@ -13,9 +13,10 @@ namespace Presentation.ViewModel
         private BackendController controller;
         private UserModel user;
         private BoardModel board;
+        private ColumnModel column;
 
-        private string _columnOrdinal;
-        public string ColumnOrdinal { get => _columnOrdinal; set { this._columnOrdinal = value; RaisePropertyChanged("ColumnOrdinal"); } }
+        //private string _columnOrdinal;
+        //public string ColumnOrdinal { get => _columnOrdinal; set { this._columnOrdinal = value; RaisePropertyChanged("ColumnOrdinal"); } }
 
         private string _columnName;
         public string ColumnName { get => _columnName; set { this._columnName = value; RaisePropertyChanged("ColumnName"); } }
@@ -25,13 +26,14 @@ namespace Presentation.ViewModel
 
 
 
-        public EditColumnViewModel(UserModel user, BoardModel board)
+        public EditColumnViewModel(UserModel user, BoardModel board, ColumnModel column)
         {
             this.controller = user.Controller;
             this.user = user;
             this.board = board;
+            this.column = column;
 
-            this._columnOrdinal = ColumnOrdinal;
+            //this._columnOrdinal = ColumnOrdinal;
             this._maxTasks = MaxTasks;
             this._columnName = ColumnName;
         }
@@ -40,13 +42,13 @@ namespace Presentation.ViewModel
         {
             try
             {
-                controller.RenameColumn(user.Email, board.Creator, board.Name, int.Parse(ColumnOrdinal), ColumnName);
-                //should it be defult maxtasks to unlimit?....
-                controller.LimitColumn(user.Email, board.Creator, board.Name, int.Parse(ColumnOrdinal), int.Parse(MaxTasks));
-
+                controller.RenameColumn(user.Email, board.Creator, board.Name, column.ColumnOrdinal, ColumnName);
+                column.Name = ColumnName;
+                controller.LimitColumn(user.Email, board.Creator, board.Name, column.ColumnOrdinal, int.Parse(MaxTasks));
+                column.MaxTasks = int.Parse(MaxTasks);
+                
 
                 //What is Shift SIZE????
-                controller.MoveColumn(user.Email,board.Creator, board.Name, int.Parse(ColumnOrdinal),1);
                 MessageBox.Show("Column Edited Successfully!");
 
             }

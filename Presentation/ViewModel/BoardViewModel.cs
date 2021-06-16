@@ -25,6 +25,7 @@ namespace Presentation.ViewModel
             set
             {
                 _selectedTask = value;
+                SelectedColumn = Board.Columns[_selectedTask.ColumnOrdinal];
                 EnableForward = value != null;
                 RaisePropertyChanged("SelectedTask");
             }
@@ -95,7 +96,10 @@ namespace Presentation.ViewModel
         {
             try
             {
-                controller.AdvanceTask(user.Email, Board.Creator, Board.Name, SelectedColumn.ColumnOrdinal, SelectedTask.TaskID);
+                //controller.AdvanceTask(user.Email, Board.Creator, Board.Name, SelectedColumn.ColumnOrdinal, SelectedTask.TaskID);
+                Board.Columns[SelectedColumn.ColumnOrdinal + 1].Tasks.Add(SelectedTask);
+                SelectedColumn.Tasks.Remove(SelectedTask);
+                
                 MessageBox.Show("Task Advanced!");
 
             }

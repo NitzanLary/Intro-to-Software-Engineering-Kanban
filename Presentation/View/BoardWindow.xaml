@@ -35,12 +35,12 @@
             <Grid>
                 <Grid>
                     <Label Content="Column Settings" FontSize="22" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="222,528,0,0" VerticalAlignment="Top"/>
-                    <Button Content="New Column" HorizontalAlignment="Left" Margin="31,621,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="New_Column_Button_Click"/>
-                    <Button Content="New Task" HorizontalAlignment="Left" Margin="31,572,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="New_Task_Button_Click"/>
-                    <Button Content="Edit Column" HorizontalAlignment="Left" Margin="224,572,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="Edit_Column_Button_Click" IsEnabled="{Binding EnableForward, Mode=OneWay}"/>
-                    <Button Content="Move Right  -->" HorizontalAlignment="Left" Margin="427,572,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="Move_Right_Button_Click" IsEnabled="{Binding EnableForward, Mode=OneWay}"/>
-                    <Button Content="Remove Column" HorizontalAlignment="Left" Margin="224,621,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="Remove_Column_Button_Click" IsEnabled="{Binding EnableForward, Mode=OneWay}" />
-                    <Button Content="&lt;--  Move Left" HorizontalAlignment="Left" Margin="427,621,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="Move_Left_Button_Click" IsEnabled="{Binding EnableForward, Mode=OneWay}"/>
+                    <Button Content="New Column" HorizontalAlignment="Left" Margin="23,621,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="New_Column_Button_Click"/>
+                    <Button Content="New Task" HorizontalAlignment="Left" Margin="23,572,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="New_Task_Button_Click"/>
+                    <Button Content="Edit Column" HorizontalAlignment="Left" Margin="206,572,0,0" VerticalAlignment="Top" Width="170" Height="29" Click="Edit_Column_Button_Click" IsEnabled="{Binding EnableForward, Mode=OneWay}"/>
+                    <Button Content="Move Right  -->" HorizontalAlignment="Left" Margin="389,572,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="Move_Right_Button_Click" IsEnabled="{Binding EnableForward, Mode=OneWay}"/>
+                    <Button Content="Remove Column" HorizontalAlignment="Left" Margin="206,621,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="Remove_Column_Button_Click" IsEnabled="{Binding EnableForward, Mode=OneWay}" />
+                    <Button Content="&lt;--  Move Left" HorizontalAlignment="Left" Margin="389,621,0,0" VerticalAlignment="Top" Width="171" Height="29" Click="Move_Left_Button_Click" IsEnabled="{Binding EnableForward, Mode=OneWay}"/>
 
                 </Grid>
             </Grid>
@@ -99,24 +99,6 @@
 
         </ListBox>
         <Border BorderThickness="1" CornerRadius="10" BorderBrush="Black" Margin="795,10,10,10" Background="SkyBlue">
-            <Grid>
-                <Label Content="My Task" FontSize="22" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top"/>
-                <TextBlock HorizontalAlignment="Center" Margin="0,63,0,0" Text="{Binding Path=SelectedTask.Title}" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="238" Background="WhiteSmoke"/>
-                <TextBlock HorizontalAlignment="Center" Margin="0,91,0,0" Text="{Binding Path=SelectedTask.Description}" TextWrapping="Wrap" VerticalAlignment="Top" Height="182" Width="238" Background="WhiteSmoke"/>
-                <TextBlock HorizontalAlignment="Left" Margin="92,306,0,0" Text="{Binding Path=SelectedTask.EmailAssignee}" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="155" Background="WhiteSmoke"/>
-                <TextBlock HorizontalAlignment="Left" Margin="92,345,0,0" Text="{Binding Path=SelectedTask.CreationTime}" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="156" Background="WhiteSmoke"/>
-                <TextBlock HorizontalAlignment="Left" Margin="91,384,0,0" Text="{Binding Path=SelectedTask.DueDate}" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="156" Background="WhiteSmoke"/>
-                <Label Content="Assignee Email:" HorizontalAlignment="Left" Margin="0,303,0,0" VerticalAlignment="Top"/>
-                <Label Content="Creation Date:" HorizontalAlignment="Left" Margin="0,342,0,0" VerticalAlignment="Top"/>
-                <Label Content="Due Date:" HorizontalAlignment="Left" Margin="1,379,0,0" VerticalAlignment="Top"/>
-                <Label Content="Task Settings" HorizontalAlignment="Center" Margin="0,433,0,0" VerticalAlignment="Top" FontSize="19" FontWeight="SemiBold"/>
-                <Button Content="Advance" HorizontalAlignment="Center" Margin="0,484,0,0" VerticalAlignment="Top" Width="237" Height="28"/>
-                <Button Content="Delete" HorizontalAlignment="Center" Margin="0,517,0,0" VerticalAlignment="Top" Width="236" Height="28"/>
-                <Button Content="Task Info" HorizontalAlignment="Center" Margin="0,550,0,0" VerticalAlignment="Top" Width="236" Height="28"/>
-                <Button Content="Assign User To Task" HorizontalAlignment="Center" Margin="0,584,0,0" VerticalAlignment="Top" Width="236" Height="28"/>
-
-
-            </Grid>
         </Border>
         <Label Content="My Board" FontSize="30" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="414,12,0,0" VerticalAlignment="Top"/>
         <Border BorderThickness="1" CornerRadius="10" BorderBrush="Black" Margin="795,10,10,10" Background="SkyBlue">
@@ -126,7 +108,7 @@
                 <TextBox HorizontalAlignment="Center" Margin="0,91,0,0" Text="{Binding SelectedTask.Description}" TextWrapping="Wrap" VerticalAlignment="Top" Height="182" Width="238" Background="WhiteSmoke"/>
                 <TextBlock HorizontalAlignment="Left" Margin="92,306,0,0" Text="{Binding SelectedTask.EmailAssignee}" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="155" Background="WhiteSmoke"/>
                 <TextBlock HorizontalAlignment="Left" Margin="92,345,0,0" Text="{Binding SelectedTask.CreationTime}" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="156" Background="WhiteSmoke"/>
-                <TextBox HorizontalAlignment="Left" Margin="91,384,0,0" Text="{Binding SelectedTask.TaskID}" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="156" Background="WhiteSmoke"/>
+                <TextBox HorizontalAlignment="Left" Margin="91,384,0,0" Text="{Binding SelectedTask.DueDate}" TextWrapping="Wrap" VerticalAlignment="Top" Height="23" Width="156" Background="WhiteSmoke"/>
                 <Label Content="Assignee Email:" HorizontalAlignment="Left" Margin="0,303,0,0" VerticalAlignment="Top"/>
                 <Label Content="Creation Date:" HorizontalAlignment="Left" Margin="0,342,0,0" VerticalAlignment="Top"/>
                 <Label Content="Due Date:" HorizontalAlignment="Left" Margin="1,379,0,0" VerticalAlignment="Top"/>
