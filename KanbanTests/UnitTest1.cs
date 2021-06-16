@@ -77,7 +77,16 @@ namespace KanbanTests
         }
         public void Logout_LogoutLoggedInUser_Success()
         {
-
+            //arrange
+            string emailAdd = "example@gmail.com";
+            Password password = new Password("Aa12345");
+            userCtrl.Setup(m => m.IsValidEmail(emailAdd)).Returns(true);
+            userCtrl.Setup(m => m.createPassword(password.Password_)).Returns(MFResponse<Password>.FromValue(password));
+            userCtrl.Object.Register(emailAdd, password.Password_);
+            //act
+            userCtrl.Object.Login(emailAdd, password.Password_);
+            //assert
+            Assert.IsTrue(userCtrl.Object.Login(emailAdd, password.Password_).ErrorOccured);
         }
         public void Logout_LogoutLoggedOutUser_Fail()
         {
@@ -85,18 +94,39 @@ namespace KanbanTests
             string emailAdd = "example@gmail.com";
             Password password = new Password("Aa12345");
             userCtrl.Setup(m => m.IsValidEmail(emailAdd)).Returns(true);
-            userCtrl.Setup(M => M.createPassword(password.Password_)).Returns(MFResponse<Password>.FromValue(password));
+            userCtrl.Setup(m => m.createPassword(password.Password_)).Returns(MFResponse<Password>.FromValue(password));
             userCtrl.Object.Register(emailAdd, password.Password_);
             //act
             userCtrl.Object.Login(emailAdd, password.Password_);
+            userCtrl.Object.Logout(emailAdd);
+            //assert
+            Assert.IsTrue(userCtrl.Object.Login(emailAdd, password.Password_).ErrorOccured);
+
         }
+        [Test]
         public void Resgister_RegisterExistingUser_Fail()
         {
             // arrange
             string emailAdd = "example@gmail.com";
             Password password = new Password("Aa12345");
             userCtrl.Setup(m => m.IsValidEmail(emailAdd)).Returns(true);
-            userCtrl.Setup(M => M.createPassword(password.Password_)).Returns(MFResponse<Password>.FromValue(password));
+            userCtrl.Setup(m => m.createPassword(password.Password_)).Returns(MFResponse<Password>.FromValue(password));
+
+            //act
+            userCtrl.Object.Register(emailAdd, password.Password_);
+
+            //assert
+            Assert.IsTrue(userCtrl.Object.Register(emailAdd, password.Password_).ErrorOccured);
+        }
+
+        [Test]
+        public void Resgister_RegisterIvalidInput_Fail()
+        {
+            // arrange
+            string emailAdd = "example@gmail.com";
+            Password password = new Password("Aa12345");
+            userCtrl.Setup(m => m.IsValidEmail(emailAdd)).Returns(true);
+            userCtrl.Setup(m => m.createPassword(password.Password_)).Returns(MFResponse<Password>.FromValue(password));
 
             //act
             userCtrl.Object.Register(emailAdd, password.Password_);
@@ -112,7 +142,7 @@ namespace KanbanTests
             string emailAdd = "example@gmail.com";
             Password password = new Password("Aa12345");
             userCtrl.Setup(m => m.IsValidEmail(emailAdd)).Returns(true);
-            userCtrl.Setup(M => M.createPassword(password.Password_)).Returns(MFResponse<Password>.FromValue(password));
+            userCtrl.Setup(m => m.createPassword(password.Password_)).Returns(MFResponse<Password>.FromValue(password));
 
             //act
             userCtrl.Object.Register(emailAdd, password.Password_);
