@@ -27,7 +27,8 @@ namespace Presentation.ViewModel
             set
             {
                 _selectedTask = value;
-                //SelectedColumn = Board.Columns[_selectedTask.ColumnOrdinal];
+                if(value != null)
+                    SelectedColumn = Board.Columns[value.ColumnOrdinal];
                 //EnableForward = value != null;
                 if (value != null && controller.IsCreator(user.Email, Board.Name))
                     EnableForward = true;
@@ -107,11 +108,7 @@ namespace Presentation.ViewModel
             this.controller = user.Controller;
         }
 
-        public void SelectedItem(TaskModel task)
-        {
-            TaskModel SelectedTask = task;
-            RaisePropertyChanged("SelectedTask");
-        }
+
 
         public void RemoveColumn()
         {
@@ -130,8 +127,8 @@ namespace Presentation.ViewModel
 
         public void AdvanceTask()
         {
-            //try
-            //{
+            try
+            {
                 //controller.AdvanceTask(user.Email, Board.Creator, Board.Name, SelectedColumn.ColumnOrdinal, SelectedTask.TaskID);
                 if (SelectedTask.ColumnOrdinal == 0)
                     user.InProgressTasks.Add(SelectedTask);
@@ -148,17 +145,17 @@ namespace Presentation.ViewModel
             {
                 MessageBox.Show("Cannot Advance Done Task");
             }
-                
-                
 
-                
 
-            //}
-            //catch (Exception e)
-            //{
-            //    MessageBox.Show("Cannot Advance This Task. " + e.Message);
 
-            //}
+
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Cannot Advance This Task. " + e.Message);
+
+            }
         }
 
         public void MoveColumnLeft()

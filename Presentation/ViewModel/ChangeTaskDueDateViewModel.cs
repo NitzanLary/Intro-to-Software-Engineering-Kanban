@@ -36,7 +36,7 @@ namespace Presentation.ViewModel
             try
             {
                 controller.UpdateTaskDueDate(user.Email, task.Creator, task.BoardName, task.ColumnOrdinal, task.TaskID, DateTime.Parse(TaskDueDate));
-
+                RaisePropertyChanged("DueDate");
                 MessageBox.Show("Task DueDate Edited Successfully!");
 
             }
