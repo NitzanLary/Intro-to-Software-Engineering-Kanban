@@ -11,7 +11,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.objects
         bool IsLoggedIn { get; set; }
         string Email { get;}
 
-        public MFResponse<IUser> Login(string password);
+        public abstract MFResponse<IUser> Login(string password);
 
         public MFResponse addBoard(string boardName);
 

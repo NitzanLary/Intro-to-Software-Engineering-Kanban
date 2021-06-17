@@ -24,8 +24,8 @@ namespace KanbanTests
             email = "example@gmail.com";
             password = "Aa12345";
             user = new Mock<IUser>();
+            System.Console.WriteLine(user.Object.GetHashCode() + " created");
             user.Setup(m => m.Email).Returns(email);
-            userCtrl.InsertExistingUser(user.Object);
         }
 
         [TearDown]
@@ -38,13 +38,16 @@ namespace KanbanTests
         public void Login_LoginValidUser_Success()
         {
             //arrange
-            user.Setup(m => m.Login(password)).Returns(MFResponse<IUser>.FromValue(user.Object));
+            int gotThere = 0;
+            user.Setup(m=>m.Login(password)).Returns(MFResponse<IUser>.FromValue(user.Object)).Callback(()=>gotThere++);
+            userCtrl.InsertExistingUser(user.Object);
 
             //act
             MFResponse<IUser> res = userCtrl.Login(email, password);
 
             //assert
             Assert.IsFalse(res.ErrorOccured, "error occured while login legitimate user");
+            Assert.AreEqual(1, gotThere, "user's Login never called");
         }
 
         [TestCase("xampl@gmail.com", "Aa12345")]
@@ -53,7 +56,7 @@ namespace KanbanTests
         public void Login_LoginInvalidUser_Fail(string givenEmail, string givenPassword)
         {
             //arrange
-            user.Setup(m => m.Login(password)).Returns(MFResponse<IUser>.FromValue(user.Object));
+            user.Setup(m => m.Login(password)).Returns<MFResponse<IUser>>(obj=>obj);
 
             //act
             MFResponse<IUser> res = userCtrl.Login(givenEmail, givenPassword);
@@ -62,44 +65,37 @@ namespace KanbanTests
             Assert.IsTrue(res.ErrorOccured, "error did not occured while login invalid user");
         }
 
-        public void Logout_LogoutLoggedInUser_Success()
+        [TestCase("unreg@gamil.com")]
+        [TestCase(null)]
+        public void IsLoggedIn_InvalidArguments_Fail(string badEmail)
         {
             //arrange
-            userCtrl.Register(email, password);
+            string uregEmail = badEmail;
+            Mock<IUser> unreg = new Mock<IUser>();
+            unreg.Setup(m => m.Email).Returns(uregEmail);
+            unreg.Setup(m => m.IsLoggedIn).Returns(true);
 
             //act
-            userCtrl.Login(email, password);
+            MFResponse<bool> res = userCtrl.isLoggedIn(uregEmail);
 
             //assert
-            Assert.IsFalse(userCtrl.Logout(email).ErrorOccured, "error occured while logout legitimate user");
+            Assert.IsTrue(res.ErrorOccured, "error didnot occured while looged in invalid user");
         }
-        public void Logout_LogoutLoggedOutUser_Fail()
-        {
-            //arrange
-            string emailAdd = email;
-            Password pass = new Password(password);
-            userCtrl.Register(emailAdd, password);
 
-            //act
-            userCtrl.Login(emailAdd, password);
-            userCtrl.Logout(emailAdd);
-
-            //assert
-            Assert.IsTrue(userCtrl.Logout(emailAdd).ErrorOccured, "error did no occured while logouting logouted user");
-
-        }
         [Test]
-        public void Resgister_RegisterExistingUser_Fail()
+        public void IsLoggedIn_RegisteredUser_Success()
         {
-            // arrange
-            string emailAdd = "example@gmail.com";
-            Password password = new Password("Aa12345");
+            //arrange
+            int gotThere = 0;
+            user.Setup(m => m.IsLoggedIn).Returns(true).Callback(()=>gotThere++);
+            userCtrl.InsertExistingUser(user.Object);
 
             //act
-            userCtrl.Register(emailAdd, password.Password_);
+            MFResponse<bool> res = userCtrl.isLoggedIn(email);
 
             //assert
-            Assert.IsTrue(userCtrl.Register(emailAdd, password.Password_).ErrorOccured, "Error didnt occured while register existing user");
+            Assert.IsFalse(res.ErrorOccured, "Error occurred while check for login of logged-in user");
+            Assert.AreEqual(1, gotThere, "user's IsLoggedInMethod never called");
         }
 
         [Test]
@@ -113,7 +109,20 @@ namespace KanbanTests
             userCtrl.Register(emailAdd, pass);
 
             //assert
-            Assert.IsTrue(userCtrl.Register(emailAdd, pass).ErrorOccured, "shouldnt register registered user");
+            Assert.IsTrue(userCtrl.Register(emailAdd, pass).ErrorOccured, "Error didnt occured while register existing user");
+        }
+
+        [TestCase("ample@gmail.com", "1234")]
+        [TestCase("ample@gmail", "Aa123456")]
+        [TestCase(null, "1234")]
+        public void Resgister_RegisterInvalidInput_Fail(string emailAdd, string pass)
+        {
+            // arrange
+            //act
+            MFResponse res = userCtrl.Register(emailAdd, pass);
+
+            //assert
+            Assert.IsTrue(res.ErrorOccured, "shouldnt register given user");
         }
 
         [Test]

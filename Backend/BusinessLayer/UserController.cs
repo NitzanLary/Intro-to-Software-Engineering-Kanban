@@ -60,6 +60,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             try
             {
                 new UserDALController().DeleteAllData();
+                users = new Dictionary<string, IUser>();
             }
             catch(Exception e)
             {
@@ -111,16 +112,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             MFResponse<Password> rPass = createPassword(password);
             if (rPass.ErrorOccured)
                 return rPass;
-            try
-            {
-                User user = new User(email, rPass.Value);
-                users.Add(email, user);
-            }
-            catch(Exception e)
-            {
-                return new MFResponse(e.Message);
-            }
-            
+
+            User user = new User(email, rPass.Value);
+            users.Add(email, user);
+
             log.Info($"{email} successfully Registered!");
             return new MFResponse();
         }
@@ -153,6 +148,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return MFResponse<IUser>.FromError(s);
             }
             //log.Info($"User {email} Login successfully!");
+            IUser u = users[email];
             return users[email].Login(password);
         }
 

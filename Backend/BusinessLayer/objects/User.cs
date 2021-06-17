@@ -50,7 +50,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
         /// </summary>
         /// <param name="password">The password of the user to log in</param>
         /// <returns>A response object. The response should contain a error message in case of an error</returns>
-        public MFResponse<IUser> Login(string password)
+        public virtual MFResponse<IUser> Login(string password)
         {
             if (!IsPasswordCorrect(password))
                 return MFResponse<IUser>.FromError("Incorrect Password");
