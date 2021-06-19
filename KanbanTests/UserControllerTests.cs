@@ -56,7 +56,7 @@ namespace KanbanTests
         public void Login_LoginInvalidUser_Fail(string givenEmail, string givenPassword)
         {
             //arrange
-            user.Setup(m => m.Login(password)).Returns<MFResponse<IUser>>(obj=>obj);
+            user.Setup(m => m.Login(password)).Returns(MFResponse<IUser>.FromValue(user.Object));
 
             //act
             MFResponse<IUser> res = userCtrl.Login(givenEmail, givenPassword);

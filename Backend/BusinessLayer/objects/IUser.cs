@@ -10,13 +10,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer.objects
     {
         bool IsLoggedIn { get; set; }
         string Email { get;}
-
         public abstract MFResponse<IUser> Login(string password);
-
-        public MFResponse addBoard(string boardName);
-
-        public MFResponse removeBoard(string boardName);
-
         public MFResponse logout();
     }
 }
