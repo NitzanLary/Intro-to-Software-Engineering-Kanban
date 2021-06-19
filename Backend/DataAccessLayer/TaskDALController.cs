@@ -26,8 +26,8 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public List<TaskDTO> SelectAllTasksForColumn(string boardName, string creator, long columnOrdinal)
         {
             string query = $"SELECT * FROM {TasksTableName} " +
-                $"WHERE {TaskDTO.CreatorColumnName} = {creator} and {TaskDTO.BoardNameColumnName} = {boardName} and {TaskDTO.ColumnOrdinalColumnName} = {columnOrdinal} ";
-            List<TaskDTO> result = Select().Cast<TaskDTO>().ToList();
+                $"WHERE {TaskDTO.CreatorColumnName} = '{creator}' and {TaskDTO.BoardNameColumnName} = '{boardName}' and {TaskDTO.ColumnOrdinalColumnName} = {columnOrdinal} ";
+            List<TaskDTO> result = Select(query).Cast<TaskDTO>().ToList();
             return result;
         }
 

@@ -178,7 +178,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// <param name="description">Description of the new task</param>
         /// <param name="dueDate">The due date if the new task</param>
         /// <returns>A response object with a value set to the Task, instead the response should contain a error message in case of an error</returns>
-        public Response<Task> AddTask(string userEmail,string creatorEmail, string boardName, string title, string description, DateTime dueDate)
+        public Response<Task> AddTask(string userEmail, string creatorEmail, string boardName, string title, string description, DateTime dueDate)
         {
             log.Info($"User {userEmail} is trying to AddTask to: {creatorEmail}, {boardName}");
             return ConfirmAndApplyT<Task>(userEmail, () =>
@@ -358,7 +358,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             return ConfirmAndApplyT<IList<Task>>(userEmail, () =>
             {
                 MFResponse<IList<BusinessLayer.Task>> BLTasks = boardController.InProgressTask(userEmail);
-                if(BLTasks.ErrorOccured)
+                if (BLTasks.ErrorOccured)
                     return Response<IList<Task>>.FromError(BLTasks.ErrorMessage);
                 List<Task> SLTasks = BLTasks.Value.Select(BLTask => new Task(BLTask)).ToList();
                 log.Info("user get all in progress Tasks successfully");
@@ -442,7 +442,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             });
         }
 
-      
+
 
         public Response<IList<Objects.Column>> GetColumns(string userEmail, string creatorEmail, string boardName)
         {
@@ -573,6 +573,17 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
                 }
 
                 return new Response();
+            });
+        }
+
+        public Response IsCreator(string userEmail, string boardName)
+        {
+            return ConfirmAndApply(userEmail, () =>
+            {
+                //log.Info($"{userEmail} is Trying to rename column in board {boardName}");
+                Response response = new Response(boardController.isCreator(userEmail, boardName));
+                WriteToLog(response, $"{userEmail} is the creator of board {boardName}");
+                return response;
             });
         }
 

@@ -47,7 +47,7 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
         public string Assignee { get => _assignee; set { if (_controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, AssigneeColumnName, value)) { _assignee = value; } } }
 
         private string _dueTime;
-        public string DueTime { get => _dueTime; set { if (_controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, _dueTime, value)) { _dueTime = value; } } }
+        public string DueTime { get => _dueTime; set { if (_controller.Update(_boardname, BoardNameColumnName, _creator, CreatorColumnName, _taskID, IdColumnName, dueDateColumnName, _dueTime)) { _dueTime = value; } } }
 
 
         private string _creationTime;

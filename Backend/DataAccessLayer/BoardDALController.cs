@@ -190,16 +190,22 @@ namespace IntroSE.Kanban.Backend.DataAccessLayer
                 try
                 {
                     connection.Open();
-                    command.CommandText = $"DELETE FROM {BoardsTableName} WHERE [{BoardDTO.BoardNameColumnName}] = @boardNameVal " +
-                $"and [{BoardDTO.CreatorColumnName}] = @boardCreatorVal";
+                    command.CommandText = $"DELETE FROM {BoardsTableName} WHERE [{BoardDTO.BoardNameColumnName}] = @boardNameVal1 " +
+                $"and [{BoardDTO.CreatorColumnName}] = @boardCreatorVal1;" +
+                $"DELETE FROM {BoardMembersTableName} WHERE [{BoardDTO.BoardNameColumnName}] = @boardNameVal2 " +
+                $"and [{BoardDTO.CreatorColumnName}] = @boardCreatorVal2;";
 
-                    SQLiteParameter creatorParam = new SQLiteParameter("@boardCreatorVal", board.Creator);
-                    SQLiteParameter boardnameParam = new SQLiteParameter($"@boardNameVal", board.Boardname);
+                    SQLiteParameter creatorParam1 = new SQLiteParameter("@boardCreatorVal1", board.Creator);
+                    SQLiteParameter boardnameParam1 = new SQLiteParameter($"@boardNameVal1", board.Boardname);
+                    SQLiteParameter creatorParam2 = new SQLiteParameter("@boardCreatorVal2", board.Creator);
+                    SQLiteParameter boardnameParam2 = new SQLiteParameter($"@boardNameVal2", board.Boardname);
 
 
 
-                    command.Parameters.Add(creatorParam);
-                    command.Parameters.Add(boardnameParam);
+                    command.Parameters.Add(creatorParam1);
+                    command.Parameters.Add(boardnameParam1);
+                    command.Parameters.Add(creatorParam2);
+                    command.Parameters.Add(boardnameParam2);
                     command.Prepare();
 
                     res = command.ExecuteNonQuery();
