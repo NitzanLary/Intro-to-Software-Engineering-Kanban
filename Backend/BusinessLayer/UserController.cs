@@ -115,13 +115,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
             User user = new User(email, rPass.Value);
             users.Add(email, user);
-
-            }
-            catch(Exception e)
-            {
-                return new MFResponse(e.Message);
-            }
-            
             log.Info($"{email} successfully Registered!");
             return new MFResponse();
         }
