@@ -57,15 +57,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public MFResponse DeleteData()
         {
-            try
-            {
-                new UserDALController().DeleteAllData();
-                users = new Dictionary<string, IUser>();
-            }
-            catch(Exception e)
-            {
-                return new MFResponse(e.Message);
-            }
+           
+            new UserDALController().DeleteAllData();
+            users = new Dictionary<string, IUser>();
+
             return new MFResponse();
         }
 

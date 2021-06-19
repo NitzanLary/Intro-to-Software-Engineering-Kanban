@@ -72,14 +72,10 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
 
         public MFResponse DeleteData()
         {
-            try
-            {
-                new BoardDALController().DeleteAllData();
-            }
-            catch (Exception e)
-            {
-                return new MFResponse(e.Message);
-            }
+            new BoardDALController().DeleteAllData();
+            boards = new Dictionary<string, Dictionary<string, Board>>();
+            members = new Dictionary<string, HashSet<Board>>();
+
             return new MFResponse();
         }
 
