@@ -114,9 +114,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             return new MFResponse();
         }
         /// <summary>
-        /// overloading register for tests useage
+        /// insert user directly into users data structure for tests useage
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="u"></param>
         /// <returns></returns>
         public MFResponse<IUser> InsertExistingUser(IUser u)
         {

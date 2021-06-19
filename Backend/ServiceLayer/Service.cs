@@ -394,7 +394,7 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         /// Returns the list of board of a user. The user must be logged-in. The function returns all the board names the user created or joined.
         /// </summary>
         /// <param name="userEmail">The email of the user. Must be logged-in.</param>
-        /// <returns>A response object with a value set to the board, instead the response should contain a error message in case of an error</returns>
+        /// <returns>A response object with a value of list of string of board names, instead the response should contain a error message in case of an error</returns>
         public Response<IList<String>> GetBoardNames(string userEmail)
         {
             return ConfirmAndApplyT<IList<String>>(userEmail, () =>
@@ -407,6 +407,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             });
         }
 
+        /// <summary>
+        /// Returns the list of board of a user. The user must be logged-in. The function returns all the board names the user created.
+        /// </summary>
+        /// <param name="userEmail">The email of the user. Must be logged-in.</param>
+        /// <returns>A response object with a value of list of string of board names, instead the response should contain a error message in case of an error</returns>
         public Response<IList<String>> GetMyBoardNames(string userEmail)
         {
             return ConfirmAndApplyT<IList<String>>(userEmail, () =>
@@ -419,6 +424,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             });
         }
 
+        /// <summary>
+        /// Returns the list of board of a user. The user must be logged-in. The function returns all the board names the user joined.
+        /// </summary>
+        /// <param name="userEmail">The email of the user. Must be logged-in.</param>
+        /// <returns>A response object with a value of list of string of board names, instead the response should contain a error message in case of an error</returns>
         public Response<IList<String>> GetBoardIMemberOfNames(string userEmail)
         {
             return ConfirmAndApplyT<IList<String>>(userEmail, () =>
@@ -431,6 +441,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             });
         }
 
+        /// <summary>
+        /// Returns the list of board of a user. The user must be logged-in. The function returns all the board names the user created or joined.
+        /// </summary>
+        /// <param name="userEmail">Email of the current user. Must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <returns></returns> A response object with a value set to the board, instead the response should contain a error message in case of an error
         public Response<Objects.Board> GetBoard(string userEmail, string creatorEmail, string boardName)
         {
             return ConfirmAndApplyT<Objects.Board>(userEmail, () =>
@@ -445,7 +462,13 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
         }
 
 
-
+        /// <summary>
+        /// Returns the list of columns of a user. The user must be logged-in. The function returns all the column of the user.
+        /// </summary>
+        /// <param name="userEmail">Email of the current user. Must be logged in</param>
+        /// <param name="creatorEmail">Email of the board creator</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <returns>  A response object with a value set to the column, instead the response should contain a error message in case of an error</returns>
         public Response<IList<Objects.Column>> GetColumns(string userEmail, string creatorEmail, string boardName)
         {
             return ConfirmAndApplyT<IList<Objects.Column>>(userEmail, () =>
@@ -556,6 +579,11 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             else log.Info(msg);
         }
 
+        /// <summary>
+        /// check if the user is logged in
+        /// </summary>
+        /// <param name="email">Email of the current user</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         private Response IsLoggedIn(string email)
         {
             return TryAndApply(() =>
@@ -578,6 +606,12 @@ namespace IntroSE.Kanban.Backend.ServiceLayer
             });
         }
 
+        /// <summary>
+        /// check if the user is the creator of the board name given
+        /// </summary>
+        /// <param name="userEmail">Email of the current user. Must be logged in</param>
+        /// <param name="boardName">The name of the board</param>
+        /// <returns>A response object. The response should contain a error message in case of an error</returns>
         public Response IsCreator(string userEmail, string boardName)
         {
             return ConfirmAndApply(userEmail, () =>
