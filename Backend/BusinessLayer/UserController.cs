@@ -101,15 +101,9 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             MFResponse<Password> rPass = pc.createPassword(password);
             if (rPass.ErrorOccured)
                 return rPass;
-            //try
-            //{
-                User user = new User(email, rPass.Value);
-                users.Add(email, user);
-            //}
-            //catch(Exception e)
-            //{
-            //    return new MFResponse(e.Message);
-            //}
+            User user = new User(email, rPass.Value);
+            users.Add(email, user);
+
             
             log.Info($"{email} successfully Registered!");
             return new MFResponse();
