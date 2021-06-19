@@ -1,0 +1,17 @@
+﻿<Window x:Class="Presentation.View.ChangeTaskDueDateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Presentation.View"
+        mc:Ignorable="d"
+        Title="ChangeTaskDueDateWindow" Height="180" Width="400">
+    <Grid>
+        <Label Content="Edit Task DueDate" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="16"/>
+        <TextBox HorizontalAlignment="Center" Text="{Binding Path=TaskDueDate, Mode=OneWayToSource , StringFormat='yyyy-MM-dd'}" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="0,56,0,0"/>
+        <Button Content="Edit DueDate" HorizontalAlignment="Center" Margin="0,110,0,0" VerticalAlignment="Top" Width="120" Click="Edit_Task_DueDate_Button_Click" />
+        <Label Content="Enter Task DueDate:" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top"/>
+        <Label Content="yyyy-MM-dd" HorizontalAlignment="Left" Margin="265,52,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>
