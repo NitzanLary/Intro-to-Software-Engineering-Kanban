@@ -50,23 +50,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                     boards.Add(boardDTO.Creator, new Dictionary<string, Board>());
                 boards[boardDTO.Creator].Add(board.Name, board);
             }
-            //try
-            //{
-            //    List<BoardDTO> dtos = new BoardDALController().SelectAllBoards();
-            //    foreach (BoardDTO boardDTO in dtos)
-            //    {
-            //        Board board = new Board(boardDTO);
-            //        boardDTO.BoardMembers.ForEach((user) => members[user].Add(board));
-            //        if (!boards.ContainsKey(boardDTO.Creator))
-            //            boards.Add(boardDTO.Creator, new Dictionary<string, Board>());
-            //        boards[boardDTO.Creator].Add(board.Name, board);
-            //    }
 
-            //}
-            //catch (Exception e)
-            //{
-            //    return new MFResponse(e.Message);
-            //}
             return new MFResponse();
         }
 
@@ -215,14 +199,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             if (!task.ErrorOccured)
             {
                 task.Value.AttachDto(creatorEmail, boardName);
-                //try
-                //{
-                //    task.Value.AttachDto(creatorEmail, boardName);
-                //}
-                //catch(Exception e)
-                //{
-                //    return MFResponse<Task>.FromError(e.Message);
-                //}
+
             }
             return task;
         }
@@ -246,15 +223,7 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
                 return MFResponse<Task>.FromError("there is no such column number");
             Task t = b.Columns[columnOrdinal].GetTask(taskId);
             return MFResponse<Task>.FromValue(t);
-            //try
-            //{
-            //    Task t = b.Columns[columnOrdinal].GetTask(taskId);
-            //    return MFResponse<Task>.FromValue(t);
-            //}
-            //catch(Exception e)
-            //{
-            //    return MFResponse<Task>.FromError($"coldn't find task id {taskId} in email {userEmail} | board {boardName} | column {columnOrdinal}\n{e.Message}");
-            //}
+
 
         }
 
@@ -285,14 +254,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             if (columnOrdinal == b.Columns.Count - 1)
                 return new MFResponse("task that is done, cannot be change");
             updateFunc(res.Value);
-            //try
-            //{
-            //    updateFunc(res.Value);
-            //}
-            //catch(Exception e)
-            //{
-            //    return new MFResponse(e.Message);
-            //}
             return new MFResponse();
         }
         /// <summary>
@@ -395,16 +356,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Board board = new Board(name, email);
             boards[email].Add(name, board);
             members[email].Add(board);
-            //try
-            //{
-            //    Board board = new Board(name, email);
-            //    boards[email].Add(name, board);
-            //    members[email].Add(board);
-            //}
-            //catch(Exception e)
-            //{
-            //    return new MFResponse(e.Message);
-            //}
             
             return new MFResponse();
         }
@@ -442,14 +393,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Board board = boards[creatorEmail][boardName];
             
             board.DTO.Delete();
-            //try
-            //{
-            //    board.DTO.Delete();
-            //}
-            //catch(Exception e)
-            //{
-            //    return new MFResponse(e.Message);
-            //}
 
             boards[creatorEmail].Remove(boardName);
             foreach (KeyValuePair<string, HashSet<Board>> entry in members)
@@ -503,14 +446,6 @@ namespace IntroSE.Kanban.Backend.BusinessLayer
             Board b = boards[creatorEmail][boardName];
             
             b.DTO.InsertNewBoardMember(userEmail);
-            //try
-            //{
-            //    b.DTO.InsertNewBoardMember(userEmail);
-            //}
-            //catch(Exception e)
-            //{
-            //    return new MFResponse(e.Message);
-            //}
             members[userEmail].Add(b);
             return new MFResponse();
         }
