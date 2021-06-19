@@ -130,6 +130,22 @@ namespace Presentation.ViewModel
             return controller.GetAssignedBoard(User.Email, _selectedAssignedBoard);
         }
 
+        public void DeleteAllData()
+        {
+            try
+            {
+                controller.DeleteData();
+                MessageBox.Show("All Data Removed Successfully!");
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Cannot Remove Data. " + e.Message);
+
+            }
+
+        }
+
 
 
 

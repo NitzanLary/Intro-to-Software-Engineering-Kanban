@@ -33,6 +33,7 @@
                             ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="156,37,296,81"/>
                         <Label Content="Assigned Boards" HorizontalAlignment="Left" Margin="240,11,0,0" VerticalAlignment="Top"/>
                         <Button Content="Select Assigned Board" HorizontalAlignment="Left" Margin="156,267,0,0" VerticalAlignment="Top" Width="252" Click="Select_AssignedBoard_Button_Click" IsEnabled="{Binding Path=EnableForward2, Mode=OneWay}" />
+                        <Button Content="Delete All Data" HorizontalAlignment="Left" Margin="10,306,0,0" VerticalAlignment="Top" Width="133" Click="Delete_Data_Button_Click" />
 
                     </Grid>
 

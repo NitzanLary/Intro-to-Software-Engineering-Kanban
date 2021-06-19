@@ -84,5 +84,14 @@ namespace Presentation.View
             boardView.Show();
             this.Close();
         }
+
+        private void Delete_Data_Button_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.DeleteAllData();
+            MainWindow mainView = new MainWindow();
+            this.Hide();
+            mainView.Show();
+            this.Close();
+        }
     }
 }
